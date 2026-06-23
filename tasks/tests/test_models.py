@@ -4,7 +4,7 @@ from django.db import IntegrityError
 from django.db.models import ProtectedError
 from django.test import TestCase
 
-from tasks.models import Position, Worker, TaskType, Task, Project
+from tasks.models import Position, Worker, TaskType, Task, Project, Team
 
 
 class TestPosition(TestCase):
@@ -42,6 +42,44 @@ class TestWorker(TestCase):
         )
 
 
+class TestTeam(TestCase):
+    def setUp(self):
+        self.team = Team.objects.create(name="Frontend developers")
+
+    def test_name_unique(self):
+        self.assertRaises(
+            IntegrityError,
+            Team.objects.create,
+            name="Frontend developers"
+        )
+
+    def test_str(self):
+        self.assertEqual(str(self.team), self.team.name)
+
+
+class TestProject(TestCase):
+    def setUp(self):
+        self.project = Project.objects.create(
+            name="Create some staff",
+            description="Some description",
+            deadline=(datetime.datetime.now(datetime.UTC)
+                      + datetime.timedelta(days=1)),
+        )
+
+    def test_description_could_be_null(self):
+        self.project.description = None
+        self.project.save()
+        self.assertIsNone(self.project.description)
+
+    def test_deadline_could_be_null(self):
+        self.project.deadline = None
+        self.project.save()
+        self.assertIsNone(self.project.deadline)
+
+    def test_str(self):
+        self.assertEqual(str(self.project), self.project.name)
+
+
 class TestTaskType(TestCase):
     def setUp(self):
         self.task_type = TaskType.objects.create(name="Bug")
@@ -63,7 +101,8 @@ class TestTask(TestCase):
         self.task = Task.objects.create(
             name="Fix some staff",
             description="Some description",
-            deadline=datetime.datetime.now(datetime.UTC) + datetime.timedelta(days=1),
+            deadline=(datetime.datetime.now(datetime.UTC)
+                      + datetime.timedelta(days=1)),
             task_type=self.task_type,
             project=Project.objects.create(name="Project")
         )
