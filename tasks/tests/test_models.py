@@ -1,6 +1,7 @@
 import datetime
 
 from django.db import IntegrityError
+from django.db.models import ProtectedError
 from django.test import TestCase
 
 from tasks.models import Position, Worker, TaskType, Task
@@ -55,17 +56,23 @@ class TestTaskType(TestCase):
 
 class TestTask(TestCase):
     def setUp(self):
+        self.task_type = TaskType.objects.create(name="Bug")
         self.task = Task.objects.create(
             name="Fix some staff",
             description="Some description",
             deadline=datetime.datetime.now(datetime.UTC) + datetime.timedelta(days=1),
-            task_type=TaskType.objects.create(name="Bug"),
+            task_type=self.task_type,
         )
 
     def test_description_could_be_null(self):
         self.task.description = None
         self.task.save()
         self.assertIsNone(self.task.description)
+
+    def test_deadline_could_be_null(self):
+        self.task.deadline = None
+        self.task.save()
+        self.assertIsNone(self.task.deadline)
 
     def test_priority_default(self):
         self.assertEqual(self.task.priority, Task.Priority.MEDIUM)
@@ -83,6 +90,9 @@ class TestTask(TestCase):
         self.task.priority = Task.Priority.URGENT
 
         self.assertEqual(self.task.priority, Task.Priority.URGENT)
+
+    def test_task_type_should_be_protected_on_delete(self):
+        self.assertRaises(ProtectedError, self.task_type.delete)
 
     def test_str(self):
         self.assertEqual(str(self.task), self.task.name)
