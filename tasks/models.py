@@ -34,7 +34,7 @@ class Task(models.Model):
         LOW = "low", "Low"
 
     name = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
     deadline = models.DateTimeField()
     is_completed = models.BooleanField(default=False)
     priority = models.CharField(
@@ -47,7 +47,12 @@ class Task(models.Model):
         on_delete=models.CASCADE,
         related_name="tasks"
     )
-    assignees = models.ManyToManyField(get_user_model(), related_name="tasks")
+    assignees = models.ManyToManyField(
+        get_user_model(),
+        related_name="tasks",
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return self.name
