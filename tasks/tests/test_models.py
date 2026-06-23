@@ -1,0 +1,88 @@
+import datetime
+
+from django.db import IntegrityError
+from django.test import TestCase
+
+from tasks.models import Position, Worker, TaskType, Task
+
+
+class TestPosition(TestCase):
+    def setUp(self):
+        self.position = Position.objects.create(name="Developer")
+
+    def test_name_unique(self):
+        self.assertRaises(
+            IntegrityError,
+            Position.objects.create,
+            name="Developer"
+        )
+
+    def test_str(self):
+        self.assertEqual(str(self.position), self.position.name)
+
+
+class TestWorker(TestCase):
+    def setUp(self):
+        self.worker = Worker.objects.create_user(
+            username="test_user",
+            password="qwerty",
+            position=Position.objects.create(name="Developer")
+        )
+
+    def test_position_could_be_null(self):
+        self.worker.position = None
+        self.worker.save()
+        self.assertIsNone(self.worker.position)
+
+    def test_str(self):
+        self.assertEqual(str(self.worker), self.worker.username)
+
+
+class TestTaskType(TestCase):
+    def setUp(self):
+        self.task_type = TaskType.objects.create(name="Bug")
+
+    def test_name_unique(self):
+        self.assertRaises(
+            IntegrityError,
+            TaskType.objects.create,
+            name="Bug"
+        )
+
+    def test_str(self):
+        self.assertEqual(str(self.task_type), self.task_type.name)
+
+
+class TestTask(TestCase):
+    def setUp(self):
+        self.task = Task.objects.create(
+            name="Fix some staff",
+            description="Some description",
+            deadline=datetime.datetime.now(datetime.UTC) + datetime.timedelta(days=1),
+            task_type=TaskType.objects.create(name="Bug"),
+        )
+
+    def test_description_could_be_null(self):
+        self.task.description = None
+        self.task.save()
+        self.assertIsNone(self.task.description)
+
+    def test_priority_default(self):
+        self.assertEqual(self.task.priority, Task.Priority.MEDIUM)
+
+    def test_priority_choices(self):
+        field = Task._meta.get_field("priority")
+        choices = [choice[0] for choice in field.choices]
+
+        self.assertIn("urgent", choices)
+        self.assertIn("high", choices)
+        self.assertIn("medium", choices)
+        self.assertIn("low", choices)
+
+    def test_priority_accepts_value(self):
+        self.task.priority = Task.Priority.URGENT
+
+        self.assertEqual(self.task.priority, Task.Priority.URGENT)
+
+    def test_str(self):
+        self.assertEqual(str(self.task), self.task.name)
