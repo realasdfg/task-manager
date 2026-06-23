@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Position(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
@@ -20,7 +20,7 @@ class Worker(AbstractUser):
 
 
 class TaskType(models.Model):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, unique=True)
 
     def __str__(self):
         return self.name
@@ -50,7 +50,6 @@ class Task(models.Model):
     assignees = models.ManyToManyField(
         get_user_model(),
         related_name="tasks",
-        null=True,
         blank=True
     )
 
