@@ -4,7 +4,7 @@ from django.db import IntegrityError
 from django.db.models import ProtectedError
 from django.test import TestCase
 
-from tasks.models import Position, Worker, TaskType, Task
+from tasks.models import Position, Worker, TaskType, Task, Project
 
 
 class TestPosition(TestCase):
@@ -65,6 +65,7 @@ class TestTask(TestCase):
             description="Some description",
             deadline=datetime.datetime.now(datetime.UTC) + datetime.timedelta(days=1),
             task_type=self.task_type,
+            project=Project.objects.create(name="Project")
         )
 
     def test_description_could_be_null(self):
@@ -76,6 +77,11 @@ class TestTask(TestCase):
         self.task.deadline = None
         self.task.save()
         self.assertIsNone(self.task.deadline)
+
+    def test_project_could_be_null(self):
+        self.task.project = None
+        self.task.save()
+        self.assertIsNone(self.task.project)
 
     def test_priority_default(self):
         self.assertEqual(self.task.priority, Task.Priority.MEDIUM)
