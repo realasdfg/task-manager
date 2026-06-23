@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 
-from tasks.models import Worker, Position, TaskType, Task
+from tasks.models import Worker, Position, TaskType, Task, Team, Project
 
 admin.site.unregister(Group)
 
@@ -44,6 +44,19 @@ class TaskAdmin(admin.ModelAdmin):
         "priority",
         "created_at",
     )
+
+
+@admin.register(Team)
+class TeamAdmin(admin.ModelAdmin):
+    search_fields = ("name",)
+    list_filter = ("members",)
+
+
+@admin.register(Project)
+class TeamAdmin(admin.ModelAdmin):
+    list_display = ("name", "deadline", "is_completed", "created_at",)
+    search_fields = ("name",)
+    list_filter = ("teams", "deadline", "is_completed", "created_at",)
 
 
 admin.site.register(Position)
