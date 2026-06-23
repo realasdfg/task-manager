@@ -18,6 +18,33 @@ class Worker(AbstractUser):
         related_name="workers"
     )
 
+class Team(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    members = models.ManyToManyField(
+        get_user_model(),
+        related_name="teams",
+        blank=True
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class Project(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True)
+    deadline = models.DateTimeField(null=True, blank=True)
+    is_completed = models.BooleanField(default=False)
+    teams = models.ManyToManyField(
+        Team,
+        related_name="projects",
+        blank=True
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.name
+
 
 class TaskType(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -52,6 +79,14 @@ class Task(models.Model):
         related_name="tasks",
         blank=True
     )
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name="tasks",
+        null=True,
+        blank=True
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
