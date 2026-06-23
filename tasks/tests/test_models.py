@@ -36,7 +36,10 @@ class TestWorker(TestCase):
         self.assertIsNone(self.worker.position)
 
     def test_str(self):
-        self.assertEqual(str(self.worker), self.worker.username)
+        self.assertEqual(
+            str(self.worker),
+            f"{self.worker.first_name} {self.worker.last_name}"
+        )
 
 
 class TestTaskType(TestCase):
