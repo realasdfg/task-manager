@@ -35,7 +35,7 @@ class Task(models.Model):
 
     name = models.CharField(max_length=255)
     description = models.TextField(null=True, blank=True)
-    deadline = models.DateTimeField()
+    deadline = models.DateTimeField(null=True, blank=True)
     is_completed = models.BooleanField(default=False)
     priority = models.CharField(
         max_length=10,
@@ -44,7 +44,7 @@ class Task(models.Model):
     )
     task_type = models.ForeignKey(
         TaskType,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         related_name="tasks"
     )
     assignees = models.ManyToManyField(
