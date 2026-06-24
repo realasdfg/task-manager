@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import generic
@@ -6,6 +8,7 @@ from tasks.forms import ProjectNameSearchForm, ProjectCreateForm
 from tasks.models import Project, Team, Worker, Task
 
 
+@login_required
 def index(request: HttpRequest) -> HttpResponse:
     num_projects = Project.objects.count()
     num_teams = Team.objects.count()
@@ -20,7 +23,7 @@ def index(request: HttpRequest) -> HttpResponse:
     return render(request, "tasks/index.html", context=context)
 
 
-class ProjectListView(generic.ListView):
+class ProjectListView(LoginRequiredMixin, generic.ListView):
     model = Project
 
     def get_context_data(self, *, object_list=None, **kwargs):
@@ -39,12 +42,12 @@ class ProjectListView(generic.ListView):
         return queryset
 
 
-class ProjectDetailView(generic.DetailView):
+class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
     model = Project
     queryset = (Project.objects.all()
                 .prefetch_related("teams", "teams__members"))
 
 
-class ProjectCreateView(generic.CreateView):
+class ProjectCreateView(LoginRequiredMixin, generic.CreateView):
     model = Project
     form_class = ProjectCreateForm
