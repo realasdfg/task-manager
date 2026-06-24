@@ -2,11 +2,14 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-  <h2>Projects</h2>
+  <div class="d-flex align-items-center gap-3 mb-2">
+    <h2>Projects</h2>
+    <a href="{% url 'tasks:project-create' %}" class="btn btn-success">Add</a>
+  </div>
   <form method="get" class="d-flex align-items-baseline gap-2">
-  {{ search_form|crispy }}
-  <input type="submit" value="Search" class="btn btn-outline-primary">
-</form>
+    {{ search_form|crispy }}
+    <input type="submit" value="Search" class="btn btn-outline-primary">
+  </form>
   <table class="table table-striped">
     <thead class="table-dark">
     <tr>
