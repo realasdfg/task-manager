@@ -1,5 +1,6 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.views.generic import ListView
 
 from tasks.models import Project, Team, Worker, Task
 
@@ -16,3 +17,7 @@ def index(request: HttpRequest) -> HttpResponse:
         "num_tasks": num_tasks,
     }
     return render(request, "tasks/index.html", context=context)
+
+
+class ProjectListView(ListView):
+    model = Project

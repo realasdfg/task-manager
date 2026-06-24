@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Projects</h2>
+  <table class="table table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Deadline</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for project in project_list %}
+      <tr class="{% if project.is_completed %}table-success{% endif %}">
+        <th scope="row">{{ project.id }}</th>
+        <td>{{ project.name }}</td>
+        <td>{{ project.deadline }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
