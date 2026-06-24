@@ -53,7 +53,7 @@ class TeamAdmin(admin.ModelAdmin):
 
 
 @admin.register(Project)
-class TeamAdmin(admin.ModelAdmin):
+class ProjectAdmin(admin.ModelAdmin):
     list_display = ("name", "deadline", "is_completed", "created_at",)
     search_fields = ("name",)
     list_filter = ("teams", "deadline", "is_completed", "created_at",)
