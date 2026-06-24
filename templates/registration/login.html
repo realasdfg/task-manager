@@ -4,10 +4,14 @@
 {% block content %}
   <div class="d-flex justify-content-center">
     <div style="width: 300px;" class="m-auto">
+      <h2 class="my-5 text-center">Login</h2>
       <form action="{% url 'login' %}" method="post">
         {% csrf_token %}
         {{ form|crispy }}
-        <input class="btn btn-outline-secondary" type="submit" value="Login">
+        <div class="text-center my-4">
+          <input class="btn btn-outline-primary w-50" type="submit" value="Login">
+        </div>
+        <input type="hidden" name="next" value="{{ next }}">
       </form>
     </div>
   </div>

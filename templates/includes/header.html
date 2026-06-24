@@ -20,7 +20,7 @@
         <button class="btn btn-outline-danger me-2" type="submit">Logout</button>
       </form>
     {% else %}
-      <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Login</a>
+      <a href="{% url 'login' %}?next={{request.path}}" class="btn btn-outline-primary me-2">Login</a>
     {% endif %}
   </div>
 </header>
