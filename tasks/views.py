@@ -1,6 +1,6 @@
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views import generic
 
 from tasks.models import Project, Team, Worker, Task
 
@@ -19,5 +19,11 @@ def index(request: HttpRequest) -> HttpResponse:
     return render(request, "tasks/index.html", context=context)
 
 
-class ProjectListView(ListView):
+class ProjectListView(generic.ListView):
     model = Project
+
+
+class ProjectDetailView(generic.DetailView):
+    model = Project
+    queryset = (Project.objects.all()
+                .prefetch_related("teams", "teams__members"))

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Project {{ project.name }}</h2>
+  <p><strong>Created:</strong> {{ project.created_at }}</p>
+  <p><strong>Deadline:</strong> {{ project.deadline }}</p>
+  <p><strong>Completed:</strong> {% if project.is_completed %}✅{% else %}❌{% endif %}</p>
+  <p class="fw-semibold">{{ project.description }}</p>
+  <h3>Teams working on project</h3>
+  <table class="table table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Members</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for team in project.teams.all %}
+      <tr>
+        <th scope="row">{{ team.id }}</th>
+        <td>{{ team.name }}</td>
+        <td>{{ team.members.count }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
