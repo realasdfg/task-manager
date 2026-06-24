@@ -1,7 +1,9 @@
+from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import generic
 
+from tasks.forms import ProjectNameSearchForm
 from tasks.models import Project, Team, Worker, Task
 
 
@@ -21,6 +23,21 @@ def index(request: HttpRequest) -> HttpResponse:
 
 class ProjectListView(generic.ListView):
     model = Project
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ProjectListView, self).get_context_data(**kwargs)
+        project_name = self.request.GET.get("name", "")
+        context["search_form"] = ProjectNameSearchForm(
+            initial={"name": project_name}
+        )
+        return context
+
+    def get_queryset(self):
+        queryset = Project.objects.all()
+        form = ProjectNameSearchForm(self.request.GET)
+        if form.is_valid():
+            return queryset.filter(name__icontains=form.cleaned_data["name"])
+        return queryset
 
 
 class ProjectDetailView(generic.DetailView):

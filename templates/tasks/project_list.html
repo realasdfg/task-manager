@@ -1,7 +1,12 @@
 {% extends "base.html" %}
+{% load crispy_forms_filters %}
 
 {% block content %}
   <h2>Projects</h2>
+  <form method="get" class="d-flex align-items-baseline gap-2">
+  {{ search_form|crispy }}
+  <input type="submit" value="Search" class="btn btn-outline-primary">
+</form>
   <table class="table table-striped">
     <thead class="table-dark">
     <tr>
