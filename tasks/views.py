@@ -1,9 +1,8 @@
-from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views import generic
 
-from tasks.forms import ProjectNameSearchForm
+from tasks.forms import ProjectNameSearchForm, ProjectCreateForm
 from tasks.models import Project, Team, Worker, Task
 
 
@@ -44,3 +43,8 @@ class ProjectDetailView(generic.DetailView):
     model = Project
     queryset = (Project.objects.all()
                 .prefetch_related("teams", "teams__members"))
+
+
+class ProjectCreateView(generic.CreateView):
+    model = Project
+    form_class = ProjectCreateForm

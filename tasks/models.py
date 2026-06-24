@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.urls import reverse
 
 
 class Position(models.Model):
@@ -49,6 +50,9 @@ class Project(models.Model):
         blank=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    def get_absolute_url(self):
+        return reverse("tasks:project-detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         return self.name

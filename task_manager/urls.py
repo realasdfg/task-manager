@@ -22,4 +22,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("tasks.urls", namespace="tasks")),
     path("accounts/", include("django.contrib.auth.urls")),
-] + debug_toolbar_urls()
+    path("select2/", include("django_select2.urls")),
+]
+
+urlpatterns += debug_toolbar_urls()
