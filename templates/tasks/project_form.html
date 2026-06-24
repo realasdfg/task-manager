@@ -2,11 +2,11 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-  <h2>Create Project</h2>
+  <h2>{{ object|yesno:"Update,Create" }} Project</h2>
   <form action="" method="post">
     {% csrf_token %}
     {{ form.media }}
     {{ form|crispy }}
-    <input type="submit" value="Create" class="btn btn-primary">
+    <input type="submit" value="Submit" class="btn btn-primary">
   </form>
 {% endblock %}
