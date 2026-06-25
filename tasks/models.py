@@ -35,6 +35,9 @@ class Team(models.Model):
         blank=True
     )
 
+    def get_absolute_url(self):
+        return reverse("tasks:team-detail", kwargs={"pk": self.pk})
+
     def __str__(self):
         return self.name
 
