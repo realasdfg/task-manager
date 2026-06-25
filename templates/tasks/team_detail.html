@@ -26,6 +26,10 @@
         <td><a href="#">{{ member.position.name }}</a></td>
         <td>{{ member.tasks.count }}</td>
       </tr>
+    {% empty %}
+      <tr>
+        <th colspan="100%" scope="row" class="text-center">There are no members at this moment.</th>
+      </tr>
     {% endfor %}
     </tbody>
   </table>

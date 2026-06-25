@@ -25,6 +25,10 @@
         <td><a href="{% url 'tasks:team-detail' team.id %}">{{ team.name }}</a></td>
         <td>{{ team.members.count }}</td>
       </tr>
+    {% empty %}
+      <tr>
+        <th colspan="100%" scope="row" class="text-center">There are no teams at this moment.</th>
+      </tr>
     {% endfor %}
     </tbody>
   </table>

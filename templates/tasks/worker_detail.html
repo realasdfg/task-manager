@@ -23,6 +23,10 @@
         <th scope="row">{{ team.id }}</th>
         <td><a href="{% url 'tasks:team-detail' team.id %}">{{ team.name }}</a></td>
       </tr>
+    {% empty %}
+      <tr>
+        <th colspan="100%" scope="row" class="text-center">There are no teams at this moment.</th>
+      </tr>
     {% endfor %}
     </tbody>
   </table>
@@ -45,6 +49,10 @@
         <td>{{ task.task_type }}</td>
         <td>{{ task.priority.title }}</td>
         <td>{{ task.deadline }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <th colspan="100%" scope="row" class="text-center">There are no tasks at this moment.</th>
       </tr>
     {% endfor %}
     </tbody>

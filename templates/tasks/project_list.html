@@ -27,6 +27,10 @@
         <td>{{ project.deadline }}</td>
         <td>{{ project.teams.count }}</td>
       </tr>
+    {% empty %}
+      <tr>
+        <th colspan="100%" scope="row" class="text-center">There are no projects at this moment.</th>
+      </tr>
     {% endfor %}
     </tbody>
   </table>
