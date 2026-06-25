@@ -22,7 +22,7 @@ class ProjectListView(SearchMixin, LoginRequiredMixin, generic.ListView):
 class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
     model = Project
     queryset = (Project.objects.all()
-                .prefetch_related("teams", "teams__members"))
+                .prefetch_related("teams__members", "tasks__task_type"))
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
