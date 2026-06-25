@@ -1,8 +1,9 @@
 from django import forms
+from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
 from django_select2.forms import Select2MultipleWidget
 
-from tasks.models import Project, Team
+from tasks.models import Project, Team, Worker
 
 
 class ProjectBaseForm(forms.ModelForm):
@@ -49,6 +50,17 @@ class TeamForm(forms.ModelForm):
         widgets = {
             "members": Select2MultipleWidget,
         }
+
+
+class WorkerCreationForm(UserCreationForm):
+    class Meta(UserCreationForm.Meta):
+        model = Worker
+        fields = UserCreationForm.Meta.fields + (
+            "first_name",
+            "last_name",
+            "email",
+            "position",
+        )
 
 
 class SearchForm(forms.Form):

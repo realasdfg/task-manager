@@ -3,6 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import generic
 
 from task_manager.mixins import SearchMixin
+from tasks.forms import WorkerCreationForm
 
 Worker = get_user_model()
 
@@ -24,3 +25,8 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
     queryset = (Worker.objects.all()
                 .select_related("position")
                 .prefetch_related("tasks__task_type", "teams"))
+
+
+class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Worker
+    form_class = WorkerCreationForm

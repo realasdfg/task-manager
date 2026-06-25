@@ -16,12 +16,16 @@ class Worker(AbstractUser):
         Position,
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         related_name="workers"
     )
 
     class Meta:
         verbose_name = "worker"
         verbose_name_plural = "workers"
+
+    def get_absolute_url(self):
+        return reverse("tasks:worker-detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         return f"{self.first_name} {self.last_name} ({self.username})"

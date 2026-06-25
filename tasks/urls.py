@@ -15,7 +15,11 @@ from tasks.views.team import (
     TeamUpdateView,
     TeamDeleteView,
 )
-from tasks.views.worker import WorkerListView, WorkerDetailView
+from tasks.views.worker import (
+    WorkerListView,
+    WorkerDetailView,
+    WorkerCreateView
+)
 
 urlpatterns = [
     path("", index, name="index"),
@@ -58,6 +62,11 @@ urlpatterns = [
         "workers/<int:pk>/",
         WorkerDetailView.as_view(),
         name="worker-detail"
+    ),
+    path(
+        "workers/create/",
+        WorkerCreateView.as_view(),
+        name="worker-create"
     ),
 ]
 
