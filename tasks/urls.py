@@ -1,12 +1,12 @@
 from django.urls import path
 
-from tasks.views import (
-    index,
+from tasks.views.index import index
+from tasks.views.project import (
     ProjectListView,
     ProjectDetailView,
     ProjectCreateView,
     ProjectUpdateView,
-    ProjectDeleteView,
+    ProjectDeleteView
 )
 
 urlpatterns = [
