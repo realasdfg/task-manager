@@ -9,7 +9,9 @@ Worker = get_user_model()
 
 class WorkerListView(SearchMixin, LoginRequiredMixin, generic.ListView):
     model = Worker
-    queryset = Worker.objects.all()
+    queryset = (Worker.objects.all()
+                .select_related("position")
+                .prefetch_related("tasks"))
     search_fields = {
         "username": "Search by username",
         "first_name": "Search by first name",
