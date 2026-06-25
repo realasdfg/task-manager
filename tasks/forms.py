@@ -51,19 +51,13 @@ class TeamForm(forms.ModelForm):
         }
 
 
-class ProjectNameSearchForm(forms.Form):
-    name = forms.CharField(
-        max_length=255,
-        required=False,
-        label="",
-        widget=forms.TextInput({"placeholder": "Search by name"})
-    )
-
-
-class TeamNameSearchForm(forms.Form):
-    name = forms.CharField(
-        max_length=100,
-        required=False,
-        label="",
-        widget=forms.TextInput({"placeholder": "Search by name"})
-    )
+class SearchForm(forms.Form):
+    def __init__(self, *args, fields: dict, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, placeholder in fields.items():
+            self.fields[field_name] = forms.CharField(
+                max_length=255,
+                required=False,
+                label="",
+                widget=forms.TextInput(attrs={"placeholder": placeholder})
+            )

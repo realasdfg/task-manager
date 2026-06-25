@@ -4,8 +4,8 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic
 
+from task_manager.mixins import SearchMixin
 from tasks.forms import (
-    ProjectNameSearchForm,
     ProjectCreateForm,
     ProjectUpdateForm,
     ProjectCompleteForm,
@@ -13,23 +13,10 @@ from tasks.forms import (
 from tasks.models import Project
 
 
-class ProjectListView(LoginRequiredMixin, generic.ListView):
+class ProjectListView(SearchMixin, LoginRequiredMixin, generic.ListView):
     model = Project
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super(ProjectListView, self).get_context_data(**kwargs)
-        project_name = self.request.GET.get("name", "")
-        context["search_form"] = ProjectNameSearchForm(
-            initial={"name": project_name}
-        )
-        return context
-
-    def get_queryset(self):
-        queryset = Project.objects.all().prefetch_related("teams")
-        form = ProjectNameSearchForm(self.request.GET)
-        if form.is_valid():
-            return queryset.filter(name__icontains=form.cleaned_data["name"])
-        return queryset
+    queryset = Project.objects.all().prefetch_related("teams")
+    search_fields = {"name": "Search by name", "description": "Search by description"}
 
 
 class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
