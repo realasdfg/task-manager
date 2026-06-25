@@ -41,9 +41,8 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
 
         project_deadline = self.object.deadline
-        context["is_overdue"] = (
-                project_deadline is not None and project_deadline < timezone.now()
-        )
+        context["is_overdue"] = (project_deadline is not None
+                                 and project_deadline < timezone.now())
         return context
 
     def post(self, request, *args, **kwargs):
