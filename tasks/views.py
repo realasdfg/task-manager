@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic
 
@@ -78,3 +79,8 @@ class ProjectCreateView(LoginRequiredMixin, generic.CreateView):
 class ProjectUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Project
     form_class = ProjectUpdateForm
+
+
+class ProjectDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Project
+    success_url = reverse_lazy("tasks:project-list")

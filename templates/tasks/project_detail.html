@@ -4,6 +4,7 @@
   <div class="d-flex justify-content-center align-items-center gap-3">
     <h2>{{ project.name }}</h2>
     <a href="{% url 'tasks:project-update' project.id %}" class="btn btn-outline-primary">Edit</a>
+    <a href="{% url 'tasks:project-delete' project.id %}" class="btn btn-danger">Delete</a>
   </div>
   <p><strong>Created:</strong> {{ project.created_at }} ({{ project.created_at|timesince }} ago)</p>
   <p><strong>Deadline:</strong> {{ project.deadline }}
@@ -13,20 +14,18 @@
       ({{ project.deadline|timeuntil }} left)
     {% endif %}
   </p>
-  <div class="d-flex align-items-baseline gap-3">
-    <form method="post">
-      {% csrf_token %}
-      <p><strong>Completed:</strong>
-        <input type="hidden" name="is_completed" value="{{ project.is_completed|yesno:'false,true' }}">
-        {% if project.is_completed %}
-          ✅
-          <button type="submit" class="btn btn-success">Resume project</button>
-        {% else %}
-          ❌
-          <button type="submit" class="btn btn-danger">Close project</button>
-        {% endif %}
-    </form>
-  </div>
+  <form method="post" class="mb-3">
+    {% csrf_token %}
+    <strong>Completed:</strong>
+    <input type="hidden" name="is_completed" value="{{ project.is_completed|yesno:'false,true' }}">
+    {% if project.is_completed %}
+      ✅
+      <button type="submit" class="btn btn-success">Resume project</button>
+    {% else %}
+      ❌
+      <button type="submit" class="btn btn-danger">Close project</button>
+    {% endif %}
+  </form>
   <p class="fw-semibold">{{ project.description }}</p>
   <h3>Teams working on project</h3>
   <table class="table table-striped">
