@@ -16,6 +16,7 @@
       <th scope="col">ID</th>
       <th scope="col">Name</th>
       <th scope="col">Deadline</th>
+      <th scope="col">Teams</th>
     </tr>
     </thead>
     <tbody>
@@ -24,6 +25,7 @@
         <th scope="row">{{ project.id }}</th>
         <td><a href="{% url 'tasks:project-detail' project.id %}">{{ project.name }}</a></td>
         <td>{{ project.deadline }}</td>
+        <td>{{ project.teams.count }}</td>
       </tr>
     {% endfor %}
     </tbody>

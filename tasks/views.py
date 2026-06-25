@@ -42,7 +42,7 @@ class ProjectListView(LoginRequiredMixin, generic.ListView):
         return context
 
     def get_queryset(self):
-        queryset = Project.objects.all()
+        queryset = Project.objects.all().prefetch_related("teams")
         form = ProjectNameSearchForm(self.request.GET)
         if form.is_valid():
             return queryset.filter(name__icontains=form.cleaned_data["name"])
