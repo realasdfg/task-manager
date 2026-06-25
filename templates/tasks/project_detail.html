@@ -46,4 +46,27 @@
     {% endfor %}
     </tbody>
   </table>
+  <h3>Tasks in this project</h3>
+  <table class="table table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Type</th>
+      <th scope="col">Priority</th>
+      <th scope="col">Deadline</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for task in project.tasks.all %}
+      <tr class="{% if task.is_completed %}table-success{% endif %}">
+        <th scope="row">{{ task.id }}</th>
+        <td>{{ task.name }}</td>
+        <td>{{ task.task_type }}</td>
+        <td>{{ task.priority.title }}</td>
+        <td>{{ task.deadline }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}
