@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <div class="d-flex align-items-center gap-3 mb-2">
+    <h2>Teams</h2>
+    <a href="#" class="btn btn-success">Add</a>
+  </div>
+  <form method="get" class="d-flex align-items-baseline gap-2">
+    {{ search_form|crispy }}
+    <input type="submit" value="Search" class="btn btn-outline-primary">
+  </form>
+  <table class="table table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Members</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for team in team_list %}
+      <tr>
+        <th scope="row">{{ team.id }}</th>
+        <td><a href="#">{{ team.name }}</a></td>
+        <td>{{ team.members.count }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

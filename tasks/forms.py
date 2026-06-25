@@ -49,3 +49,12 @@ class ProjectNameSearchForm(forms.Form):
         label="",
         widget=forms.TextInput({"placeholder": "Search by name"})
     )
+
+
+class TeamNameSearchForm(forms.Form):
+    name = forms.CharField(
+        max_length=100,
+        required=False,
+        label="",
+        widget=forms.TextInput({"placeholder": "Search by name"})
+    )
