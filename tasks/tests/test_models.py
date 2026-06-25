@@ -3,6 +3,7 @@ import datetime
 from django.db import IntegrityError
 from django.db.models import ProtectedError
 from django.test import TestCase
+from django.urls import reverse
 
 from tasks.models import Position, Worker, TaskType, Task, Project, Team
 
@@ -54,6 +55,12 @@ class TestTeam(TestCase):
             name="Frontend developers"
         )
 
+    def test_get_absolute_url(self):
+        self.assertEqual(
+            self.team.get_absolute_url(),
+            reverse("tasks:team-detail", kwargs={"pk": self.team.pk})
+        )
+
     def test_str(self):
         self.assertEqual(str(self.team), self.team.name)
 
@@ -76,6 +83,12 @@ class TestProject(TestCase):
         self.project.deadline = None
         self.project.save()
         self.assertIsNone(self.project.deadline)
+
+    def test_get_absolute_url(self):
+        self.assertEqual(
+            self.project.get_absolute_url(),
+            reverse("tasks:project-detail", kwargs={"pk": self.project.pk})
+        )
 
     def test_str(self):
         self.assertEqual(str(self.project), self.project.name)
