@@ -5,8 +5,14 @@
     <h2>{{ project.name }}</h2>
     <a href="{% url 'tasks:project-update' project.id %}" class="btn btn-outline-primary">Edit</a>
   </div>
-  <p><strong>Created:</strong> {{ project.created_at }}</p>
-  <p><strong>Deadline:</strong> {{ project.deadline }}</p>
+  <p><strong>Created:</strong> {{ project.created_at }} ({{ project.created_at|timesince }} ago)</p>
+  <p><strong>Deadline:</strong> {{ project.deadline }}
+    {% if is_overdue %}
+      (overdue)
+    {% else %}
+      ({{ project.deadline|timeuntil }} left)
+    {% endif %}
+  </p>
   <div class="d-flex align-items-baseline gap-3">
     <form method="post">
       {% csrf_token %}

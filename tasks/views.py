@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render, redirect
+from django.utils import timezone
 from django.views import generic
 
 from tasks.forms import (
@@ -51,6 +52,15 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
     model = Project
     queryset = (Project.objects.all()
                 .prefetch_related("teams", "teams__members"))
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(ProjectDetailView, self).get_context_data(**kwargs)
+
+        project_deadline = self.object.deadline
+        context["is_overdue"] = (
+                project_deadline is not None and project_deadline < timezone.now()
+        )
+        return context
 
     def post(self, request, *args, **kwargs):
         project = self.get_object()
