@@ -6,8 +6,10 @@ class SearchMixin:
     Mixin for ListView that adds name-based search functionality.
 
     Attributes:
-        search_fields (dict): A mapping of field names to their placeholder text.
-            Example: {"name": "Search by name", "description": "Search by description"}
+        search_fields (dict): A mapping of field names
+            to their placeholder text.
+            Example: {"name": "Search by name",
+            "description": "Search by description"}
 
     Example usage:
         class ProjectListView(SearchMixin, generic.ListView):
