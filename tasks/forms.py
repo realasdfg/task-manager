@@ -2,7 +2,7 @@ from django import forms
 from django.utils import timezone
 from django_select2.forms import Select2MultipleWidget
 
-from tasks.models import Project
+from tasks.models import Project, Team
 
 
 class ProjectBaseForm(forms.ModelForm):
@@ -40,6 +40,15 @@ class ProjectCompleteForm(forms.ModelForm):
     class Meta:
         model = Project
         fields = ("is_completed",)
+
+
+class TeamForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        fields = ("name", "members",)
+        widgets = {
+            "members": Select2MultipleWidget,
+        }
 
 
 class ProjectNameSearchForm(forms.Form):
