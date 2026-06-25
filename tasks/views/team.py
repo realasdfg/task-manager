@@ -28,7 +28,9 @@ class TeamListView(LoginRequiredMixin, generic.ListView):
 
 class TeamDetailView(LoginRequiredMixin, generic.DetailView):
     model = Team
-    queryset = Team.objects.all().prefetch_related("members", "members__position")
+    queryset = (Team.objects.all().prefetch_related(
+        "members", "members__position", "members__tasks"
+    ))
 
 
 class TeamCreateView(LoginRequiredMixin, generic.CreateView):

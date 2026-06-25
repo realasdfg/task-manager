@@ -24,7 +24,7 @@
         <td>{{ member.username }}</td>
         <td>{{ member.first_name }} {{ member.last_name }}</td>
         <td>{{ member.position.name }}</td>
-        <td>Num of tasks</td> {# TODO num of tasks for each worker #}
+        <td>{{ member.tasks.count }}</td>
       </tr>
     {% endfor %}
     </tbody>
