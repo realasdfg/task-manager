@@ -3,8 +3,8 @@
 {% block content %}
   <div class="d-flex justify-content-center align-items-center gap-3">
     <h2>{{ worker.first_name }} {{ worker.last_name }}</h2>
-    <a href="#" class="btn btn-outline-primary">Edit</a>
-    <a href="#" class="btn btn-danger">Delete</a>
+    <a href="{% url 'tasks:worker-update' worker.id %}" class="btn btn-outline-primary">Edit</a>
+    <a href="{% url 'tasks:worker-delete' worker.id %}" class="btn btn-danger">Delete</a>
   </div>
   <p><strong>Username:</strong> {{ worker.username }}</p>
   <p><strong>E-mail:</strong> {{ worker.email }}</p>

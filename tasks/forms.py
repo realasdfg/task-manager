@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.utils import timezone
 from django_select2.forms import Select2MultipleWidget
 
@@ -61,6 +61,12 @@ class WorkerCreationForm(UserCreationForm):
             "email",
             "position",
         )
+
+
+class WorkerUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Worker
+        fields = ("username", "first_name", "last_name", "email", "position",)
 
 
 class SearchForm(forms.Form):
