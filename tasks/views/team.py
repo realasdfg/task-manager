@@ -18,7 +18,13 @@ class TeamListView(LoginRequiredMixin, generic.ListView):
 
     def get_queryset(self):
         queryset = Team.objects.all().prefetch_related("members")
+
         form = TeamNameSearchForm(self.request.GET)
         if form.is_valid():
             return queryset.filter(name__icontains=form.cleaned_data["name"])
         return queryset
+
+
+class TeamDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Team
+    queryset = Team.objects.all().prefetch_related("members", "members__position")

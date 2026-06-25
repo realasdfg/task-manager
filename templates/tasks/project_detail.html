@@ -40,7 +40,7 @@
     {% for team in project.teams.all %}
       <tr>
         <th scope="row">{{ team.id }}</th>
-        <td>{{ team.name }}</td>
+        <td><a href="{% url 'tasks:team-detail' team.id %}">{{ team.name }}</a></td>
         <td>{{ team.members.count }}</td>
       </tr>
     {% endfor %}
