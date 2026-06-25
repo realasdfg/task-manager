@@ -23,7 +23,7 @@
         <th scope="row">{{ member.id }}</th>
         <td><a href="{% url 'tasks:worker-detail' member.id %}">{{ member.username }}</a></td>
         <td>{{ member.first_name }} {{ member.last_name }}</td>
-        <td><a href="#">{{ member.position.name }}</a></td>
+        <td><a href="{% url 'tasks:position-detail' member.position.id %}">{{ member.position.name }}</a></td>
         <td>{{ member.tasks.count }}</td>
       </tr>
     {% empty %}

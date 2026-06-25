@@ -8,7 +8,9 @@
   </div>
   <p><strong>Username:</strong> {{ worker.username }}</p>
   <p><strong>E-mail:</strong> {{ worker.email }}</p>
-  <p><strong>Position:</strong> {{ worker.position.name }}</p>
+  <p><strong>Position:</strong>
+    <a href="{% url 'tasks:position-detail' worker.position.id %}">{{ worker.position.name }}</a>
+  </p>
   <h3>Member of teams</h3>
   <table class="table table-striped">
     <thead class="table-dark">

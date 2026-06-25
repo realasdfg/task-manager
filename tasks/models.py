@@ -7,6 +7,9 @@ from django.urls import reverse
 class Position(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
+    def get_absolute_url(self):
+        return reverse("tasks:position-detail", kwargs={"pk": self.pk})
+
     def __str__(self):
         return self.name
 

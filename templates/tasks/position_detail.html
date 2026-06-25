@@ -1,33 +1,27 @@
 {% extends "base.html" %}
-{% load crispy_forms_filters %}
 
 {% block content %}
-  <div class="d-flex align-items-center gap-3 mb-2">
-    <h2>Workers</h2>
-    <a href="{% url 'tasks:worker-create' %}" class="btn btn-success">Add</a>
+  <div class="d-flex justify-content-center align-items-center gap-3">
+    <h2>{{ position.name }}</h2>
+    <a href="{% url 'tasks:position-update' position.id %}" class="btn btn-outline-primary">Edit</a>
+    <a href="{% url 'tasks:position-delete' position.id %}" class="btn btn-danger">Delete</a>
   </div>
-  <form method="get" class="d-flex align-items-baseline gap-2">
-    {{ search_form|crispy }}
-    <input type="submit" value="Search" class="btn btn-outline-primary">
-  </form>
+  <p class="fw-semibold">{{ project.description }}</p>
+  <h3>Workers at this position</h3>
   <table class="table table-striped">
     <thead class="table-dark">
     <tr>
       <th scope="col">ID</th>
       <th scope="col">Username</th>
       <th scope="col">Full Name</th>
-      <th scope="col">Position</th>
-      <th scope="col">Tasks</th>
     </tr>
     </thead>
     <tbody>
-    {% for worker in worker_list %}
+    {% for worker in position.workers.all %}
       <tr>
         <th scope="row">{{ worker.id }}</th>
         <td><a href="{% url 'tasks:worker-detail' worker.id %}">{{ worker.username }}</a></td>
         <td>{{ worker.first_name }} {{ worker.last_name }}</td>
-        <td><a href="{% url 'tasks:position-detail' worker.position.id %}">{{ worker.position.name }}</a></td>
-        <td>{{ worker.tasks.count }}</td>
       </tr>
     {% empty %}
       <tr>

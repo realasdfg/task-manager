@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <h2>{{ object|yesno:"Update,Create" }} Position</h2>
+  <form action="" method="post">
+    {% csrf_token %}
+    {{ form.media }}
+    {{ form|crispy }}
+    <input type="submit" value="Submit" class="btn btn-primary">
+  </form>
+{% endblock %}

@@ -1,6 +1,13 @@
 from django.urls import path
 
 from tasks.views.index import index
+from tasks.views.position import (
+    PositionListView,
+    PositionDetailView,
+    PositionCreateView,
+    PositionUpdateView,
+    PositionDeleteView,
+)
 from tasks.views.project import (
     ProjectListView,
     ProjectDetailView,
@@ -79,6 +86,27 @@ urlpatterns = [
         "workers/<int:pk>/delete/",
         WorkerDeleteView.as_view(),
         name="worker-delete"
+    ),
+    path("positions/", PositionListView.as_view(), name="position-list"),
+    path(
+        "positions/<int:pk>/",
+        PositionDetailView.as_view(),
+        name="position-detail"
+    ),
+    path(
+        "positions/create/",
+        PositionCreateView.as_view(),
+        name="position-create"
+    ),
+    path(
+        "positions/<int:pk>/update/",
+        PositionUpdateView.as_view(),
+        name="position-update"
+    ),
+    path(
+        "positions/<int:pk>/delete/",
+        PositionDeleteView.as_view(),
+        name="position-delete"
     ),
 ]
 
