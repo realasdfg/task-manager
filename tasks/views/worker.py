@@ -17,3 +17,10 @@ class WorkerListView(SearchMixin, LoginRequiredMixin, generic.ListView):
         "first_name": "Search by first name",
         "last_name": "Search by last name",
     }
+
+
+class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Worker
+    queryset = (Worker.objects.all()
+                .select_related("position")
+                .prefetch_related("tasks__task_type", "teams"))

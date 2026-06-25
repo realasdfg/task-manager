@@ -24,7 +24,7 @@
     {% for worker in worker_list %}
       <tr>
         <th scope="row">{{ worker.id }}</th>
-        <td><a href="#">{{ worker.username }}</a></td>
+        <td><a href="{% url 'tasks:worker-detail' worker.id %}">{{ worker.username }}</a></td>
         <td>{{ worker.first_name }} {{ worker.last_name }}</td>
         <td><a href="#">{{ worker.position.name }}</a></td>
         <td>{{ worker.tasks.count }}</td>

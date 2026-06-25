@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="d-flex justify-content-center align-items-center gap-3">
+    <h2>{{ worker.first_name }} {{ worker.last_name }}</h2>
+    <a href="#" class="btn btn-outline-primary">Edit</a>
+    <a href="#" class="btn btn-danger">Delete</a>
+  </div>
+  <p><strong>Username:</strong> {{ worker.username }}</p>
+  <p><strong>E-mail:</strong> {{ worker.email }}</p>
+  <p><strong>Position:</strong> {{ worker.position.name }}</p>
+  <h3>Member of teams</h3>
+  <table class="table table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for team in worker.teams.all %}
+      <tr>
+        <th scope="row">{{ team.id }}</th>
+        <td><a href="{% url 'tasks:team-detail' team.id %}">{{ team.name }}</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <h3>Worker's tasks</h3>
+  <table class="table table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Type</th>
+      <th scope="col">Priority</th>
+      <th scope="col">Deadline</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for task in worker.tasks.all %}
+      <tr class="{% if task.is_completed %}table-success{% endif %}">
+        <th scope="row">{{ task.id }}</th>
+        <td>{{ task.name }}</td>
+        <td>{{ task.task_type }}</td>
+        <td>{{ task.priority.title }}</td>
+        <td>{{ task.deadline }}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
