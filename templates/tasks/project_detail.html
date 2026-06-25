@@ -1,10 +1,26 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h2>Project {{ project.name }}</h2>
+  <div class="d-flex justify-content-center align-items-center gap-3">
+    <h2>{{ project.name }}</h2>
+    <a href="{% url 'tasks:project-update' project.id %}" class="btn btn-outline-primary">Edit</a>
+  </div>
   <p><strong>Created:</strong> {{ project.created_at }}</p>
   <p><strong>Deadline:</strong> {{ project.deadline }}</p>
-  <p><strong>Completed:</strong> {% if project.is_completed %}✅{% else %}❌{% endif %}</p>
+  <div class="d-flex align-items-baseline gap-3">
+    <form method="post">
+      {% csrf_token %}
+      <p><strong>Completed:</strong>
+        <input type="hidden" name="is_completed" value="{{ project.is_completed|yesno:'false,true' }}">
+        {% if project.is_completed %}
+          ✅
+          <button type="submit" class="btn btn-success">Resume project</button>
+        {% else %}
+          ❌
+          <button type="submit" class="btn btn-danger">Close project</button>
+        {% endif %}
+    </form>
+  </div>
   <p class="fw-semibold">{{ project.description }}</p>
   <h3>Teams working on project</h3>
   <table class="table table-striped">

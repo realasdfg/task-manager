@@ -1,10 +1,15 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic
 
-from tasks.forms import ProjectNameSearchForm, ProjectCreateForm
+from tasks.forms import (
+    ProjectNameSearchForm,
+    ProjectCreateForm,
+    ProjectUpdateForm,
+    ProjectCompleteForm,
+)
 from tasks.models import Project, Team, Worker, Task
 
 
@@ -47,7 +52,19 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
     queryset = (Project.objects.all()
                 .prefetch_related("teams", "teams__members"))
 
+    def post(self, request, *args, **kwargs):
+        project = self.get_object()
+        form = ProjectCompleteForm(request.POST, instance=project)
+        if form.is_valid():
+            form.save()
+        return redirect("tasks:project-detail", pk=project.pk)
+
 
 class ProjectCreateView(LoginRequiredMixin, generic.CreateView):
     model = Project
     form_class = ProjectCreateForm
+
+
+class ProjectUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Project
+    form_class = ProjectUpdateForm

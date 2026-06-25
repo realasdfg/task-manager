@@ -5,6 +5,7 @@ from tasks.views import (
     ProjectListView,
     ProjectDetailView,
     ProjectCreateView,
+    ProjectUpdateView,
 )
 
 urlpatterns = [
@@ -19,6 +20,11 @@ urlpatterns = [
         "projects/create/",
         ProjectCreateView.as_view(),
         name="project-create"
+    ),
+    path(
+        "projects/<int:pk>/update/",
+        ProjectUpdateView.as_view(),
+        name="project-update"
     ),
 ]
 
