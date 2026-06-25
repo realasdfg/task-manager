@@ -15,6 +15,7 @@ from tasks.views.team import (
     TeamUpdateView,
     TeamDeleteView,
 )
+from tasks.views.worker import WorkerListView
 
 urlpatterns = [
     path("", index, name="index"),
@@ -52,6 +53,7 @@ urlpatterns = [
         TeamDeleteView.as_view(),
         name="team-delete"
     ),
+    path("workers/", WorkerListView.as_view(), name="worker-list"),
 ]
 
 app_name = "tasks"

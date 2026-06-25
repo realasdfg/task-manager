@@ -1,0 +1,17 @@
+from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views import generic
+
+from task_manager.mixins import SearchMixin
+
+Worker = get_user_model()
+
+
+class WorkerListView(SearchMixin, LoginRequiredMixin, generic.ListView):
+    model = Worker
+    queryset = Worker.objects.all()
+    search_fields = {
+        "username": "Search by username",
+        "first_name": "Search by first name",
+        "last_name": "Search by last name",
+    }

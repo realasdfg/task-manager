@@ -16,7 +16,8 @@ from tasks.models import Project
 class ProjectListView(SearchMixin, LoginRequiredMixin, generic.ListView):
     model = Project
     queryset = Project.objects.all().prefetch_related("teams")
-    search_fields = {"name": "Search by name", "description": "Search by description"}
+    search_fields = {"name": "Search by name",
+                     "description": "Search by description"}
 
 
 class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
