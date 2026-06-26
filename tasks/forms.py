@@ -57,7 +57,15 @@ class TaskCompleteForm(forms.ModelForm):
 class TaskForm(DeadlineValidationMixin, forms.ModelForm):
     class Meta:
         model = Task
-        fields = ("name", "task_type", "priority","description", "project", "deadline", "assignees")
+        fields = (
+            "name",
+            "task_type",
+            "priority",
+            "description",
+            "project",
+            "deadline",
+            "assignees",
+        )
         widgets = {
             "assignees": Select2MultipleWidget,
             "deadline": forms.DateTimeInput(attrs={"type": "datetime-local"})
