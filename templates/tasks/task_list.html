@@ -26,7 +26,7 @@
     {% for task in task_list %}
       <tr class="{% if task.is_completed %}table-success{% endif %}">
         <th scope="row">{{ task.id }}</th>
-        <td><a href="#">{{ task.name }}</a></td>
+        <td><a href="{% url 'tasks:task-detail' task.id %}">{{ task.name }}</a></td>
         <td><a href="{% url 'tasks:project-detail' task.project.id %}">{{ task.project }}</a></td>
         <td><a href="{% url 'tasks:tasktype-detail' task.task_type.id %}">{{ task.task_type }}</a></td>
         <td>{{ task.priority.title }}</td>

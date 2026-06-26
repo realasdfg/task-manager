@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.utils import timezone
 from django_select2.forms import Select2MultipleWidget
 
-from tasks.models import Project, Team, Worker
+from tasks.models import Project, Team, Worker, Task
 
 
 class ProjectBaseForm(forms.ModelForm):
@@ -67,6 +67,12 @@ class WorkerUpdateForm(forms.ModelForm):
     class Meta:
         model = Worker
         fields = ("username", "first_name", "last_name", "email", "position",)
+
+
+class TaskCompleteForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ("is_completed",)
 
 
 class SearchForm(forms.Form):
