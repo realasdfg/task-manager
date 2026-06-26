@@ -3,8 +3,8 @@
 {% block content %}
   <div class="d-flex justify-content-center align-items-center gap-3">
     <h2>{{ task.name }}</h2>
-    <a href="#" class="btn btn-outline-primary">Edit</a>
-    <a href="#" class="btn btn-danger">Delete</a>
+    <a href="{% url 'tasks:task-update' task.id %}" class="btn btn-outline-primary">Edit</a>
+    <a href="{% url 'tasks:task-delete' task.id %}" class="btn btn-danger">Delete</a>
   </div>
   <p><strong>Created:</strong> {{ task.created_at }} ({{ task.created_at|timesince }} ago)</p>
   <p><strong>Deadline:</strong> {{ task.deadline }}
