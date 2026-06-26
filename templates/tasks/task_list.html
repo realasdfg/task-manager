@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <div class="d-flex align-items-center gap-3 mb-2">
+    <h2>Tasks</h2>
+    <a href="#" class="btn btn-success">Add</a>
+  </div>
+  <form method="get" class="d-flex align-items-baseline gap-2">
+    {{ search_form|crispy }}
+    <input type="submit" value="Search" class="btn btn-outline-primary">
+  </form>
+  <table class="table table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Project</th>
+      <th scope="col">Type</th>
+      <th scope="col">Priority</th>
+      <th scope="col">Deadline</th>
+      <th scope="col">Assignees</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for task in task_list %}
+      <tr class="{% if task.is_completed %}table-success{% endif %}">
+        <th scope="row">{{ task.id }}</th>
+        <td><a href="#">{{ task.name }}</a></td>
+        <td><a href="{% url 'tasks:project-detail' task.project.id %}">{{ task.project }}</a></td>
+        <td><a href="{% url 'tasks:tasktype-detail' task.task_type.id %}">{{ task.task_type }}</a></td>
+        <td>{{ task.priority.title }}</td>
+        <td>{{ task.deadline }}</td>
+        <td>{{ task.assignees.count }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <th colspan="100%" scope="row" class="text-center">There are no tasks at this moment.</th>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

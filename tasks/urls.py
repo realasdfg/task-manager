@@ -15,6 +15,9 @@ from tasks.views.project import (
     ProjectUpdateView,
     ProjectDeleteView
 )
+from tasks.views.task import (
+    TaskListView,
+)
 from tasks.views.task_type import (
     TaskTypeListView,
     TaskTypeDetailView,
@@ -136,6 +139,7 @@ urlpatterns = [
         TaskTypeDeleteView.as_view(),
         name="tasktype-delete"
     ),
+    path("tasks/", TaskListView.as_view(), name="task-list"),
 ]
 
 app_name = "tasks"
