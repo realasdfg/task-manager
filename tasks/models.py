@@ -71,6 +71,9 @@ class Project(models.Model):
 class TaskType(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
+    def get_absolute_url(self):
+        return reverse("tasks:tasktype-detail", kwargs={"pk": self.pk})
+
     def __str__(self):
         return self.name
 

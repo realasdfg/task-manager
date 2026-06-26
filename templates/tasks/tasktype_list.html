@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <div class="d-flex align-items-center gap-3 mb-2">
+    <h2>Task Types</h2>
+    <a href="{% url 'tasks:tasktype-create' %}" class="btn btn-success">Add</a>
+  </div>
+  <form method="get" class="d-flex align-items-baseline gap-2">
+    {{ search_form|crispy }}
+    <input type="submit" value="Search" class="btn btn-outline-primary">
+  </form>
+  <table class="table table-striped">
+    <thead class="table-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Tasks</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for task_type in tasktype_list %}
+      <tr>
+        <th scope="row">{{ task_type.id }}</th>
+        <td><a href="{% url 'tasks:tasktype-detail' task_type.id %}">{{ task_type.name }}</a></td>
+        <td>{{ task_type.tasks.count }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <th colspan="100%" scope="row" class="text-center">There are no tasks at this moment.</th>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

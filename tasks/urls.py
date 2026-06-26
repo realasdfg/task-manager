@@ -15,6 +15,13 @@ from tasks.views.project import (
     ProjectUpdateView,
     ProjectDeleteView
 )
+from tasks.views.task_type import (
+    TaskTypeListView,
+    TaskTypeDetailView,
+    TaskTypeCreateView,
+    TaskTypeUpdateView,
+    TaskTypeDeleteView,
+)
 from tasks.views.team import (
     TeamListView,
     TeamDetailView,
@@ -107,6 +114,27 @@ urlpatterns = [
         "positions/<int:pk>/delete/",
         PositionDeleteView.as_view(),
         name="position-delete"
+    ),
+    path("task-types/", TaskTypeListView.as_view(), name="tasktype-list"),
+    path(
+        "task-types/<int:pk>/",
+        TaskTypeDetailView.as_view(),
+        name="tasktype-detail"
+    ),
+    path(
+        "task-types/create/",
+        TaskTypeCreateView.as_view(),
+        name="tasktype-create"
+    ),
+    path(
+        "task-types/<int:pk>/update/",
+        TaskTypeUpdateView.as_view(),
+        name="tasktype-update"
+    ),
+    path(
+        "task-types/<int:pk>/delete/",
+        TaskTypeDeleteView.as_view(),
+        name="tasktype-delete"
     ),
 ]
 
