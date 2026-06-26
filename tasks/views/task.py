@@ -1,10 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
+from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic
 
 from task_manager.mixins import SearchMixin
-from tasks.forms import TaskCompleteForm
+from tasks.forms import TaskCompleteForm, TaskForm
 from tasks.models import Task
 
 
@@ -34,3 +35,18 @@ class TaskDetailView(LoginRequiredMixin, generic.DetailView):
         if form.is_valid():
             form.save()
         return redirect("tasks:task-detail", pk=task.pk)
+
+
+class TaskCreateView(LoginRequiredMixin, generic.CreateView):
+    model = Task
+    form_class = TaskForm
+
+
+class TaskUpdateView(LoginRequiredMixin, generic.UpdateView):
+    model = Task
+    form_class = TaskForm
+
+
+class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Task
+    success_url = reverse_lazy("tasks:task-list")

@@ -5,11 +5,7 @@ from django.utils import timezone
 from django.views import generic
 
 from task_manager.mixins import SearchMixin
-from tasks.forms import (
-    ProjectCreateForm,
-    ProjectUpdateForm,
-    ProjectCompleteForm,
-)
+from tasks.forms import ProjectForm, ProjectCompleteForm
 from tasks.models import Project
 
 
@@ -43,12 +39,12 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
 
 class ProjectCreateView(LoginRequiredMixin, generic.CreateView):
     model = Project
-    form_class = ProjectCreateForm
+    form_class = ProjectForm
 
 
 class ProjectUpdateView(LoginRequiredMixin, generic.UpdateView):
     model = Project
-    form_class = ProjectUpdateForm
+    form_class = ProjectForm
 
 
 class ProjectDeleteView(LoginRequiredMixin, generic.DeleteView):

@@ -1,12 +1,12 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from django.utils import timezone
+from django.contrib.auth.forms import UserCreationForm
 from django_select2.forms import Select2MultipleWidget
 
+from tasks.mixins import DeadlineValidationMixin
 from tasks.models import Project, Team, Worker, Task
 
 
-class ProjectBaseForm(forms.ModelForm):
+class ProjectForm(DeadlineValidationMixin, forms.ModelForm):
     class Meta:
         model = Project
         fields = ("name", "description", "deadline", "teams",)
@@ -14,27 +14,6 @@ class ProjectBaseForm(forms.ModelForm):
             "teams": Select2MultipleWidget,
             "deadline": forms.DateTimeInput(attrs={"type": "datetime-local"})
         }
-
-
-class ProjectCreateForm(ProjectBaseForm):
-    def clean_deadline(self):
-        deadline = self.cleaned_data.get("deadline")
-        if deadline and deadline < timezone.now():
-            raise forms.ValidationError("Deadline cannot be in the past")
-        return deadline
-
-
-class ProjectUpdateForm(ProjectBaseForm):
-    def clean_deadline(self):
-        deadline = self.cleaned_data.get("deadline")
-        if deadline is None:
-            return deadline
-
-        original_deadline = self.instance.deadline
-        deadline_changed = original_deadline != deadline
-        if deadline_changed and deadline < timezone.now():
-            raise forms.ValidationError("Deadline cannot be in the past")
-        return deadline
 
 
 class ProjectCompleteForm(forms.ModelForm):
@@ -73,6 +52,16 @@ class TaskCompleteForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ("is_completed",)
+
+
+class TaskForm(DeadlineValidationMixin, forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ("name", "task_type", "description", "project", "deadline", "priority", "assignees")
+        widgets = {
+            "assignees": Select2MultipleWidget,
+            "deadline": forms.DateTimeInput(attrs={"type": "datetime-local"})
+        }
 
 
 class SearchForm(forms.Form):
