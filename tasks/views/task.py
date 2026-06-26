@@ -19,7 +19,9 @@ class TaskListView(SearchMixin, LoginRequiredMixin, generic.ListView):
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):
     model = Task
-    queryset = Task.objects.all()
+    queryset = (Task.objects.all()
+                .select_related("project", "task_type")
+                .prefetch_related("assignees__position", "assignees__teams"))
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super(TaskDetailView, self).get_context_data(**kwargs)
