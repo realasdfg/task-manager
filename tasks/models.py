@@ -7,6 +7,9 @@ from django.urls import reverse
 class Position(models.Model):
     name = models.CharField(max_length=100, unique=True)
 
+    class Meta:
+        ordering = ["name"]
+
     def get_absolute_url(self):
         return reverse("tasks:position-detail", kwargs={"pk": self.pk})
 
@@ -26,6 +29,7 @@ class Worker(AbstractUser):
     class Meta:
         verbose_name = "worker"
         verbose_name_plural = "workers"
+        ordering = ["first_name", "last_name"]
 
     def get_absolute_url(self):
         return reverse("tasks:worker-detail", kwargs={"pk": self.pk})
@@ -41,6 +45,9 @@ class Team(models.Model):
         related_name="teams",
         blank=True
     )
+
+    class Meta:
+        ordering = ["name"]
 
     def get_absolute_url(self):
         return reverse("tasks:team-detail", kwargs={"pk": self.pk})
@@ -61,6 +68,9 @@ class Project(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["-created_at"]
+
     def get_absolute_url(self):
         return reverse("tasks:project-detail", kwargs={"pk": self.pk})
 
@@ -70,6 +80,9 @@ class Project(models.Model):
 
 class TaskType(models.Model):
     name = models.CharField(max_length=100, unique=True)
+
+    class Meta:
+        ordering = ["name"]
 
     def get_absolute_url(self):
         return reverse("tasks:tasktype-detail", kwargs={"pk": self.pk})
@@ -112,6 +125,9 @@ class Task(models.Model):
         blank=True
     )
     created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
 
     def get_absolute_url(self):
         return reverse("tasks:task-detail", kwargs={"pk": self.pk})
