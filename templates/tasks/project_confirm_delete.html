@@ -1,16 +1,5 @@
-{% extends "base.html" %}
+{% extends "tasks/confirm_delete.html" %}
 
-{% block content %}
-  <h1>Delete project?</h1>
-  <p>Are you sure you want to delete the project "{{ project.name }}"?</p>
+{% block additional_info %}
   <p>All related tasks will also be deleted!</p>
-  <form action="" method="post">
-    {% csrf_token %}
-    <button type="button"
-            class="btn btn-secondary"
-            onclick="history.back()">
-      Cancel
-    </button>
-    <input type="submit" value="Yes" class="btn btn-danger">
-  </form>
 {% endblock %}

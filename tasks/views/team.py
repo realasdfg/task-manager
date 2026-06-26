@@ -32,4 +32,5 @@ class TeamUpdateView(LoginRequiredMixin, generic.UpdateView):
 
 class TeamDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Team
+    template_name = "tasks/confirm_delete.html"
     success_url = reverse_lazy("tasks:team-list")

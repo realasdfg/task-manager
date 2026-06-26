@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <h1>Delete worker?</h1>
-  <p>Are you sure you want to delete the worker "{{ worker.username }}"?</p>
+  <h1>Delete confirmation</h1>
+  <p>Are you sure you want to delete "{{ object }}"?</p>
+  {% block additional_info %}{% endblock %}
   <form action="" method="post">
     {% csrf_token %}
     <button type="button"
