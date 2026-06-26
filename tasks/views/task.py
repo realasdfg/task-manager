@@ -7,5 +7,7 @@ from tasks.models import Task
 
 class TaskListView(SearchMixin, LoginRequiredMixin, generic.ListView):
     model = Task
-    queryset = Task.objects.all()
+    queryset = (Task.objects.all()
+                .prefetch_related("assignees")
+                .select_related("task_type", "project"))
     search_fields = {"name": "Search by name"}
