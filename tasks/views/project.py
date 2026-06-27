@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic
 
-from task_manager.mixins import SearchMixin
+from task_manager.mixins import SearchMixin, AddObjectNameMixin
 from tasks.forms import ProjectForm, ProjectCompleteForm
 from tasks.models import Project
 
@@ -37,14 +37,24 @@ class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
         return redirect("tasks:project-detail", pk=project.pk)
 
 
-class ProjectCreateView(LoginRequiredMixin, generic.CreateView):
+class ProjectCreateView(
+    AddObjectNameMixin,
+    LoginRequiredMixin,
+    generic.CreateView
+):
     model = Project
     form_class = ProjectForm
+    template_name = "tasks/base_form.html"
 
 
-class ProjectUpdateView(LoginRequiredMixin, generic.UpdateView):
+class ProjectUpdateView(
+    AddObjectNameMixin,
+    LoginRequiredMixin,
+    generic.UpdateView
+):
     model = Project
     form_class = ProjectForm
+    template_name = "tasks/base_form.html"
 
 
 class ProjectDeleteView(LoginRequiredMixin, generic.DeleteView):

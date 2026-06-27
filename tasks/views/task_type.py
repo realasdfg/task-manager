@@ -5,7 +5,7 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from task_manager.mixins import SearchMixin
+from task_manager.mixins import SearchMixin, AddObjectNameMixin
 from tasks.models import TaskType
 
 
@@ -20,14 +20,24 @@ class TaskTypeDetailView(LoginRequiredMixin, generic.DetailView):
     queryset = TaskType.objects.all().prefetch_related("tasks")
 
 
-class TaskTypeCreateView(LoginRequiredMixin, generic.CreateView):
+class TaskTypeCreateView(
+    AddObjectNameMixin,
+    LoginRequiredMixin,
+    generic.CreateView
+):
     model = TaskType
     fields = ("name",)
+    template_name = "tasks/base_form.html"
 
 
-class TaskTypeUpdateView(LoginRequiredMixin, generic.UpdateView):
+class TaskTypeUpdateView(
+    AddObjectNameMixin,
+    LoginRequiredMixin,
+    generic.UpdateView
+):
     model = TaskType
     fields = ("name",)
+    template_name = "tasks/base_form.html"
 
 
 class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):

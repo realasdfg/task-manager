@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import generic
 
-from task_manager.mixins import SearchMixin
+from task_manager.mixins import SearchMixin, AddObjectNameMixin
 from tasks.models import Position
 
 
@@ -17,14 +17,24 @@ class PositionDetailView(LoginRequiredMixin, generic.DetailView):
     queryset = Position.objects.all().prefetch_related("workers")
 
 
-class PositionCreateView(LoginRequiredMixin, generic.CreateView):
+class PositionCreateView(
+    AddObjectNameMixin,
+    LoginRequiredMixin,
+    generic.CreateView
+):
     model = Position
     fields = ("name",)
+    template_name = "tasks/base_form.html"
 
 
-class PositionUpdateView(LoginRequiredMixin, generic.UpdateView):
+class PositionUpdateView(
+    AddObjectNameMixin,
+    LoginRequiredMixin,
+    generic.UpdateView
+):
     model = Position
     fields = ("name",)
+    template_name = "tasks/base_form.html"
 
 
 class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):

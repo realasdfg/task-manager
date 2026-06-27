@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import generic
 
-from task_manager.mixins import SearchMixin
+from task_manager.mixins import SearchMixin, AddObjectNameMixin
 from tasks.forms import TeamForm
 from tasks.models import Team
 
@@ -20,14 +20,24 @@ class TeamDetailView(LoginRequiredMixin, generic.DetailView):
     ))
 
 
-class TeamCreateView(LoginRequiredMixin, generic.CreateView):
+class TeamCreateView(
+    AddObjectNameMixin,
+    LoginRequiredMixin,
+    generic.CreateView
+):
     model = Team
     form_class = TeamForm
+    template_name = "tasks/base_form.html"
 
 
-class TeamUpdateView(LoginRequiredMixin, generic.UpdateView):
+class TeamUpdateView(
+    AddObjectNameMixin,
+    LoginRequiredMixin,
+    generic.UpdateView
+):
     model = Team
     form_class = TeamForm
+    template_name = "tasks/base_form.html"
 
 
 class TeamDeleteView(LoginRequiredMixin, generic.DeleteView):

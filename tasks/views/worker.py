@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import generic
 
-from task_manager.mixins import SearchMixin
+from task_manager.mixins import SearchMixin, AddObjectNameMixin
 from tasks.forms import WorkerCreationForm, WorkerUpdateForm
 
 Worker = get_user_model()
@@ -28,14 +28,24 @@ class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
                 .prefetch_related("tasks__task_type", "teams"))
 
 
-class WorkerCreateView(LoginRequiredMixin, generic.CreateView):
+class WorkerCreateView(
+    AddObjectNameMixin,
+    LoginRequiredMixin,
+    generic.CreateView
+):
     model = Worker
     form_class = WorkerCreationForm
+    template_name = "tasks/base_form.html"
 
 
-class WorkerUpdateView(LoginRequiredMixin, generic.UpdateView):
+class WorkerUpdateView(
+    AddObjectNameMixin,
+    LoginRequiredMixin,
+    generic.UpdateView
+):
     model = Worker
     form_class = WorkerUpdateForm
+    template_name = "tasks/base_form.html"
 
 
 class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):

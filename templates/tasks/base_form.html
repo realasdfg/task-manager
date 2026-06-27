@@ -1,0 +1,25 @@
+{% extends "layouts/base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <main>
+    <div class="section pb-2 bg-primary text-white header-list">
+      <div class="container d-flex justify-content-between">
+        <h2>{{ object|yesno:"Update,Create" }} {{ object_name|capfirst }} {% if object %}"{{ object }}"{% endif %}</h2>
+      </div>
+    </div>
+    <div class="section section-md pt-3">
+      <div class="container">
+        <form method="post">
+          {% csrf_token %}
+          {{ form.media }}
+          {{ form|crispy }}
+          <div class="d-flex justify-content-center gap-4">
+            {% include 'includes/cancel_button.html' %}
+            <input type="submit" value="Submit" class="btn btn-success">
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+{% endblock %}
