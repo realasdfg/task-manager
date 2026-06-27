@@ -17,11 +17,16 @@
         <div class="alert alert-tertiary">
           <strong>Created:</strong> {{ project.created_at }} ({{ project.created_at|timesince }} ago)
           <br>
-          <strong>Deadline:</strong> {{ project.deadline }}
-          {% if is_overdue %}
-            (overdue)
+          <strong>Deadline:</strong>
+          {% if project.deadline %}
+            {{ project.deadline }}
+            {% if is_overdue %}
+              <span class="text-danger">(overdue)</span>
+            {% else %}
+              ({{ project.deadline|timeuntil }} left)
+            {% endif %}
           {% else %}
-            ({{ project.deadline|timeuntil }} left)
+            No
           {% endif %}
         </div>
         <div class="alert alert-tertiary">
@@ -39,7 +44,7 @@
           </form>
         </div>
         <div class="alert alert-secondary">
-          {{ project.description }}
+          {{ project.description|default:"No description" }}
         </div>
         <h3>Teams working on project</h3>
         <table class="table">
@@ -92,7 +97,7 @@
                   {{ task.get_priority_display }}
                 </span>
               </td>
-              <td>{{ task.deadline }}</td>
+              <td>{{ task.deadline|default:"No" }}</td>
             </tr>
           {% empty %}
             <tr>

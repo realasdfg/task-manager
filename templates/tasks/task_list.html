@@ -24,9 +24,15 @@
       <td><a href="{% url 'tasks:task-detail' task.id %}" class="text-decoration-underline">
         {{ task.name }}
       </a></td>
-      <td><a href="{% url 'tasks:project-detail' task.project.id %}" class="text-decoration-underline">
-        {{ task.project }}
-      </a></td>
+      <td>
+        {% if task.project %}
+          <a href="{% url 'tasks:project-detail' task.project.id %}" class="text-decoration-underline">
+            {{ task.project }}
+          </a>
+        {% else %}
+          -
+        {% endif %}
+      </td>
       <td><a href="{% url 'tasks:tasktype-detail' task.task_type.id %}" class="text-decoration-underline">
         {{ task.task_type }}
       </a></td>
@@ -35,7 +41,7 @@
           {{ task.get_priority_display }}
         </span>
       </td>
-      <td>{{ task.deadline }}</td>
+      <td>{{ task.deadline|default:"No" }}</td>
       <td class="text-center">{{ task.assignees.count }}</td>
     </tr>
   {% empty %}

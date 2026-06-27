@@ -5,7 +5,7 @@
   <main>
     <div class="section pb-2 bg-primary text-white header-list">
       <div class="container d-flex justify-content-between">
-        <h2>{{ worker.first_name }} {{ worker.last_name }}</h2>
+        <h2>{{ worker.username }}</h2>
         <div>
           <a href="{% url 'tasks:worker-update' worker.id %}" class="btn btn-outline-success me-3">Edit</a>
           <a href="{% url 'tasks:worker-delete' worker.id %}" class="btn btn-danger">Delete</a>
@@ -15,14 +15,20 @@
     <div class="section section-md pt-3">
       <div class="container">
         <div class="alert alert-tertiary">
-          <strong>Username:</strong> {{ worker.username }}
+          <strong>First name:</strong> {{ worker.first_name|default:"-" }}
           <br>
-          <strong>E-mail:</strong> {{ worker.email }}
+          <strong>Last name:</strong> {{ worker.last_name|default:"-" }}
+          <br>
+          <strong>E-mail:</strong> {{ worker.email|default:"No" }}
           <br>
           <strong>Position:</strong>
-          <a href="{% url 'tasks:position-detail' worker.position.id %}" class="text-decoration-underline">
-            {{ worker.position.name }}
-          </a>
+          {% if worker.position %}
+            <a href="{% url 'tasks:position-detail' worker.position.id %}" class="text-decoration-underline">
+              {{ worker.position.name }}
+            </a>
+          {% else %}
+            No
+          {% endif %}
         </div>
         <h3>Member of teams</h3>
         <table class="table table-striped">
@@ -47,7 +53,7 @@
           {% endfor %}
           </tbody>
         </table>
-        <h3>{{ worker.first_name }} {{ worker.last_name }}'s tasks</h3>
+        <h3>{{ worker.username }}'s tasks</h3>
         <table class="table table-striped">
           <thead class="table-dark">
           <tr>
@@ -73,7 +79,7 @@
                   {{ task.get_priority_display }}
                 </span>
               </td>
-              <td>{{ task.deadline }}</td>
+              <td>{{ task.deadline|default:"No" }}</td>
             </tr>
           {% empty %}
             <tr>

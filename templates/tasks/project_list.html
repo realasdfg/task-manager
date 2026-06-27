@@ -21,7 +21,7 @@
              class="text-decoration-underline">
         {{ project.name }}
       </a></td>
-      <td>{{ project.deadline }}</td>
+      <td>{{ project.deadline|default:"No" }}</td>
       <td class="text-center">{{ project.teams.count }}</td>
     </tr>
   {% empty %}

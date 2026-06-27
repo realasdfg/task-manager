@@ -17,11 +17,16 @@
         <div class="alert alert-tertiary">
           <strong>Created:</strong> {{ task.created_at }} ({{ task.created_at|timesince }} ago)
           <br>
-          <strong>Deadline:</strong> {{ task.deadline }}
-          {% if is_overdue %}
-            (overdue)
+          <strong>Deadline:</strong>
+          {% if task.deadline %}
+            {{ task.deadline }}
+            {% if is_overdue %}
+              <span class="text-danger">(overdue)</span>
+            {% else %}
+              ({{ task.deadline|timeuntil }} left)
+            {% endif %}
           {% else %}
-            ({{ task.deadline|timeuntil }} left)
+            No
           {% endif %}
           <br>
           <strong>Priority:</strong>
@@ -36,10 +41,14 @@
           </a>
           <br>
           <strong>Belongs to project:</strong>
-          <a href="{% url 'tasks:project-detail' task.project.id %}"
-             class="text-decoration-underline">
-            {{ task.project }}
-          </a>
+          {% if task.project %}
+            <a href="{% url 'tasks:project-detail' task.project.id %}"
+               class="text-decoration-underline">
+              {{ task.project }}
+            </a>
+          {% else %}
+            No
+          {% endif %}
         </div>
         <div class="alert alert-tertiary">
           <form method="post" class="d-flex align-items-center gap-2">
@@ -56,10 +65,9 @@
           </form>
         </div>
         <div class="alert alert-secondary">
-          {{ task.description }}
+          {{ task.description|default:"No description" }}
         </div>
-
-        <h3>Assignees</h3>
+        <h3>Assignees ({{ task.assignees.count }})</h3>
         <table class="table table-striped">
           <thead class="table-dark">
           <tr>
@@ -78,9 +86,15 @@
                 {{ assignee.username }}
               </a></td>
               <td>{{ assignee.first_name }} {{ assignee.last_name }}</td>
-              <td><a href="{% url 'tasks:position-detail' assignee.position.id %}" class="text-decoration-underline">
-                {{ assignee.position.name }}
-              </a></td>
+              <td>
+                {% if assignee.position %}
+                  <a href="{% url 'tasks:position-detail' assignee.position.id %}" class="text-decoration-underline">
+                    {{ assignee.position.name }}
+                  </a>
+                {% else %}
+                  -
+                {% endif %}
+              </td>
               <td>
                 {% for team in assignee.teams.all %}
                   <a href="{% url 'tasks:team-detail' team.id %}" class="text-decoration-underline">{{ team }}</a><br>

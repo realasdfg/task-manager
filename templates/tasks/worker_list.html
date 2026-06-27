@@ -22,9 +22,15 @@
         {{ worker.username }}
       </a></td>
       <td>{{ worker.first_name }} {{ worker.last_name }}</td>
-      <td><a href="{% url 'tasks:position-detail' worker.position.id %}" class="text-decoration-underline">
-        {{ worker.position.name }}
-      </a></td>
+      <td>
+        {% if worker.position %}
+          <a href="{% url 'tasks:position-detail' worker.position.id %}" class="text-decoration-underline">
+            {{ worker.position.name }}
+          </a>
+        {% else %}
+          -
+        {% endif %}
+      </td>
       <td class="text-center">{{ worker.tasks.count }}</td>
     </tr>
   {% empty %}

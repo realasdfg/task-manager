@@ -32,9 +32,15 @@
                 {{ member.username }}
               </a></td>
               <td>{{ member.first_name }} {{ member.last_name }}</td>
-              <td><a href="{% url 'tasks:position-detail' member.position.id %}" class="text-decoration-underline">
-                {{ member.position.name }}
-              </a></td>
+              <td>
+                {% if member.position %}
+                  <a href="{% url 'tasks:position-detail' member.position.id %}" class="text-decoration-underline">
+                    {{ member.position.name }}
+                  </a>
+                {% else %}
+                  -
+                {% endif %}
+              </td>
               <td class="text-center">{{ member.tasks.count }}</td>
             </tr>
           {% empty %}
