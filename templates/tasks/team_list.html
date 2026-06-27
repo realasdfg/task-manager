@@ -2,34 +2,46 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-  <div class="d-flex align-items-center gap-3 mb-2">
-    <h2>Teams</h2>
-    <a href="{% url 'tasks:team-create' %}" class="btn btn-success">Add</a>
-  </div>
-  <form method="get" class="d-flex align-items-baseline gap-2">
-    {{ search_form|crispy }}
-    <input type="submit" value="Search" class="btn btn-outline-primary">
-  </form>
-  <table class="table table-striped">
-    <thead class="table-dark">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Name</th>
-      <th scope="col">Members</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for team in team_list %}
-      <tr>
-        <th scope="row">{{ team.id }}</th>
-        <td><a href="{% url 'tasks:team-detail' team.id %}">{{ team.name }}</a></td>
-        <td>{{ team.members.count }}</td>
-      </tr>
-    {% empty %}
-      <tr>
-        <th colspan="100%" scope="row" class="text-center">There are no teams at this moment.</th>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-{% endblock %}
+  <main>
+    <div class="section pb-2 bg-primary text-white header-list">
+      <div class="container">
+        <h1>Teams</h1>
+      </div>
+    </div>
+    <div class="section section-md pt-3">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-baseline">
+          <form method="get" class="d-flex align-items-baseline gap-2">
+            {{ search_form|crispy }}
+            <input type="submit" value="Search" class="btn btn-outline-primary">
+          </form>
+          <a href="{% url 'tasks:team-create' %}" class="btn btn-success text-white">Create team</a>
+        </div>
+        <table class="table">
+          <thead class="table-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Members</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for team in team_list %}
+            <tr>
+              <th scope="row">{{ team.id }}</th>
+              <td><a href="{% url 'tasks:team-detail' team.id %}" class="text-decoration-underline">
+                {{ team.name }}
+              </a></td>
+              <td>{{ team.members.count }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <th colspan="100%" scope="row" class="text-center">There are no teams at this moment.</th>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+{% endblock content %}
