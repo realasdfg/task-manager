@@ -16,11 +16,19 @@ Including another URLconf
 """
 from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib import admin
+from django.contrib.auth.views import LoginView
 from django.urls import path, include
+
+from tasks.forms import LoginForm
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("tasks.urls", namespace="tasks")),
+    path(
+        "accounts/login/",
+        LoginView.as_view(authentication_form=LoginForm),
+        name="login",
+    ),
     path("accounts/", include("django.contrib.auth.urls")),
     path("select2/", include("django_select2.urls")),
 ]

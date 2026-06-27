@@ -1,9 +1,17 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django_select2.forms import Select2MultipleWidget
 
 from tasks.mixins import DeadlineValidationMixin
 from tasks.models import Project, Team, Worker, Task
+
+
+class LoginForm(AuthenticationForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field in self.fields.values():
+            field.widget.attrs["class"] = "form-control"
 
 
 class ProjectForm(DeadlineValidationMixin, forms.ModelForm):
