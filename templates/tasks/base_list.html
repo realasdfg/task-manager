@@ -1,0 +1,37 @@
+{% extends "layouts/base.html" %}
+{% load crispy_forms_filters %}
+
+{% block content %}
+  <main>
+    <div class="section pb-2 bg-primary text-white header-list">
+      <div class="container">
+        <h1>{% block list_title %}{% endblock %}</h1>
+      </div>
+    </div>
+    <div class="section section-md pt-3">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-baseline">
+          <form method="get" class="d-flex align-items-baseline gap-2">
+            {{ search_form|crispy }}
+            <input type="submit" value="Search" class="btn btn-outline-primary">
+          </form>
+          <a href="{% block create_url %}#{% endblock %}" class="btn btn-success text-white">
+            {% block create_title %}Create{% endblock %}
+          </a>
+        </div>
+        <table class="table">
+          <thead class="table-dark">
+          <tr>
+            {% block table_headers %}
+            {% endblock %}
+          </tr>
+          </thead>
+          <tbody>
+          {% block table_rows %}
+          {% endblock %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+{% endblock content %}

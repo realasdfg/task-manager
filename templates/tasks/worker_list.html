@@ -1,53 +1,35 @@
-{% extends "layouts/base.html" %}
-{% load crispy_forms_filters %}
+{% extends "tasks/base_list.html" %}
 
-{% block content %}
-  <main>
-    <div class="section pb-2 bg-primary text-white header-list">
-      <div class="container">
-        <h1>Workers</h1>
-      </div>
-    </div>
-    <div class="section section-md pt-3">
-      <div class="container">
-        <div class="d-flex justify-content-between align-items-baseline">
-          <form method="get" class="d-flex align-items-baseline gap-2">
-            {{ search_form|crispy }}
-            <input type="submit" value="Search" class="btn btn-outline-primary">
-          </form>
-          <a href="{% url 'tasks:worker-create' %}" class="btn btn-success text-white">Add worker</a>
-        </div>
-        <table class="table">
-          <thead class="table-dark">
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Username</th>
-            <th scope="col">Full Name</th>
-            <th scope="col">Position</th>
-            <th scope="col">Tasks</th>
-          </tr>
-          </thead>
-          <tbody>
-          {% for worker in worker_list %}
-            <tr>
-              <th scope="row">{{ worker.id }}</th>
-              <td><a href="{% url 'tasks:worker-detail' worker.id %}" class="text-decoration-underline">
-                {{ worker.username }}
-              </a></td>
-              <td>{{ worker.first_name }} {{ worker.last_name }}</td>
-              <td><a href="{% url 'tasks:position-detail' worker.position.id %}" class="text-decoration-underline">
-                {{ worker.position.name }}
-              </a></td>
-              <td>{{ worker.tasks.count }}</td>
-            </tr>
-          {% empty %}
-            <tr>
-              <th colspan="100%" scope="row" class="text-center">There are no workers at this moment.</th>
-            </tr>
-          {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </main>
-{% endblock content %}
+{% block list_title %}Workers{% endblock %}
+
+{% block create_url %}{% url 'tasks:worker-create' %}{% endblock %}
+
+{% block create_title %}Add worker{% endblock %}
+
+{% block table_headers %}
+  <th scope="col">ID</th>
+  <th scope="col">Username</th>
+  <th scope="col">Full Name</th>
+  <th scope="col">Position</th>
+  <th scope="col">Tasks</th>
+{% endblock %}
+
+{% block table_rows %}
+  {% for worker in worker_list %}
+    <tr>
+      <th scope="row">{{ worker.id }}</th>
+      <td><a href="{% url 'tasks:worker-detail' worker.id %}" class="text-decoration-underline">
+        {{ worker.username }}
+      </a></td>
+      <td>{{ worker.first_name }} {{ worker.last_name }}</td>
+      <td><a href="{% url 'tasks:position-detail' worker.position.id %}" class="text-decoration-underline">
+        {{ worker.position.name }}
+      </a></td>
+      <td>{{ worker.tasks.count }}</td>
+    </tr>
+  {% empty %}
+    <tr>
+      <th colspan="100%" scope="row" class="text-center">There are no workers at this moment.</th>
+    </tr>
+  {% endfor %}
+{% endblock %}
