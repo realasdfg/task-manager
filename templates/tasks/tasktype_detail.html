@@ -34,7 +34,9 @@
           {% for task in tasktype.tasks.all %}
             <tr class="{% if task.is_completed %}table-success{% endif %}">
               <th scope="row">{{ task.id }}</th>
-              <td>{{ task.name }}</td>
+              <td><a href="{% url 'tasks:task-detail' task.id %}" class="text-decoration-underline">
+                {{ task.name }}
+              </a></td>
               <td><a href="{% url 'tasks:tasktype-detail' task.task_type.id %}" class="text-decoration-underline">
                 {{ task.task_type }}
               </a></td>
