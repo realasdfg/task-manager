@@ -1,59 +1,59 @@
 {% extends "layouts/base.html" %}
 
 {% block content %}
-  <section class="section-header overflow-hiddeng mb-10 bg-primary text-white">
-    <div class="container">
-      <div class="row">
-        <div class="col-12 text-center">
-          <h1 class="fw-bolder display-2">
-            Task Manager
-          </h1>
-          <h2 class="lead fw-normal text-muted mb-4 px-lg-10">
-            Welcome to my Task Manager Project. I hope you'll enjoy using it!
-          </h2>
+  <main>
+    <section class="section-header overflow-hiddeng mb-10 bg-primary text-white">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 text-center">
+            <h1 class="fw-bolder display-2">
+              Task Manager
+            </h1>
+            <h2 class="lead fw-normal text-muted mb-4 px-lg-10">
+              Welcome to my Task Manager Project. I hope you'll enjoy using it!
+            </h2>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="container mt-6">
-      <div class="row justify-content-center">
-        <div class="col-6 col-md-3 text-center">
-          <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-1">
-            <span class="fas fa-user text-tertiary"></span>
+      <div class="container mt-6">
+        <div class="row justify-content-center">
+          <div class="col-6 col-md-3 text-center">
+            <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-1">
+              <span class="fas fa-user text-tertiary"></span>
+            </div>
+            <h3 class="fw-bolder mb-0">{{ num_workers }}</h3>
+            <h5 class="fw-normal">Workers</h5>
           </div>
-          <h3 class="fw-bolder mb-0">{{ num_workers }}</h3>
-          <h5 class="fw-normal">Workers</h5>
-        </div>
-        <div class="col-6 col-md-3 text-center ">
-          <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-1">
-            <span class="fas fa-project-diagram text-tertiary"></span>
+          <div class="col-6 col-md-3 text-center ">
+            <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-1">
+              <span class="fas fa-project-diagram text-tertiary"></span>
+            </div>
+            <h3 class="fw-bolder mb-0">{{ num_projects }}</h3>
+            <h5 class="fw-normal">Projects</h5>
           </div>
-          <h3 class="fw-bolder mb-0">{{ num_projects }}</h3>
-          <h5 class="fw-normal">Projects</h5>
-        </div>
-        <div class="col-6 col-md-3 text-center">
-          <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-1">
-            <span class="fas fa-users text-tertiary"></span>
+          <div class="col-6 col-md-3 text-center">
+            <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-1">
+              <span class="fas fa-users text-tertiary"></span>
+            </div>
+            <h3 class="fw-bolder mb-0">{{ num_teams }}</h3>
+            <h5 class="fw-normal">Teams</h5>
           </div>
-          <h3 class="fw-bolder mb-0">{{ num_teams }}</h3>
-          <h5 class="fw-normal">Teams</h5>
-        </div>
-        <div class="col-6 col-md-3 text-center">
-          <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-1">
-            <span class="fas fa-tasks text-tertiary"></span>
+          <div class="col-6 col-md-3 text-center">
+            <div class="icon icon-shape icon-lg bg-white shadow-lg border-light rounded-circle mb-1">
+              <span class="fas fa-tasks text-tertiary"></span>
+            </div>
+            <h3 class="fw-bolder mb-0">{{ num_tasks }}</h3>
+            <h5 class="fw-normal">Tasks</h5>
           </div>
-          <h3 class="fw-bolder mb-0">{{ num_tasks }}</h3>
-          <h5 class="fw-normal">Tasks</h5>
         </div>
       </div>
-    </div>
-    <figure class="position-absolute bottom-0 left-0 w-100 d-none d-md-block mb-n2">
-      <svg class="fill-white"
-           xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 185.4">
-        <path d="M3000,0v185.4H0V0c496.4,115.6,996.4,173.4,1500,173.4S2503.6,115.6,3000,0z"></path>
-      </svg>
-    </figure>
-  </section>
-
+      <figure class="position-absolute bottom-0 left-0 w-100 d-none d-md-block mb-n2">
+        <svg class="fill-white"
+             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3000 185.4">
+          <path d="M3000,0v185.4H0V0c496.4,115.6,996.4,173.4,1500,173.4S2503.6,115.6,3000,0z"></path>
+        </svg>
+      </figure>
+    </section>
+  </main>
   {% include 'includes/footer.html' %}
-
 {% endblock content %}
