@@ -2,34 +2,46 @@
 {% load crispy_forms_filters %}
 
 {% block content %}
-  <div class="d-flex align-items-center gap-3 mb-2">
-    <h2>Worker positions</h2>
-    <a href="{% url 'tasks:position-create' %}" class="btn btn-success">Add</a>
-  </div>
-  <form method="get" class="d-flex align-items-baseline gap-2">
-    {{ search_form|crispy }}
-    <input type="submit" value="Search" class="btn btn-outline-primary">
-  </form>
-  <table class="table table-striped">
-    <thead class="table-dark">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Name</th>
-      <th scope="col">Workers</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for position in position_list %}
-      <tr>
-        <th scope="row">{{ position.id }}</th>
-        <td><a href="{% url 'tasks:position-detail' position.id %}">{{ position.name }}</a></td>
-        <td>{{ position.workers.count }}</td>
-      </tr>
-    {% empty %}
-      <tr>
-        <th colspan="100%" scope="row" class="text-center">There are no positions at this moment.</th>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-{% endblock %}
+  <main>
+    <div class="section pb-2 bg-primary text-white header-list">
+      <div class="container">
+        <h1>Worker positions</h1>
+      </div>
+    </div>
+    <div class="section section-md pt-3">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-baseline">
+          <form method="get" class="d-flex align-items-baseline gap-2">
+            {{ search_form|crispy }}
+            <input type="submit" value="Search" class="btn btn-outline-primary">
+          </form>
+          <a href="{% url 'tasks:position-create' %}" class="btn btn-success text-white">Create position</a>
+        </div>
+        <table class="table">
+          <thead class="table-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Workers</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for position in position_list %}
+            <tr>
+              <th scope="row">{{ position.id }}</th>
+              <td><a href="{% url 'tasks:position-detail' position.id %}" class="text-decoration-underline">
+                {{ position.name }}
+              </a></td>
+              <td>{{ position.workers.count }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <th colspan="100%" scope="row" class="text-center">There are no positions at this moment.</th>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+{% endblock content %}
