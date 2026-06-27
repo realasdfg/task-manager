@@ -17,22 +17,29 @@
     "model": "tasks.position",
     "pk": 3,
     "fields": {
-      "name": "Project Manager"
+      "name": "DevOps Engineer"
+    }
+  },
+  {
+    "model": "tasks.position",
+    "pk": 4,
+    "fields": {
+      "name": "QA Engineer"
     }
   },
   {
     "model": "tasks.worker",
     "pk": 1,
     "fields": {
-      "username": "admin",
-      "email": "admin@example.com",
-      "password": "pbkdf2_sha256$720000$salt$hashedpassword",
-      "is_superuser": true,
-      "is_staff": true,
+      "username": "jfrusciante",
+      "first_name": "John",
+      "last_name": "Frusciante",
+      "email": "john.frusciante@devteam.com",
+      "password": "pbkdf2_sha256$600000$placeholder$hashedpassword=",
       "is_active": true,
-      "first_name": "Admin",
-      "last_name": "User",
-      "position": 3,
+      "is_staff": false,
+      "is_superuser": false,
+      "position": 1,
       "groups": [],
       "user_permissions": []
     }
@@ -41,15 +48,15 @@
     "model": "tasks.worker",
     "pk": 2,
     "fields": {
-      "username": "john_doe",
-      "email": "john@example.com",
-      "password": "pbkdf2_sha256$720000$salt$hashedpassword",
-      "is_superuser": false,
-      "is_staff": false,
+      "username": "kcobain",
+      "first_name": "Kurt",
+      "last_name": "Cobain",
+      "email": "kurt.cobain@devteam.com",
+      "password": "pbkdf2_sha256$600000$placeholder$hashedpassword=",
       "is_active": true,
-      "first_name": "John",
-      "last_name": "Doe",
-      "position": 1,
+      "is_staff": false,
+      "is_superuser": false,
+      "position": 2,
       "groups": [],
       "user_permissions": []
     }
@@ -58,15 +65,15 @@
     "model": "tasks.worker",
     "pk": 3,
     "fields": {
-      "username": "jane_smith",
-      "email": "jane@example.com",
-      "password": "pbkdf2_sha256$720000$salt$hashedpassword",
-      "is_superuser": false,
-      "is_staff": false,
+      "username": "jbuckley",
+      "first_name": "Jeff",
+      "last_name": "Buckley",
+      "email": "jeff.buckley@devteam.com",
+      "password": "pbkdf2_sha256$600000$placeholder$hashedpassword=",
       "is_active": true,
-      "first_name": "Jane",
-      "last_name": "Smith",
-      "position": 2,
+      "is_staff": false,
+      "is_superuser": false,
+      "position": 1,
       "groups": [],
       "user_permissions": []
     }
@@ -75,81 +82,167 @@
     "model": "tasks.worker",
     "pk": 4,
     "fields": {
-      "username": "bob_williams",
-      "email": "bob@example.com",
-      "password": "pbkdf2_sha256$720000$salt$hashedpassword",
-      "is_superuser": false,
-      "is_staff": false,
+      "username": "lreed",
+      "first_name": "Lou",
+      "last_name": "Reed",
+      "email": "lou.reed@devteam.com",
+      "password": "pbkdf2_sha256$600000$placeholder$hashedpassword=",
       "is_active": true,
-      "first_name": "Bob",
-      "last_name": "Williams",
+      "is_staff": false,
+      "is_superuser": false,
+      "position": 3,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "tasks.worker",
+    "pk": 5,
+    "fields": {
+      "username": "dgilmour",
+      "first_name": "David",
+      "last_name": "Gilmour",
+      "email": "david.gilmour@devteam.com",
+      "password": "pbkdf2_sha256$600000$placeholder$hashedpassword=",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "position": 4,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "tasks.worker",
+    "pk": 6,
+    "fields": {
+      "username": "tyorke",
+      "first_name": "Thom",
+      "last_name": "Yorke",
+      "email": "thom.yorke@devteam.com",
+      "password": "pbkdf2_sha256$600000$placeholder$hashedpassword=",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "position": 2,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "tasks.worker",
+    "pk": 7,
+    "fields": {
+      "username": "jgreenwood",
+      "first_name": "Jonny",
+      "last_name": "Greenwood",
+      "email": "jonny.greenwood@devteam.com",
+      "password": "pbkdf2_sha256$600000$placeholder$hashedpassword=",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
       "position": 1,
       "groups": [],
       "user_permissions": []
     }
   },
   {
-    "model": "tasks.team",
-    "pk": 1,
+    "model": "tasks.worker",
+    "pk": 8,
     "fields": {
-      "name": "Backend Team",
-      "members": [
-        2,
-        4
-      ]
+      "username": "dbowie",
+      "first_name": "David",
+      "last_name": "Bowie",
+      "email": "david.bowie@devteam.com",
+      "password": "pbkdf2_sha256$600000$placeholder$hashedpassword=",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "position": 4,
+      "groups": [],
+      "user_permissions": []
     }
   },
   {
-    "model": "tasks.team",
-    "pk": 2,
+    "model": "tasks.worker",
+    "pk": 9,
     "fields": {
-      "name": "Frontend Team",
-      "members": [
-        3
-      ]
+      "username": "lstaley",
+      "first_name": "Layne",
+      "last_name": "Staley",
+      "email": "layne.staley@devteam.com",
+      "password": "pbkdf2_sha256$600000$placeholder$hashedpassword=",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "position": 3,
+      "groups": [],
+      "user_permissions": []
     }
   },
   {
-    "model": "tasks.project",
-    "pk": 1,
+    "model": "tasks.worker",
+    "pk": 10,
     "fields": {
-      "name": "E-Commerce Platform",
-      "description": "Building a scalable e-commerce platform.",
-      "deadline": "2025-12-31T23:59:59Z",
-      "is_completed": false,
-      "teams": [
-        1,
-        2
-      ],
-      "created_at": "2025-01-10T09:00:00Z"
+      "username": "jmorrison",
+      "first_name": "Jim",
+      "last_name": "Morrison",
+      "email": "jim.morrison@devteam.com",
+      "password": "pbkdf2_sha256$600000$placeholder$hashedpassword=",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "position": 2,
+      "groups": [],
+      "user_permissions": []
     }
   },
   {
-    "model": "tasks.project",
-    "pk": 2,
+    "model": "tasks.worker",
+    "pk": 11,
     "fields": {
-      "name": "Internal Dashboard",
-      "description": "Analytics dashboard for internal use.",
-      "deadline": "2025-09-30T23:59:59Z",
-      "is_completed": false,
-      "teams": [
-        2
-      ],
-      "created_at": "2025-02-15T10:30:00Z"
+      "username": "jhendrix",
+      "first_name": "Jimi",
+      "last_name": "Hendrix",
+      "email": "jimi.hendrix@devteam.com",
+      "password": "pbkdf2_sha256$600000$placeholder$hashedpassword=",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "position": 3,
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "tasks.worker",
+    "pk": 12,
+    "fields": {
+      "username": "ndrake",
+      "first_name": "Nick",
+      "last_name": "Drake",
+      "email": "nick.drake@devteam.com",
+      "password": "pbkdf2_sha256$600000$placeholder$hashedpassword=",
+      "is_active": true,
+      "is_staff": false,
+      "is_superuser": false,
+      "position": 4,
+      "groups": [],
+      "user_permissions": []
     }
   },
   {
     "model": "tasks.tasktype",
     "pk": 1,
-    "fields": {
-      "name": "Feature"
-    }
-  },
-  {
-    "model": "tasks.tasktype",
-    "pk": 2,
     "fields": {
       "name": "Bug Fix"
+    }
+  },
+  {
+    "model": "tasks.tasktype",
+    "pk": 2,
+    "fields": {
+      "name": "Feature"
     }
   },
   {
@@ -160,106 +253,818 @@
     }
   },
   {
+    "model": "tasks.tasktype",
+    "pk": 4,
+    "fields": {
+      "name": "Testing"
+    }
+  },
+  {
+    "model": "tasks.tasktype",
+    "pk": 5,
+    "fields": {
+      "name": "Documentation"
+    }
+  },
+  {
+    "model": "tasks.tasktype",
+    "pk": 6,
+    "fields": {
+      "name": "DevOps"
+    }
+  },
+  {
+    "model": "tasks.team",
+    "pk": 1,
+    "fields": {
+      "name": "Backend Core",
+      "members": [
+        1,
+        3,
+        7
+      ]
+    }
+  },
+  {
+    "model": "tasks.team",
+    "pk": 2,
+    "fields": {
+      "name": "Infrastructure",
+      "members": [
+        4,
+        9,
+        11
+      ]
+    }
+  },
+  {
+    "model": "tasks.team",
+    "pk": 3,
+    "fields": {
+      "name": "Product",
+      "members": [
+        2,
+        6,
+        10,
+        5,
+        8,
+        12
+      ]
+    }
+  },
+  {
+    "model": "tasks.project",
+    "pk": 1,
+    "fields": {
+      "name": "Task Management Platform",
+      "description": "A full-featured internal task management web application. Covers authentication, dashboards, real-time notifications, and reporting.",
+      "deadline": "2026-07-25T23:59:00Z",
+      "is_completed": false,
+      "teams": [
+        1,
+        3
+      ],
+      "created_at": "2026-01-10T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.project",
+    "pk": 2,
+    "fields": {
+      "name": "Internal REST API",
+      "description": "High-performance REST API backend powering the internal tool suite. Covers all CRUD endpoints for workers, teams, projects, and tasks.",
+      "deadline": "2026-07-20T23:59:00Z",
+      "is_completed": false,
+      "teams": [
+        1,
+        2
+      ],
+      "created_at": "2026-02-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.project",
+    "pk": 3,
+    "fields": {
+      "name": "CI/CD Pipeline Overhaul",
+      "description": "Complete overhaul of the deployment pipeline: containerization, automated testing, staging and production environments, and monitoring stack.",
+      "deadline": "2026-05-15T23:59:00Z",
+      "is_completed": true,
+      "teams": [
+        2,
+        3
+      ],
+      "created_at": "2026-01-20T08:00:00Z"
+    }
+  },
+  {
     "model": "tasks.task",
     "pk": 1,
     "fields": {
       "name": "Set up Django project structure",
-      "description": "Initialize the project with proper app layout and settings.",
-      "deadline": "2025-07-15T18:00:00Z",
+      "description": "Initialize the Django project, configure settings for dev/staging/prod environments.",
+      "deadline": "2026-02-10T18:00:00Z",
       "is_completed": true,
       "priority": "high",
-      "task_type": 1,
-      "project": 1,
+      "task_type": 2,
       "assignees": [
-        2
+        3,
+        7
       ],
-      "created_at": "2025-01-11T09:00:00Z"
+      "project": 1,
+      "created_at": "2026-01-10T09:30:00Z"
     }
   },
   {
     "model": "tasks.task",
     "pk": 2,
     "fields": {
-      "name": "Implement user authentication",
-      "description": "JWT-based auth with refresh tokens.",
-      "deadline": "2025-08-01T18:00:00Z",
-      "is_completed": false,
-      "priority": "urgent",
-      "task_type": 1,
-      "project": 1,
+      "name": "Design PostgreSQL schema",
+      "description": "Create ER diagram and write initial migrations for Worker, Team, Project, Task models.",
+      "deadline": "2026-02-20T18:00:00Z",
+      "is_completed": true,
+      "priority": "high",
+      "task_type": 2,
       "assignees": [
-        2,
-        4
+        3
       ],
-      "created_at": "2025-01-12T10:00:00Z"
+      "project": 1,
+      "created_at": "2026-01-11T10:00:00Z"
     }
   },
   {
     "model": "tasks.task",
     "pk": 3,
     "fields": {
-      "name": "Design product listing page",
-      "description": "Responsive UI for browsing products.",
-      "deadline": "2025-08-10T18:00:00Z",
-      "is_completed": false,
-      "priority": "medium",
-      "task_type": 1,
-      "project": 1,
+      "name": "Implement JWT authentication",
+      "description": "Set up djangorestframework-simplejwt for token-based auth with refresh token rotation.",
+      "deadline": "2026-03-05T18:00:00Z",
+      "is_completed": true,
+      "priority": "urgent",
+      "task_type": 2,
       "assignees": [
-        3
+        1,
+        7
       ],
-      "created_at": "2025-01-13T11:00:00Z"
+      "project": 1,
+      "created_at": "2026-01-12T09:00:00Z"
     }
   },
   {
     "model": "tasks.task",
     "pk": 4,
     "fields": {
-      "name": "Fix cart total calculation bug",
-      "description": "Discount codes not applied correctly.",
-      "deadline": "2025-07-20T18:00:00Z",
-      "is_completed": false,
+      "name": "Build user registration and login API",
+      "description": "Endpoints: POST /auth/register, POST /auth/login, POST /auth/logout, POST /auth/refresh.",
+      "deadline": "2026-03-15T18:00:00Z",
+      "is_completed": true,
       "priority": "urgent",
       "task_type": 2,
-      "project": 1,
       "assignees": [
-        4
+        1
       ],
-      "created_at": "2025-01-14T08:00:00Z"
+      "project": 1,
+      "created_at": "2026-01-13T10:00:00Z"
     }
   },
   {
     "model": "tasks.task",
     "pk": 5,
     "fields": {
-      "name": "Build dashboard charts",
-      "description": "Revenue and user activity charts using Chart.js.",
-      "deadline": "2025-09-01T18:00:00Z",
-      "is_completed": false,
-      "priority": "medium",
-      "task_type": 1,
-      "project": 2,
+      "name": "Create dashboard UI layout",
+      "description": "Build the main dashboard React layout including sidebar, top nav, and main content area.",
+      "deadline": "2026-04-01T18:00:00Z",
+      "is_completed": true,
+      "priority": "high",
+      "task_type": 2,
       "assignees": [
-        3
+        2,
+        6
       ],
-      "created_at": "2025-02-16T09:00:00Z"
+      "project": 1,
+      "created_at": "2026-01-14T09:00:00Z"
     }
   },
   {
     "model": "tasks.task",
     "pk": 6,
     "fields": {
-      "name": "Refactor API response structure",
-      "description": "Standardize all API responses to use envelope format.",
-      "deadline": "2025-08-20T18:00:00Z",
+      "name": "Fix token expiry not clearing session",
+      "description": "On JWT expiry, the frontend doesn't clear local state correctly — user sees stale data.",
+      "deadline": "2026-04-10T18:00:00Z",
+      "is_completed": true,
+      "priority": "urgent",
+      "task_type": 1,
+      "assignees": [
+        1,
+        6
+      ],
+      "project": 1,
+      "created_at": "2026-01-20T11:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 7,
+    "fields": {
+      "name": "Add task filtering and sorting",
+      "description": "Support filtering by priority, status, assignee, deadline, and task type. Support sorting on all fields.",
+      "deadline": "2026-05-20T18:00:00Z",
+      "is_completed": true,
+      "priority": "medium",
+      "task_type": 2,
+      "assignees": [
+        7,
+        2
+      ],
+      "project": 1,
+      "created_at": "2026-01-22T10:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 8,
+    "fields": {
+      "name": "Write E2E tests for auth flow",
+      "description": "Cover registration, login, token refresh, and logout using Playwright.",
+      "deadline": "2026-06-01T18:00:00Z",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type": 4,
+      "assignees": [
+        5,
+        8
+      ],
+      "project": 1,
+      "created_at": "2026-01-25T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 9,
+    "fields": {
+      "name": "Implement WebSocket notifications",
+      "description": "Real-time in-app notifications for task assignment, status changes, and deadline reminders via Django Channels.",
+      "deadline": "2026-06-10T18:00:00Z",
+      "is_completed": false,
+      "priority": "high",
+      "task_type": 2,
+      "assignees": [
+        1,
+        4
+      ],
+      "project": 1,
+      "created_at": "2026-01-28T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 10,
+    "fields": {
+      "name": "Write API documentation",
+      "description": "Document all endpoints using drf-spectacular / Swagger UI. Include request/response examples.",
+      "deadline": "2026-06-15T18:00:00Z",
+      "is_completed": false,
+      "priority": "low",
+      "task_type": 5,
+      "assignees": [
+        11
+      ],
+      "project": 1,
+      "created_at": "2026-02-01T10:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 11,
+    "fields": {
+      "name": "Refactor authentication middleware",
+      "description": "Extract auth logic from views into a dedicated middleware layer for cleaner separation of concerns.",
+      "deadline": "2026-06-20T18:00:00Z",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type": 3,
+      "assignees": [
+        3,
+        7
+      ],
+      "project": 1,
+      "created_at": "2026-02-03T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 12,
+    "fields": {
+      "name": "Implement project progress tracker",
+      "description": "Add a progress bar and stats panel showing completed vs total tasks per project.",
+      "deadline": "2026-07-10T18:00:00Z",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type": 2,
+      "assignees": [
+        6,
+        2
+      ],
+      "project": 1,
+      "created_at": "2026-02-05T10:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 13,
+    "fields": {
+      "name": "Design core API endpoints",
+      "description": "Define REST API routes for /workers, /teams, /projects, /tasks with proper HTTP methods and status codes.",
+      "deadline": "2026-02-25T18:00:00Z",
+      "is_completed": true,
+      "priority": "urgent",
+      "task_type": 2,
+      "assignees": [
+        3,
+        10
+      ],
+      "project": 2,
+      "created_at": "2026-02-01T10:30:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 14,
+    "fields": {
+      "name": "Implement Worker CRUD endpoints",
+      "description": "Full CRUD for Worker model. Include filtering by position, search by name, pagination.",
+      "deadline": "2026-03-10T18:00:00Z",
+      "is_completed": true,
+      "priority": "high",
+      "task_type": 2,
+      "assignees": [
+        3
+      ],
+      "project": 2,
+      "created_at": "2026-02-02T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 15,
+    "fields": {
+      "name": "Implement Team CRUD endpoints",
+      "description": "CRUD for Team model. Support adding/removing members via nested endpoint.",
+      "deadline": "2026-03-20T18:00:00Z",
+      "is_completed": true,
+      "priority": "high",
+      "task_type": 2,
+      "assignees": [
+        10
+      ],
+      "project": 2,
+      "created_at": "2026-02-03T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 16,
+    "fields": {
+      "name": "Implement Project CRUD endpoints",
+      "description": "CRUD for Project. Support assigning teams, filtering by completion status, deadline range.",
+      "deadline": "2026-04-05T18:00:00Z",
+      "is_completed": true,
+      "priority": "high",
+      "task_type": 2,
+      "assignees": [
+        3,
+        9
+      ],
+      "project": 2,
+      "created_at": "2026-02-04T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 17,
+    "fields": {
+      "name": "Implement Task CRUD endpoints",
+      "description": "CRUD for Task. Support bulk assignment, priority filtering, and overdue detection.",
+      "deadline": "2026-04-20T18:00:00Z",
+      "is_completed": true,
+      "priority": "high",
+      "task_type": 2,
+      "assignees": [
+        3,
+        10
+      ],
+      "project": 2,
+      "created_at": "2026-02-05T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 18,
+    "fields": {
+      "name": "Add rate limiting to API",
+      "description": "Implement per-user rate limiting using django-ratelimit. Limits: 100 req/min for standard users.",
+      "deadline": "2026-05-10T18:00:00Z",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type": 2,
+      "assignees": [
+        9
+      ],
+      "project": 2,
+      "created_at": "2026-02-06T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 19,
+    "fields": {
+      "name": "Write unit tests for all serializers",
+      "description": "100% coverage on all DRF serializers including validation edge cases.",
+      "deadline": "2026-05-25T18:00:00Z",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type": 4,
+      "assignees": [
+        8,
+        5
+      ],
+      "project": 2,
+      "created_at": "2026-02-07T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 20,
+    "fields": {
+      "name": "Fix N+1 query issue in task list",
+      "description": "Task list endpoint performs N+1 queries due to missing select_related on task_type and project.",
+      "deadline": "2026-06-05T18:00:00Z",
+      "is_completed": false,
+      "priority": "urgent",
+      "task_type": 1,
+      "assignees": [
+        3
+      ],
+      "project": 2,
+      "created_at": "2026-02-10T11:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 21,
+    "fields": {
+      "name": "Add API versioning",
+      "description": "Implement URL-based versioning (/api/v1/). Ensure backward compatibility for existing clients.",
+      "deadline": "2026-06-18T18:00:00Z",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type": 3,
+      "assignees": [
+        10,
+        9
+      ],
+      "project": 2,
+      "created_at": "2026-02-12T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 22,
+    "fields": {
+      "name": "Implement caching layer with Redis",
+      "description": "Cache frequently read endpoints (worker list, project stats) with Redis and django-cachalot.",
+      "deadline": "2026-07-05T18:00:00Z",
+      "is_completed": false,
+      "priority": "high",
+      "task_type": 2,
+      "assignees": [
+        3,
+        4
+      ],
+      "project": 2,
+      "created_at": "2026-02-15T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 23,
+    "fields": {
+      "name": "Write API integration tests",
+      "description": "Full integration test suite covering all CRUD flows with database transactions and rollback.",
+      "deadline": "2026-07-18T18:00:00Z",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type": 4,
+      "assignees": [
+        8,
+        12
+      ],
+      "project": 2,
+      "created_at": "2026-02-18T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 24,
+    "fields": {
+      "name": "Dockerize application",
+      "description": "Write Dockerfile for the Django app and docker-compose for local dev (app, db, redis, celery).",
+      "deadline": "2026-02-15T18:00:00Z",
+      "is_completed": true,
+      "priority": "urgent",
+      "task_type": 6,
+      "assignees": [
+        4,
+        11
+      ],
+      "project": 3,
+      "created_at": "2026-01-20T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 25,
+    "fields": {
+      "name": "Set up GitHub Actions CI pipeline",
+      "description": "Automate linting (flake8, black), unit tests, and coverage report on every PR.",
+      "deadline": "2026-02-28T18:00:00Z",
+      "is_completed": true,
+      "priority": "high",
+      "task_type": 6,
+      "assignees": [
+        4
+      ],
+      "project": 3,
+      "created_at": "2026-01-21T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 26,
+    "fields": {
+      "name": "Configure staging environment",
+      "description": "Set up staging server on AWS EC2. Deploy with Gunicorn + Nginx. Configure environment variables.",
+      "deadline": "2026-03-10T18:00:00Z",
+      "is_completed": true,
+      "priority": "high",
+      "task_type": 6,
+      "assignees": [
+        9,
+        11
+      ],
+      "project": 3,
+      "created_at": "2026-01-22T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 27,
+    "fields": {
+      "name": "Implement automated deployment to staging",
+      "description": "On merge to develop branch, auto-deploy to staging via GitHub Actions + SSH + Docker Compose.",
+      "deadline": "2026-03-25T18:00:00Z",
+      "is_completed": true,
+      "priority": "high",
+      "task_type": 6,
+      "assignees": [
+        4,
+        9
+      ],
+      "project": 3,
+      "created_at": "2026-01-23T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 28,
+    "fields": {
+      "name": "Set up production environment",
+      "description": "Configure production AWS infra: RDS (PostgreSQL), ElastiCache (Redis), ALB, EC2 auto-scaling group.",
+      "deadline": "2026-04-15T18:00:00Z",
+      "is_completed": true,
+      "priority": "urgent",
+      "task_type": 6,
+      "assignees": [
+        4,
+        11
+      ],
+      "project": 3,
+      "created_at": "2026-01-25T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 29,
+    "fields": {
+      "name": "Configure SSL certificates",
+      "description": "Issue and configure Let's Encrypt SSL certificates via Certbot for staging and production domains.",
+      "deadline": "2026-04-25T18:00:00Z",
+      "is_completed": true,
+      "priority": "medium",
+      "task_type": 6,
+      "assignees": [
+        9
+      ],
+      "project": 3,
+      "created_at": "2026-01-26T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 30,
+    "fields": {
+      "name": "Set up Sentry error tracking",
+      "description": "Integrate Sentry SDK for both Django backend and React frontend. Configure alert rules and issue grouping.",
+      "deadline": "2026-05-05T18:00:00Z",
+      "is_completed": true,
+      "priority": "medium",
+      "task_type": 6,
+      "assignees": [
+        4,
+        6
+      ],
+      "project": 3,
+      "created_at": "2026-01-27T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 31,
+    "fields": {
+      "name": "Configure Prometheus and Grafana monitoring",
+      "description": "Expose /metrics endpoint with django-prometheus. Set up Grafana dashboards for request latency, error rates, DB connections.",
+      "deadline": "2026-05-15T18:00:00Z",
+      "is_completed": true,
+      "priority": "medium",
+      "task_type": 6,
+      "assignees": [
+        11,
+        4
+      ],
+      "project": 3,
+      "created_at": "2026-01-28T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 32,
+    "fields": {
+      "name": "Database backup automation",
+      "description": "Set up nightly PostgreSQL backups to S3 with 30-day retention. Alert on backup failure.",
+      "deadline": "2026-05-15T18:00:00Z",
+      "is_completed": true,
+      "priority": "high",
+      "task_type": 6,
+      "assignees": [
+        9,
+        11
+      ],
+      "project": 3,
+      "created_at": "2026-01-30T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 33,
+    "fields": {
+      "name": "Fix deployment script failing on clean servers",
+      "description": "Deployment script assumes git is installed but base AMI doesn't include it. Fails silently on first run.",
+      "deadline": "2026-04-08T18:00:00Z",
+      "is_completed": true,
+      "priority": "urgent",
+      "task_type": 1,
+      "assignees": [
+        4
+      ],
+      "project": 3,
+      "created_at": "2026-02-05T11:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 34,
+    "fields": {
+      "name": "Load testing with Locust",
+      "description": "Simulate 500 concurrent users on core endpoints. Identify bottlenecks before production launch.",
+      "deadline": "2026-05-10T18:00:00Z",
+      "is_completed": true,
+      "priority": "high",
+      "task_type": 4,
+      "assignees": [
+        8,
+        12
+      ],
+      "project": 3,
+      "created_at": "2026-02-08T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 35,
+    "fields": {
+      "name": "Write deployment runbook",
+      "description": "Document step-by-step deployment procedures, rollback strategy, and environment variable reference.",
+      "deadline": "2026-06-01T18:00:00Z",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type": 5,
+      "assignees": [
+        11,
+        9
+      ],
+      "project": 3,
+      "created_at": "2026-02-10T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 36,
+    "fields": {
+      "name": "Refactor docker-compose for production parity",
+      "description": "Align local docker-compose services with production setup to eliminate env-specific bugs.",
+      "deadline": "2026-06-12T18:00:00Z",
       "is_completed": false,
       "priority": "low",
       "task_type": 3,
-      "project": 2,
       "assignees": [
+        4,
+        11
+      ],
+      "project": 3,
+      "created_at": "2026-02-12T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 37,
+    "fields": {
+      "name": "Implement dark mode for dashboard",
+      "description": "Add a dark/light theme toggle using CSS variables and React context. Persist preference in localStorage.",
+      "deadline": "2026-07-15T18:00:00Z",
+      "is_completed": false,
+      "priority": "low",
+      "task_type": 2,
+      "assignees": [
+        6,
         2
       ],
-      "created_at": "2025-02-17T10:00:00Z"
+      "project": 1,
+      "created_at": "2026-02-20T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 38,
+    "fields": {
+      "name": "Fix pagination breaking on filtered results",
+      "description": "When applying filters and navigating to page 2+, filters are lost due to state not being preserved in URL params.",
+      "deadline": "2026-06-22T18:00:00Z",
+      "is_completed": false,
+      "priority": "high",
+      "task_type": 1,
+      "assignees": [
+        2,
+        7
+      ],
+      "project": 1,
+      "created_at": "2026-02-22T11:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 39,
+    "fields": {
+      "name": "Add CSV export for task reports",
+      "description": "Allow managers to export filtered task lists as CSV from the dashboard.",
+      "deadline": "2026-07-25T18:00:00Z",
+      "is_completed": false,
+      "priority": "medium",
+      "task_type": 2,
+      "assignees": [
+        7,
+        1
+      ],
+      "project": 1,
+      "created_at": "2026-02-25T09:00:00Z"
+    }
+  },
+  {
+    "model": "tasks.task",
+    "pk": 40,
+    "fields": {
+      "name": "Implement Celery async task queue",
+      "description": "Set up Celery with Redis broker for async jobs: email notifications, CSV generation, scheduled reminders.",
+      "deadline": "2026-07-20T18:00:00Z",
+      "is_completed": false,
+      "priority": "high",
+      "task_type": 2,
+      "assignees": [
+        3,
+        4
+      ],
+      "project": 2,
+      "created_at": "2026-02-28T09:00:00Z"
     }
   }
 ]
