@@ -12,6 +12,7 @@ class TeamListView(SearchMixin, LoginRequiredMixin, generic.ListView):
     model = Team
     queryset = Team.objects.all().prefetch_related("members")
     search_fields = {"name": "Search by name"}
+    paginate_by = 10
 
 
 class TeamDetailView(LoginRequiredMixin, generic.DetailView):

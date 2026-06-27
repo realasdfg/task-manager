@@ -20,6 +20,7 @@ class WorkerListView(SearchMixin, LoginRequiredMixin, generic.ListView):
         "first_name": "Search by first name",
         "last_name": "Search by last name",
     }
+    paginate_by = 10
 
 
 class WorkerDetailView(LoginRequiredMixin, generic.DetailView):

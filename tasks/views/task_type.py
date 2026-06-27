@@ -13,6 +13,7 @@ class TaskTypeListView(SearchMixin, LoginRequiredMixin, generic.ListView):
     model = TaskType
     queryset = TaskType.objects.all().prefetch_related("tasks")
     search_fields = {"name": "Search by name"}
+    paginate_by = 10
 
 
 class TaskTypeDetailView(LoginRequiredMixin, generic.DetailView):

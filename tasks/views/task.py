@@ -16,6 +16,7 @@ class TaskListView(SearchMixin, LoginRequiredMixin, generic.ListView):
                 .prefetch_related("assignees")
                 .select_related("task_type", "project"))
     search_fields = {"name": "Search by name"}
+    paginate_by = 10
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):

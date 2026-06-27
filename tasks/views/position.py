@@ -11,6 +11,7 @@ class PositionListView(SearchMixin, LoginRequiredMixin, generic.ListView):
     model = Position
     queryset = Position.objects.all().prefetch_related("workers")
     search_fields = {"name": "Search by name"}
+    paginate_by = 10
 
 
 class PositionDetailView(LoginRequiredMixin, generic.DetailView):
