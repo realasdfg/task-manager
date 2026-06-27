@@ -7,6 +7,7 @@ from django.views import generic
 
 from task_manager.mixins import SearchMixin, AddObjectNameMixin
 from tasks.forms import ProjectForm, ProjectCompleteForm
+from tasks.mixins import PaginationMixin
 from tasks.models import Project
 
 
@@ -18,17 +19,27 @@ class ProjectListView(SearchMixin, LoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
 
-class ProjectDetailView(LoginRequiredMixin, generic.DetailView):
+class ProjectDetailView(
+    PaginationMixin,
+    LoginRequiredMixin,
+    generic.DetailView
+):
     model = Project
-    queryset = (Project.objects.all()
-                .prefetch_related("teams__members", "tasks__task_type"))
+    queryset = Project.objects.prefetch_related("teams__members")
+    paginate_by = 10
+    page_kwarg = "tasks_page"
+    pagination_context_name = "tasks"
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_pagination_queryset(self):
+        return self.object.tasks.select_related("task_type")
+
+    def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
 
         project_deadline = self.object.deadline
         context["is_overdue"] = (project_deadline is not None
                                  and project_deadline < timezone.now())
+
         return context
 
     def post(self, request, *args, **kwargs):

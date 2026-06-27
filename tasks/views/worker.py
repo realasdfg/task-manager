@@ -6,6 +6,7 @@ from django.views import generic
 
 from task_manager.mixins import SearchMixin, AddObjectNameMixin
 from tasks.forms import WorkerCreationForm, WorkerUpdateForm
+from tasks.mixins import PaginationMixin
 
 Worker = get_user_model()
 
@@ -23,11 +24,21 @@ class WorkerListView(SearchMixin, LoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
 
-class WorkerDetailView(LoginRequiredMixin, generic.DetailView):
+class WorkerDetailView(
+    PaginationMixin,
+    LoginRequiredMixin,
+    generic.DetailView
+):
     model = Worker
     queryset = (Worker.objects.all()
                 .select_related("position")
-                .prefetch_related("tasks__task_type", "teams"))
+                .prefetch_related("teams"))
+    paginate_by = 10
+    page_kwarg = "tasks_page"
+    pagination_context_name = "tasks"
+
+    def get_pagination_queryset(self):
+        return self.object.tasks.select_related("task_type", "project")
 
 
 class WorkerCreateView(

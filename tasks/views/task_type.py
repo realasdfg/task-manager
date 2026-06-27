@@ -6,6 +6,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 from task_manager.mixins import SearchMixin, AddObjectNameMixin
+from tasks.mixins import PaginationMixin
 from tasks.models import TaskType
 
 
@@ -16,9 +17,22 @@ class TaskTypeListView(SearchMixin, LoginRequiredMixin, generic.ListView):
     paginate_by = 10
 
 
-class TaskTypeDetailView(LoginRequiredMixin, generic.DetailView):
+class TaskTypeDetailView(
+    PaginationMixin,
+    LoginRequiredMixin,
+    generic.DetailView
+):
     model = TaskType
-    queryset = TaskType.objects.all().prefetch_related("tasks")
+    paginate_by = 10
+    page_kwarg = "tasks_page"
+    pagination_context_name = "tasks"
+
+    def get_pagination_queryset(self):
+        return (
+            self.object.tasks
+            .select_related("project")
+            .prefetch_related("assignees")
+        )
 
 
 class TaskTypeCreateView(

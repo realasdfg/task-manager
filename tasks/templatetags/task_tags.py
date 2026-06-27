@@ -22,3 +22,10 @@ def query_transform(request, **kwargs):
         else:
             updated.pop(key, 0)
     return updated.urlencode()
+
+
+@register.simple_tag
+def page_query(request, page_param, page_number):
+    updated = request.GET.copy()
+    updated[page_param] = page_number
+    return updated.urlencode()

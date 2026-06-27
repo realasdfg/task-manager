@@ -8,7 +8,7 @@
         <h2>Task Type: {{ tasktype.name }}</h2>
         <div>
           <a href="{% url 'tasks:tasktype-update' tasktype.id %}" class="btn btn-outline-success">Edit</a>
-          {% if tasktype.tasks.exists %}
+          {% if tasks_count > 0 %}
             <span title="Cannot delete: used by existing tasks">
               <button class="btn btn-danger" disabled>Delete</button>
             </span>
@@ -20,26 +20,27 @@
     </div>
     <div class="section section-md pt-3">
       <div class="container">
-        <h3>Tasks ({{ tasktype.tasks.count }})</h3>
+        <h3>Tasks ({{ tasks_count }})</h3>
         <table class="table table-striped">
           <thead class="table-dark">
           <tr>
             <th scope="col" class="text-center">ID</th>
             <th scope="col">Name</th>
             <th scope="col">Project</th>
-            <th scope="col">Type</th>
             <th scope="col" class="text-center">Priority</th>
             <th scope="col">Deadline</th>
             <th scope="col" class="text-center">Assignees</th>
           </tr>
           </thead>
           <tbody>
-          {% for task in tasktype.tasks.all %}
+          {% for task in tasks %}
             <tr class="{% if task.is_completed %}table-success{% endif %}">
               <th scope="row" class="text-center">{{ task.id }}</th>
-              <td><a href="{% url 'tasks:task-detail' task.id %}" class="text-decoration-underline">
-                {{ task.name }}
-              </a></td>
+              <td>
+                <a href="{% url 'tasks:task-detail' task.id %}" class="text-decoration-underline">
+                  {{ task.name }}
+                </a>
+              </td>
               <td>
                 {% if task.project %}
                   <a href="{% url 'tasks:project-detail' task.project.id %}" class="text-decoration-underline">
@@ -49,13 +50,8 @@
                   -
                 {% endif %}
               </td>
-              <td><a href="{% url 'tasks:tasktype-detail' task.task_type.id %}" class="text-decoration-underline">
-                {{ task.task_type }}
-              </a></td>
               <td class="text-center">
-                <span class="badge {{ task.priority|priority_badge }}">
-                  {{ task.get_priority_display }}
-                </span>
+                <span class="badge {{ task.priority|priority_badge }}">{{ task.get_priority_display }}</span>
               </td>
               <td>{{ task.deadline|default:"No" }}</td>
               <td class="text-center">{{ task.assignees.count }}</td>
@@ -67,6 +63,7 @@
           {% endfor %}
           </tbody>
         </table>
+        {% include "includes/pagination_detail.html" with page=tasks page_param="tasks_page" %}
       </div>
     </div>
   </main>

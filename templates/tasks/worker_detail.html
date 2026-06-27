@@ -53,7 +53,7 @@
           {% endfor %}
           </tbody>
         </table>
-        <h3>{{ worker.username }}'s tasks ({{ worker.tasks.count }})</h3>
+        <h3>{{ worker.username }}'s tasks ({{ tasks_count }})</h3>
         <table class="table table-striped">
           <thead class="table-dark">
           <tr>
@@ -66,12 +66,14 @@
           </tr>
           </thead>
           <tbody>
-          {% for task in worker.tasks.all %}
+          {% for task in tasks %}
             <tr class="{% if task.is_completed %}table-success{% endif %}">
               <th scope="row" class="text-center">{{ task.id }}</th>
-              <td><a href="{% url 'tasks:task-detail' task.id %}" class="text-decoration-underline">
-                {{ task.name }}
-              </a></td>
+              <td>
+                <a href="{% url 'tasks:task-detail' task.id %}" class="text-decoration-underline">
+                  {{ task.name }}
+                </a>
+              </td>
               <td>
                 {% if task.project %}
                   <a href="{% url 'tasks:project-detail' task.project.id %}" class="text-decoration-underline">
@@ -81,13 +83,14 @@
                   -
                 {% endif %}
               </td>
-              <td><a href="{% url 'tasks:tasktype-detail' task.task_type.id %}" class="text-decoration-underline">
-                {{ task.task_type }}
-              </a></td>
+              <td>
+                <a href="{% url 'tasks:tasktype-detail' task.task_type.id %}"
+                   class="text-decoration-underline">
+                  {{ task.task_type }}
+                </a>
+              </td>
               <td class="text-center">
-                <span class="badge {{ task.priority|priority_badge }}">
-                  {{ task.get_priority_display }}
-                </span>
+                <span class="badge {{ task.priority|priority_badge }}">{{ task.get_priority_display }}</span>
               </td>
               <td>{{ task.deadline|default:"No" }}</td>
             </tr>
@@ -98,6 +101,7 @@
           {% endfor %}
           </tbody>
         </table>
+        {% include "includes/pagination_detail.html" with page=tasks page_param="tasks_page" %}
       </div>
     </div>
   </main>
