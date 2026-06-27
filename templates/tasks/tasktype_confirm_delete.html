@@ -1,27 +1,27 @@
-{% extends "layouts/base.html" %}
+{% extends "tasks/confirm_delete.html" %}
 
-{% block content %}
-  <h1>Delete Task Type?</h1>
-  {% if tasktype.tasks.exists %}
-    <p class="text-danger">
-      Warning: You cannot delete this task type.
-      {{ tasktype.tasks.count }} task(s) use this type.
-    </p>
-    <button type="button"
-            class="btn btn-secondary"
-            onclick="history.back()">
-      Back
-    </button>
-  {% else %}
-    <p>Are you sure you want to delete the task type "{{ tasktype.name }}"?</p>
-    <form action="" method="post">
-      {% csrf_token %}
-      <button type="button"
-              class="btn btn-secondary"
-              onclick="history.back()">
-        Cancel
-      </button>
-      <input type="submit" value="Yes" class="btn btn-danger">
-    </form>
-  {% endif %}
+{% block deletion_info %}
+  <div class="section section-md pt-3">
+    <div class="container">
+      <div class="alert alert-danger">
+        {% if tasktype.tasks.exists %}
+          <p class="text-danger fw-bold">
+            Warning: You cannot delete this task type.
+            {{ tasktype.tasks.count }} task(s) use this type!
+          </p>
+        {% else %}
+          <p class="fw-bold">Are you sure you want to delete "{{ object }}"?</p>
+        {% endif %}
+        <form action="" method="post">
+          {% csrf_token %}
+          <button type="button"
+                  class="btn btn-secondary"
+                  onclick="history.back()">
+            Cancel
+          </button>
+          <input type="submit" value="Yes" class="btn btn-danger" {% if tasktype.tasks.exists %}disabled{% endif %}>
+        </form>
+      </div>
+    </div>
+  </div>
 {% endblock %}
