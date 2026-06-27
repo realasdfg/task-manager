@@ -5,7 +5,7 @@
   <main>
     <div class="section pb-2 bg-primary text-white header-list">
       <div class="container">
-        <h1>{% block list_title %}{% endblock %}</h1>
+        <h1>{% block list_title %}{% endblock %} ({{ object_list.count }})</h1>
         {% for message in messages %}
           <div class="alert alert-success">{{ message }}</div>
         {% endfor %}

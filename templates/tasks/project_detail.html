@@ -46,7 +46,7 @@
         <div class="alert alert-secondary">
           {{ project.description|default:"No description" }}
         </div>
-        <h3>Teams working on project</h3>
+        <h3>Teams working on project ({{ project.teams.count }})</h3>
         <table class="table">
           <thead class="table-dark">
           <tr>
@@ -71,7 +71,7 @@
           {% endfor %}
           </tbody>
         </table>
-        <h3>Tasks in this project</h3>
+        <h3>Tasks in this project ({{ project.tasks.count }})</h3>
         <table class="table">
           <thead class="table-dark">
           <tr>

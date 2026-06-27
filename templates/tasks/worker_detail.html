@@ -30,7 +30,7 @@
             No
           {% endif %}
         </div>
-        <h3>Member of teams</h3>
+        <h3>Member of teams ({{ worker.teams.count }})</h3>
         <table class="table table-striped">
           <thead class="table-dark">
           <tr>
@@ -53,12 +53,13 @@
           {% endfor %}
           </tbody>
         </table>
-        <h3>{{ worker.username }}'s tasks</h3>
+        <h3>{{ worker.username }}'s tasks ({{ worker.tasks.count }})</h3>
         <table class="table table-striped">
           <thead class="table-dark">
           <tr>
             <th scope="col" class="text-center">ID</th>
             <th scope="col">Name</th>
+            <th scope="col">Project</th>
             <th scope="col">Type</th>
             <th scope="col" class="text-center">Priority</th>
             <th scope="col">Deadline</th>
@@ -71,6 +72,15 @@
               <td><a href="{% url 'tasks:task-detail' task.id %}" class="text-decoration-underline">
                 {{ task.name }}
               </a></td>
+              <td>
+                {% if task.project %}
+                  <a href="{% url 'tasks:project-detail' task.project.id %}" class="text-decoration-underline">
+                    {{ task.project.name }}
+                  </a>
+                {% else %}
+                  -
+                {% endif %}
+              </td>
               <td><a href="{% url 'tasks:tasktype-detail' task.task_type.id %}" class="text-decoration-underline">
                 {{ task.task_type }}
               </a></td>

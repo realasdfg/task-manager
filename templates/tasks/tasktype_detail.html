@@ -20,15 +20,17 @@
     </div>
     <div class="section section-md pt-3">
       <div class="container">
-        <h3>Tasks</h3>
+        <h3>Tasks ({{ tasktype.tasks.count }})</h3>
         <table class="table table-striped">
           <thead class="table-dark">
           <tr>
             <th scope="col" class="text-center">ID</th>
             <th scope="col">Name</th>
+            <th scope="col">Project</th>
             <th scope="col">Type</th>
             <th scope="col" class="text-center">Priority</th>
             <th scope="col">Deadline</th>
+            <th scope="col" class="text-center">Assignees</th>
           </tr>
           </thead>
           <tbody>
@@ -38,6 +40,15 @@
               <td><a href="{% url 'tasks:task-detail' task.id %}" class="text-decoration-underline">
                 {{ task.name }}
               </a></td>
+              <td>
+                {% if task.project %}
+                  <a href="{% url 'tasks:project-detail' task.project.id %}" class="text-decoration-underline">
+                    {{ task.project.name }}
+                  </a>
+                {% else %}
+                  -
+                {% endif %}
+              </td>
               <td><a href="{% url 'tasks:tasktype-detail' task.task_type.id %}" class="text-decoration-underline">
                 {{ task.task_type }}
               </a></td>
@@ -47,6 +58,7 @@
                 </span>
               </td>
               <td>{{ task.deadline|default:"No" }}</td>
+              <td class="text-center">{{ task.assignees.count }}</td>
             </tr>
           {% empty %}
             <tr>
