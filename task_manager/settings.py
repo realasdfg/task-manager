@@ -138,3 +138,5 @@ ASSETS_ROOT = "/static/assets"
 AUTH_USER_MODEL = "tasks.Worker"
 
 LOGIN_REDIRECT_URL = "/"
+
+LOGOUT_REDIRECT_URL = "/accounts/login/"
