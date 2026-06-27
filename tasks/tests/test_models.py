@@ -19,6 +19,12 @@ class TestPosition(TestCase):
             name="Developer"
         )
 
+    def test_get_absolute_url(self):
+        self.assertEqual(
+            self.position.get_absolute_url(),
+            reverse("tasks:position-detail", kwargs={"pk": self.position.pk})
+        )
+
     def test_str(self):
         self.assertEqual(str(self.position), self.position.name)
 
@@ -35,6 +41,12 @@ class TestWorker(TestCase):
         self.worker.position = None
         self.worker.save()
         self.assertIsNone(self.worker.position)
+
+    def test_get_absolute_url(self):
+        self.assertEqual(
+            self.worker.get_absolute_url(),
+            reverse("tasks:worker-detail", kwargs={"pk": self.worker.pk})
+        )
 
     def test_str(self):
         self.assertEqual(
@@ -105,6 +117,12 @@ class TestTaskType(TestCase):
             name="Bug"
         )
 
+    def test_get_absolute_url(self):
+        self.assertEqual(
+            self.task_type.get_absolute_url(),
+            reverse("tasks:tasktype-detail", kwargs={"pk": self.task_type.pk})
+        )
+
     def test_str(self):
         self.assertEqual(str(self.task_type), self.task_type.name)
 
@@ -155,6 +173,11 @@ class TestTask(TestCase):
 
     def test_task_type_should_be_protected_on_delete(self):
         self.assertRaises(ProtectedError, self.task_type.delete)
+
+    def test_get_absolute_url(self):
+        self.assertEqual(
+            self.task.get_absolute_url(),
+            reverse("tasks:task-detail", kwargs={"pk": self.task.pk}))
 
     def test_str(self):
         self.assertEqual(str(self.task), self.task.name)
