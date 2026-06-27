@@ -6,7 +6,7 @@
       <div class="container d-flex justify-content-between">
         <h2>Task Type: {{ tasktype.name }}</h2>
         <div>
-          <a href="{% url 'tasks:tasktype-update' tasktype.id %}" class="btn btn-outline-primary">Edit</a>
+          <a href="{% url 'tasks:tasktype-update' tasktype.id %}" class="btn btn-outline-success">Edit</a>
           {% if tasktype.tasks.exists %}
             <span title="Cannot delete: used by existing tasks">
               <button class="btn btn-danger" disabled>Delete</button>
