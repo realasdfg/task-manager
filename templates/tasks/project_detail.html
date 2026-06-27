@@ -1,80 +1,102 @@
 {% extends "layouts/base.html" %}
 
 {% block content %}
-  <div class="d-flex justify-content-center align-items-center gap-3">
-    <h2>{{ project.name }}</h2>
-    <a href="{% url 'tasks:project-update' project.id %}" class="btn btn-outline-primary">Edit</a>
-    <a href="{% url 'tasks:project-delete' project.id %}" class="btn btn-danger">Delete</a>
-  </div>
-  <p><strong>Created:</strong> {{ project.created_at }} ({{ project.created_at|timesince }} ago)</p>
-  <p><strong>Deadline:</strong> {{ project.deadline }}
-    {% if is_overdue %}
-      (overdue)
-    {% else %}
-      ({{ project.deadline|timeuntil }} left)
-    {% endif %}
-  </p>
-  <form method="post" class="mb-3">
-    {% csrf_token %}
-    <strong>Completed:</strong>
-    <input type="hidden" name="is_completed" value="{{ project.is_completed|yesno:'false,true' }}">
-    {% if project.is_completed %}
-      ✅
-      <button type="submit" class="btn btn-success">Resume project</button>
-    {% else %}
-      ❌
-      <button type="submit" class="btn btn-danger">Close project</button>
-    {% endif %}
-  </form>
-  <p class="fw-semibold">{{ project.description }}</p>
-  <h3>Teams working on project</h3>
-  <table class="table table-striped">
-    <thead class="table-dark">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Name</th>
-      <th scope="col">Members</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for team in project.teams.all %}
-      <tr>
-        <th scope="row">{{ team.id }}</th>
-        <td><a href="{% url 'tasks:team-detail' team.id %}">{{ team.name }}</a></td>
-        <td>{{ team.members.count }}</td>
-      </tr>
-    {% empty %}
-      <tr>
-        <th colspan="100%" scope="row" class="text-center">There are no teams at this moment.</th>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-  <h3>Tasks in this project</h3>
-  <table class="table table-striped">
-    <thead class="table-dark">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Name</th>
-      <th scope="col">Type</th>
-      <th scope="col">Priority</th>
-      <th scope="col">Deadline</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for task in project.tasks.all %}
-      <tr class="{% if task.is_completed %}table-success{% endif %}">
-        <th scope="row">{{ task.id }}</th>
-        <td>{{ task.name }}</td>
-        <td><a href="{% url 'tasks:tasktype-detail' task.task_type.id %}">{{ task.task_type }}</a></td>
-        <td>{{ task.priority.title }}</td>
-        <td>{{ task.deadline }}</td>
-      </tr>
-    {% empty %}
-      <tr>
-        <th colspan="100%" scope="row" class="text-center">There are no tasks at this moment.</th>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-{% endblock %}
+  <main>
+    <div class="section pb-2 bg-primary text-white header-list">
+      <div class="container d-flex justify-content-between">
+        <h2>Project: {{ project.name }}</h2>
+        <div>
+          <a href="{% url 'tasks:project-update' project.id %}" class="btn btn-outline-success me-3">Edit</a>
+          <a href="{% url 'tasks:project-delete' project.id %}" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+    <div class="section section-md pt-3">
+      <div class="container">
+        <div class="alert alert-tertiary">
+          <strong>Created:</strong> {{ project.created_at }} ({{ project.created_at|timesince }} ago)
+          <br>
+          <strong>Deadline:</strong> {{ project.deadline }}
+          {% if is_overdue %}
+            (overdue)
+          {% else %}
+            ({{ project.deadline|timeuntil }} left)
+          {% endif %}
+        </div>
+        <div class="alert alert-tertiary">
+          <form method="post" class="d-flex align-items-center gap-2">
+            {% csrf_token %}
+            <strong>Completed:</strong>
+            <input type="hidden" name="is_completed" value="{{ project.is_completed|yesno:'false,true' }}">
+            {% if project.is_completed %}
+              <span class="icon-success"><span class="fas fa-check-circle"></span></span>
+              <button type="submit" class="btn btn-sm btn-outline-success">Resume project</button>
+            {% else %}
+              <span class="icon-danger"><span class="fas fa-times-circle"></span></span>
+              <button type="submit" class="btn btn-sm btn-outline-danger">Close project</button>
+            {% endif %}
+          </form>
+        </div>
+        <div class="alert alert-secondary">
+          {{ project.description }}
+        </div>
+        <h3>Teams working on project</h3>
+        <table class="table">
+          <thead class="table-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Members</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for team in project.teams.all %}
+            <tr>
+              <th scope="row">{{ team.id }}</th>
+              <td><a href="{% url 'tasks:team-detail' team.id %}" class="text-decoration-underline">
+                {{ team.name }}
+              </a></td>
+              <td>{{ team.members.count }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <th colspan="100%" scope="row" class="text-center">There are no teams at this moment.</th>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <h3>Tasks in this project</h3>
+        <table class="table">
+          <thead class="table-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Deadline</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for task in project.tasks.all %}
+            <tr class="{% if task.is_completed %}table-success{% endif %}">
+              <th scope="row">{{ task.id }}</th>
+              <td><a href="{% url 'tasks:task-detail' task.id %}" class="text-decoration-underline">
+                {{ task.name }}
+              </a></td>
+              <td><a href="{% url 'tasks:tasktype-detail' task.task_type.id %}" class="text-decoration-underline">
+                {{ task.task_type }}
+              </a></td>
+              <td>{{ task.priority.title }}</td>
+              <td>{{ task.deadline }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <th colspan="100%" scope="row" class="text-center">There are no tasks at this moment.</th>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+{% endblock content %}

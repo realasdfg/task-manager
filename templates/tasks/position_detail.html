@@ -1,33 +1,44 @@
 {% extends "layouts/base.html" %}
 
 {% block content %}
-  <div class="d-flex justify-content-center align-items-center gap-3">
-    <h2>{{ position.name }}</h2>
-    <a href="{% url 'tasks:position-update' position.id %}" class="btn btn-outline-primary">Edit</a>
-    <a href="{% url 'tasks:position-delete' position.id %}" class="btn btn-danger">Delete</a>
-  </div>
-  <p class="fw-semibold">{{ project.description }}</p>
-  <h3>Workers at this position</h3>
-  <table class="table table-striped">
-    <thead class="table-dark">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Username</th>
-      <th scope="col">Full Name</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for worker in position.workers.all %}
-      <tr>
-        <th scope="row">{{ worker.id }}</th>
-        <td><a href="{% url 'tasks:worker-detail' worker.id %}">{{ worker.username }}</a></td>
-        <td>{{ worker.first_name }} {{ worker.last_name }}</td>
-      </tr>
-    {% empty %}
-      <tr>
-        <th colspan="100%" scope="row" class="text-center">There are no workers at this moment.</th>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-{% endblock %}
+  <main>
+    <div class="section pb-2 bg-primary text-white header-list">
+      <div class="container d-flex justify-content-between">
+        <h2>Position: {{ position.name }}</h2>
+        <div>
+          <a href="{% url 'tasks:position-update' position.id %}" class="btn btn-outline-success me-3">Edit</a>
+          <a href="{% url 'tasks:position-delete' position.id %}" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+    <div class="section section-md pt-3">
+      <div class="container">
+        <h3>Workers at this position</h3>
+        <table class="table">
+          <thead class="table-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Full Name</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for worker in position.workers.all %}
+            <tr>
+              <th scope="row">{{ worker.id }}</th>
+              <td><a href="{% url 'tasks:worker-detail' worker.id %}" class="text-decoration-underline">
+                {{ worker.username }}
+              </a></td>
+              <td>{{ worker.first_name }} {{ worker.last_name }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <th colspan="100%" scope="row" class="text-center">There are no workers at this moment.</th>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+{% endblock content %}

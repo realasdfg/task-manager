@@ -1,43 +1,54 @@
 {% extends "layouts/base.html" %}
 
 {% block content %}
-  <div class="d-flex justify-content-center align-items-center gap-3">
-    <h2>{{ tasktype.name }}</h2>
-    <a href="{% url 'tasks:tasktype-update' tasktype.id %}" class="btn btn-outline-primary">Edit</a>
-    {% if tasktype.tasks.exists %}
-      <span title="Cannot delete: used by existing tasks">
-      <button class="btn btn-danger" disabled>Delete</button>
-      </span>
-    {% else %}
-      <a href="{% url 'tasks:tasktype-delete' tasktype.id %}" class="btn btn-danger">Delete</a>
-    {% endif %}
-  </div>
-  <p class="fw-semibold">{{ project.description }}</p>
-  <h3>Tasks</h3>
-  <table class="table table-striped">
-    <thead class="table-dark">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Name</th>
-      <th scope="col">Type</th>
-      <th scope="col">Priority</th>
-      <th scope="col">Deadline</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for task in tasktype.tasks.all %}
-      <tr class="{% if task.is_completed %}table-success{% endif %}">
-        <th scope="row">{{ task.id }}</th>
-        <td>{{ task.name }}</td>
-        <td><a href="{% url 'tasks:tasktype-detail' task.task_type.id %}">{{ task.task_type }}</a></td>
-        <td>{{ task.priority.title }}</td>
-        <td>{{ task.deadline }}</td>
-      </tr>
-    {% empty %}
-      <tr>
-        <th colspan="100%" scope="row" class="text-center">There are no tasks at this moment.</th>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
-{% endblock %}
+  <main>
+    <div class="section pb-2 bg-primary text-white header-list">
+      <div class="container d-flex justify-content-between">
+        <h2>Task Type: {{ tasktype.name }}</h2>
+        <div>
+          <a href="{% url 'tasks:tasktype-update' tasktype.id %}" class="btn btn-outline-primary">Edit</a>
+          {% if tasktype.tasks.exists %}
+            <span title="Cannot delete: used by existing tasks">
+              <button class="btn btn-danger" disabled>Delete</button>
+            </span>
+          {% else %}
+            <a href="{% url 'tasks:tasktype-delete' tasktype.id %}" class="btn btn-danger">Delete</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="section section-md pt-3">
+      <div class="container">
+        <h3>Tasks</h3>
+        <table class="table table-striped">
+          <thead class="table-dark">
+          <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Type</th>
+            <th scope="col">Priority</th>
+            <th scope="col">Deadline</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for task in tasktype.tasks.all %}
+            <tr class="{% if task.is_completed %}table-success{% endif %}">
+              <th scope="row">{{ task.id }}</th>
+              <td>{{ task.name }}</td>
+              <td><a href="{% url 'tasks:tasktype-detail' task.task_type.id %}" class="text-decoration-underline">
+                {{ task.task_type }}
+              </a></td>
+              <td>{{ task.priority.title }}</td>
+              <td>{{ task.deadline }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <th colspan="100%" scope="row" class="text-center">There are no tasks at this moment.</th>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+{% endblock content %}
