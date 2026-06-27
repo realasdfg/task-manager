@@ -1,4 +1,5 @@
 {% extends "layouts/base.html" %}
+{% load task_tags %}
 
 {% block content %}
   <main>
@@ -23,7 +24,10 @@
             ({{ task.deadline|timeuntil }} left)
           {% endif %}
           <br>
-          <strong>Priority:</strong> {{ task.priority.title }}
+          <strong>Priority:</strong>
+          <span class="badge {{ task.priority|priority_badge }}">
+            {{ task.get_priority_display }}
+          </span>
           <br>
           <strong>Task type:</strong>
           <a href="{% url 'tasks:tasktype-detail' task.task_type.id %}"
@@ -59,7 +63,7 @@
         <table class="table table-striped">
           <thead class="table-dark">
           <tr>
-            <th scope="col">ID</th>
+            <th scope="col" class="text-center">ID</th>
             <th scope="col">Username</th>
             <th scope="col">Full Name</th>
             <th scope="col">Position</th>
@@ -69,7 +73,7 @@
           <tbody>
           {% for assignee in task.assignees.all %}
             <tr>
-              <th scope="row">{{ assignee.id }}</th>
+              <th scope="row" class="text-center">{{ assignee.id }}</th>
               <td><a href="{% url 'tasks:worker-detail' assignee.id %}" class="text-decoration-underline">
                 {{ assignee.username }}
               </a></td>

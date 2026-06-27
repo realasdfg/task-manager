@@ -1,4 +1,5 @@
 {% extends "layouts/base.html" %}
+{% load task_tags %}
 
 {% block content %}
   <main>
@@ -23,24 +24,28 @@
         <table class="table table-striped">
           <thead class="table-dark">
           <tr>
-            <th scope="col">ID</th>
+            <th scope="col" class="text-center">ID</th>
             <th scope="col">Name</th>
             <th scope="col">Type</th>
-            <th scope="col">Priority</th>
+            <th scope="col" class="text-center">Priority</th>
             <th scope="col">Deadline</th>
           </tr>
           </thead>
           <tbody>
           {% for task in tasktype.tasks.all %}
             <tr class="{% if task.is_completed %}table-success{% endif %}">
-              <th scope="row">{{ task.id }}</th>
+              <th scope="row" class="text-center">{{ task.id }}</th>
               <td><a href="{% url 'tasks:task-detail' task.id %}" class="text-decoration-underline">
                 {{ task.name }}
               </a></td>
               <td><a href="{% url 'tasks:tasktype-detail' task.task_type.id %}" class="text-decoration-underline">
                 {{ task.task_type }}
               </a></td>
-              <td>{{ task.priority.title }}</td>
+              <td class="text-center">
+                <span class="badge {{ task.priority|priority_badge }}">
+                  {{ task.get_priority_display }}
+                </span>
+              </td>
               <td>{{ task.deadline }}</td>
             </tr>
           {% empty %}

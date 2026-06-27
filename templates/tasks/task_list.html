@@ -1,4 +1,5 @@
 {% extends "tasks/base_list.html" %}
+{% load task_tags %}
 
 {% block list_title %}Tasks{% endblock %}
 
@@ -7,19 +8,19 @@
 {% block create_title %}Create task{% endblock %}
 
 {% block table_headers %}
-  <th scope="col">ID</th>
+  <th scope="col" class="text-center">ID</th>
   <th scope="col">Name</th>
   <th scope="col">Project</th>
   <th scope="col">Type</th>
-  <th scope="col">Priority</th>
+  <th scope="col" class="text-center">Priority</th>
   <th scope="col">Deadline</th>
-  <th scope="col">Assignees</th>
+  <th scope="col" class="text-center">Assignees</th>
 {% endblock %}
 
 {% block table_rows %}
   {% for task in task_list %}
     <tr class="{% if task.is_completed %}table-success{% endif %}">
-      <th scope="row">{{ task.id }}</th>
+      <th scope="row" class="text-center">{{ task.id }}</th>
       <td><a href="{% url 'tasks:task-detail' task.id %}" class="text-decoration-underline">
         {{ task.name }}
       </a></td>
@@ -29,9 +30,13 @@
       <td><a href="{% url 'tasks:tasktype-detail' task.task_type.id %}" class="text-decoration-underline">
         {{ task.task_type }}
       </a></td>
-      <td>{{ task.priority.title }}</td>
+      <td class="text-center">
+        <span class="badge {{ task.priority|priority_badge }}">
+          {{ task.get_priority_display }}
+        </span>
+      </td>
       <td>{{ task.deadline }}</td>
-      <td>{{ task.assignees.count }}</td>
+      <td class="text-center">{{ task.assignees.count }}</td>
     </tr>
   {% empty %}
     <tr>

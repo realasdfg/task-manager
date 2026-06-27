@@ -7,17 +7,17 @@
 {% block create_title %}Add worker{% endblock %}
 
 {% block table_headers %}
-  <th scope="col">ID</th>
+  <th scope="col" class="text-center">ID</th>
   <th scope="col">Username</th>
   <th scope="col">Full Name</th>
   <th scope="col">Position</th>
-  <th scope="col">Tasks</th>
+  <th scope="col" class="text-center">Tasks</th>
 {% endblock %}
 
 {% block table_rows %}
   {% for worker in worker_list %}
     <tr>
-      <th scope="row">{{ worker.id }}</th>
+      <th scope="row" class="text-center">{{ worker.id }}</th>
       <td><a href="{% url 'tasks:worker-detail' worker.id %}" class="text-decoration-underline">
         {{ worker.username }}
       </a></td>
@@ -25,7 +25,7 @@
       <td><a href="{% url 'tasks:position-detail' worker.position.id %}" class="text-decoration-underline">
         {{ worker.position.name }}
       </a></td>
-      <td>{{ worker.tasks.count }}</td>
+      <td class="text-center">{{ worker.tasks.count }}</td>
     </tr>
   {% empty %}
     <tr>

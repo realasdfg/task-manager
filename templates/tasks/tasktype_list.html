@@ -7,19 +7,19 @@
 {% block create_title %}Add task type{% endblock %}
 
 {% block table_headers %}
-  <th scope="col">ID</th>
+  <th scope="col" class="text-center">ID</th>
   <th scope="col">Name</th>
-  <th scope="col">Tasks</th>
+  <th scope="col" class="text-center">Tasks</th>
 {% endblock %}
 
 {% block table_rows %}
   {% for task_type in tasktype_list %}
     <tr>
-      <th scope="row">{{ task_type.id }}</th>
+      <th scope="row" class="text-center">{{ task_type.id }}</th>
       <td><a href="{% url 'tasks:tasktype-detail' task_type.id %}" class="text-decoration-underline">
         {{ task_type.name }}
       </a></td>
-      <td>{{ task_type.tasks.count }}</td>
+      <td class="text-center">{{ task_type.tasks.count }}</td>
     </tr>
   {% empty %}
     <tr>

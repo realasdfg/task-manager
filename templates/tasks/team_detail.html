@@ -17,17 +17,17 @@
         <table class="table table-striped">
           <thead class="table-dark">
           <tr>
-            <th scope="col">ID</th>
+            <th scope="col" class="text-center">ID</th>
             <th scope="col">Username</th>
             <th scope="col">Full name</th>
             <th scope="col">Position</th>
-            <th scope="col">Tasks</th>
+            <th scope="col" class="text-center">Tasks</th>
           </tr>
           </thead>
           <tbody>
           {% for member in team.members.all %}
             <tr>
-              <th scope="row">{{ member.id }}</th>
+              <th scope="row" class="text-center">{{ member.id }}</th>
               <td><a href="{% url 'tasks:worker-detail' member.id %}" class="text-decoration-underline">
                 {{ member.username }}
               </a></td>
@@ -35,7 +35,7 @@
               <td><a href="{% url 'tasks:position-detail' member.position.id %}" class="text-decoration-underline">
                 {{ member.position.name }}
               </a></td>
-              <td>{{ member.tasks.count }}</td>
+              <td class="text-center">{{ member.tasks.count }}</td>
             </tr>
           {% empty %}
             <tr>

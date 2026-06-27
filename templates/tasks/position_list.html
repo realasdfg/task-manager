@@ -7,19 +7,19 @@
 {% block create_title %}Add position{% endblock %}
 
 {% block table_headers %}
-  <th scope="col">ID</th>
+  <th scope="col" class="text-center">ID</th>
   <th scope="col">Name</th>
-  <th scope="col">Workers</th>
+  <th scope="col" class="text-center">Workers</th>
 {% endblock %}
 
 {% block table_rows %}
   {% for position in position_list %}
     <tr>
-      <th scope="row">{{ position.id }}</th>
+      <th scope="row" class="text-center">{{ position.id }}</th>
       <td><a href="{% url 'tasks:position-detail' position.id %}" class="text-decoration-underline">
         {{ position.name }}
       </a></td>
-      <td>{{ position.workers.count }}</td>
+      <td class="text-center">{{ position.workers.count }}</td>
     </tr>
   {% empty %}
     <tr>

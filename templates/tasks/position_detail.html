@@ -17,7 +17,7 @@
         <table class="table">
           <thead class="table-dark">
           <tr>
-            <th scope="col">ID</th>
+            <th scope="col" class="text-center">ID</th>
             <th scope="col">Username</th>
             <th scope="col">Full Name</th>
           </tr>
@@ -25,7 +25,7 @@
           <tbody>
           {% for worker in position.workers.all %}
             <tr>
-              <th scope="row">{{ worker.id }}</th>
+              <th scope="row" class="text-center">{{ worker.id }}</th>
               <td><a href="{% url 'tasks:worker-detail' worker.id %}" class="text-decoration-underline">
                 {{ worker.username }}
               </a></td>
