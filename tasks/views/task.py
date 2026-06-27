@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -63,3 +64,7 @@ class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Task
     template_name = "tasks/base_confirm_delete.html"
     success_url = reverse_lazy("tasks:task-list")
+
+    def form_valid(self, form):
+        messages.success(self.request, f"Task '{self.object.name}' has been successfully deleted.")
+        return super().form_valid(form)

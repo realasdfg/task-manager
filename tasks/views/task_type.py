@@ -51,3 +51,7 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
         except ProtectedError:
             messages.error(request, "Cannot delete: used by existing tasks.")
             return redirect("tasks:tasktype-list")
+
+    def form_valid(self, form):
+        messages.success(self.request, f"Task type '{self.object.name}' has been successfully deleted.")
+        return super().form_valid(form)

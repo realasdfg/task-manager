@@ -6,6 +6,9 @@
     <div class="section pb-2 bg-primary text-white header-list">
       <div class="container">
         <h1>{% block list_title %}{% endblock %}</h1>
+        {% for message in messages %}
+          <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
       </div>
     </div>
     <div class="section section-md pt-3">

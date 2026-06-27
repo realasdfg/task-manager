@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -60,3 +61,7 @@ class ProjectUpdateView(
 class ProjectDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Project
     success_url = reverse_lazy("tasks:project-list")
+
+    def form_valid(self, form):
+        messages.success(self.request, f"Project '{self.object.name}' has been successfully deleted.")
+        return super().form_valid(form)

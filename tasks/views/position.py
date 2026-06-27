@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import generic
@@ -40,3 +41,7 @@ class PositionUpdateView(
 class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Position
     success_url = reverse_lazy("tasks:position-list")
+
+    def form_valid(self, form):
+        messages.success(self.request, f"Position '{self.object.name}' has been successfully deleted.")
+        return super().form_valid(form)
