@@ -4,14 +4,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import generic
 
-from task_manager.mixins import SearchMixin, AddObjectNameMixin
+from task_manager.mixins import SearchMixin, AddObjectNameMixin, SortMixin
 from tasks.forms import WorkerCreationForm, WorkerUpdateForm
 from tasks.mixins import PaginationMixin
 
 Worker = get_user_model()
 
 
-class WorkerListView(SearchMixin, LoginRequiredMixin, generic.ListView):
+class WorkerListView(
+    SortMixin,
+    SearchMixin,
+    LoginRequiredMixin,
+    generic.ListView
+):
     model = Worker
     queryset = (Worker.objects.all()
                 .select_related("position")
@@ -22,6 +27,17 @@ class WorkerListView(SearchMixin, LoginRequiredMixin, generic.ListView):
         "last_name": "Search by last name",
     }
     paginate_by = 10
+    sort_options = {
+        "username": "Username (A→Z)",
+        "-username": "Username (Z→A)",
+        "first_name": "Name (A→Z)",
+        "-first_name": "Name (Z→A)",
+        "last_name": "Surname (A→Z)",
+        "-last_name": "Surname (Z→A)",
+        "position__name": "Position (A→Z)",
+        "-position__name": "Position (Z→A)",
+    }
+    default_sort = "username"
 
 
 class WorkerDetailView(
