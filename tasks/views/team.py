@@ -50,6 +50,6 @@ class TeamDeleteView(LoginRequiredMixin, generic.DeleteView):
     def form_valid(self, form):
         messages.success(
             self.request,
-            f"Team '{self.object.name}' has been successfully deleted."
+            f"Team '{self.object}' has been successfully deleted."
         )
         return super().form_valid(form)

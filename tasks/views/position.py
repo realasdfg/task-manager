@@ -46,6 +46,6 @@ class PositionDeleteView(LoginRequiredMixin, generic.DeleteView):
     def form_valid(self, form):
         messages.success(
             self.request,
-            f"Position '{self.object.name}' has been successfully deleted."
+            f"Position '{self.object}' has been successfully deleted."
         )
         return super().form_valid(form)
