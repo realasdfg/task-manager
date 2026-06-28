@@ -3,16 +3,26 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.views import generic
 
-from task_manager.mixins import SearchMixin, AddObjectNameMixin
+from task_manager.mixins import SearchMixin, AddObjectNameMixin, SortMixin
 from tasks.forms import TeamForm
 from tasks.models import Team
 
 
-class TeamListView(SearchMixin, LoginRequiredMixin, generic.ListView):
+class TeamListView(
+    SortMixin,
+    SearchMixin,
+    LoginRequiredMixin,
+    generic.ListView
+):
     model = Team
     queryset = Team.objects.all().prefetch_related("members")
     search_fields = {"name": "Search by name"}
     paginate_by = 10
+    sort_options = {
+        "name": "Name (A→Z)",
+        "-name": "Name (Z→A)",
+    }
+    default_sort = "name"
 
 
 class TeamDetailView(LoginRequiredMixin, generic.DetailView):

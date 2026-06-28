@@ -5,16 +5,26 @@ from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from task_manager.mixins import SearchMixin, AddObjectNameMixin
+from task_manager.mixins import SearchMixin, AddObjectNameMixin, SortMixin
 from tasks.mixins import PaginationMixin
 from tasks.models import TaskType
 
 
-class TaskTypeListView(SearchMixin, LoginRequiredMixin, generic.ListView):
+class TaskTypeListView(
+    SortMixin,
+    SearchMixin,
+    LoginRequiredMixin,
+    generic.ListView
+):
     model = TaskType
     queryset = TaskType.objects.all().prefetch_related("tasks")
     search_fields = {"name": "Search by name"}
     paginate_by = 10
+    sort_options = {
+        "name": "Name (A→Z)",
+        "-name": "Name (Z→A)",
+    }
+    default_sort = "name"
 
 
 class TaskTypeDetailView(

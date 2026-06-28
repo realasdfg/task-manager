@@ -7,7 +7,7 @@
     {% endfor %}
 
     <label>
-      <select class="form-select" name="sort" onchange="this.form.submit()">
+      <select class="form-select" name="sort" onchange="this.form.submit()" style="min-width: 140px">
         {% for value, label in sort_options.items %}
           <option value="{{ value }}" {% if value == current_sort %}selected{% endif %}>
             {{ label }}
