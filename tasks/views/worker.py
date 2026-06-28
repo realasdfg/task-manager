@@ -67,5 +67,8 @@ class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("tasks:worker-list")
 
     def form_valid(self, form):
-        messages.success(self.request, f"Worker '{self.object.name}' has been successfully deleted.")
+        messages.success(
+            self.request,
+            f"Worker '{self.object.name}' has been successfully deleted."
+        )
         return super().form_valid(form)

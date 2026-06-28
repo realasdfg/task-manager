@@ -75,5 +75,8 @@ class ProjectDeleteView(LoginRequiredMixin, generic.DeleteView):
     success_url = reverse_lazy("tasks:project-list")
 
     def form_valid(self, form):
-        messages.success(self.request, f"Project '{self.object.name}' has been successfully deleted.")
+        messages.success(
+            self.request,
+            f"Project '{self.object.name}' has been successfully deleted."
+        )
         return super().form_valid(form)

@@ -68,5 +68,8 @@ class TaskTypeDeleteView(LoginRequiredMixin, generic.DeleteView):
             return redirect("tasks:tasktype-list")
 
     def form_valid(self, form):
-        messages.success(self.request, f"Task type '{self.object.name}' has been successfully deleted.")
+        messages.success(
+            self.request,
+            f"Task type '{self.object.name}' has been successfully deleted."
+        )
         return super().form_valid(form)
