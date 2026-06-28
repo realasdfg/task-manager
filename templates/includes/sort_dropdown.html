@@ -1,0 +1,19 @@
+{% if sort_options %}
+  <form method="get">
+    {% for key, value in request.GET.items %}
+      {% if key != "sort" and key != "page" %}
+        <input type="hidden" name="{{ key }}" value="{{ value }}">
+      {% endif %}
+    {% endfor %}
+
+    <label>
+      <select class="form-select" name="sort" onchange="this.form.submit()">
+        {% for value, label in sort_options.items %}
+          <option value="{{ value }}" {% if value == current_sort %}selected{% endif %}>
+            {{ label }}
+          </option>
+        {% endfor %}
+      </select>
+    </label>
+  </form>
+{% endif %}

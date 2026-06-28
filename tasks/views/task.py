@@ -5,18 +5,34 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views import generic
 
-from task_manager.mixins import SearchMixin, AddObjectNameMixin
+from task_manager.mixins import SearchMixin, AddObjectNameMixin, SortMixin
 from tasks.forms import TaskCompleteForm, TaskForm
 from tasks.models import Task
 
 
-class TaskListView(SearchMixin, LoginRequiredMixin, generic.ListView):
+class TaskListView(
+    SortMixin,
+    SearchMixin,
+    LoginRequiredMixin,
+    generic.ListView
+):
     model = Task
     queryset = (Task.objects.all()
                 .prefetch_related("assignees")
                 .select_related("task_type", "project"))
     search_fields = {"name": "Search by name"}
     paginate_by = 10
+    sort_options = {
+        "name": "Name (A→Z)",
+        "-name": "Name (Z→A)",
+        "deadline": "Deadline (earliest)",
+        "-deadline": "Deadline (latest)",
+        "created_at": "Creation (earliest)",
+        "-created_at": "Creation (latest)",
+        "-is_completed": "Completed first",
+        "is_completed": "Uncompleted first",
+    }
+    default_sort = "-created_at"
 
 
 class TaskDetailView(LoginRequiredMixin, generic.DetailView):

@@ -39,6 +39,31 @@ class SearchMixin:
         return queryset
 
 
+class SortMixin:
+    sort_options = {}
+    default_sort = ""
+
+    def get_sort_options(self):
+        return self.sort_options
+
+    def get_current_sort(self):
+        sort = self.request.GET.get("sort", self.default_sort)
+        return sort if sort in self.get_sort_options() else self.default_sort
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        sort = self.get_current_sort()
+        if sort:
+            queryset = queryset.order_by(sort)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["sort_options"] = self.get_sort_options()
+        context["current_sort"] = self.get_current_sort()
+        return context
+
+
 class AddObjectNameMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
