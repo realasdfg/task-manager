@@ -5,7 +5,11 @@
   <main>
     <div class="section pb-2 bg-primary text-white header-list">
       <div class="container d-flex justify-content-between">
-        <h2>{{ object|yesno:"Update,Create" }} {{ object_name|capfirst }} {% if object %}"{{ object }}"{% endif %}</h2>
+        <h2>
+          {% block form_header %}
+            {{ object|yesno:"Update,Create" }} {{ object_name|capfirst }} {% if object %}"{{ object }}"{% endif %}
+          {% endblock %}
+        </h2>
       </div>
     </div>
     <div class="section section-md pt-3">
