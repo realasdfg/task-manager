@@ -13,7 +13,7 @@ Worker = get_user_model()
 class TestProjectListView(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.worker = Worker.objects.create_user(
+        cls.user = Worker.objects.create_user(
             username="test_user",
             password="qwerty",
         )
@@ -33,7 +33,7 @@ class TestProjectListView(TestCase):
         response = self.client.get(reverse("tasks:project-list"))
 
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(self.worker == response.context["user"])
+        self.assertTrue(self.user == response.context["user"])
         self.assertTemplateUsed(response, "tasks/project_list.html")
 
     def test_search_works(self):
@@ -72,7 +72,7 @@ class TestProjectListView(TestCase):
 class TestProjectDetailView(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.worker = Worker.objects.create_user(
+        cls.user = Worker.objects.create_user(
             username="test_user",
             password="qwerty",
         )
@@ -112,7 +112,7 @@ class TestProjectDetailView(TestCase):
         response = self.client.get(self.project.get_absolute_url())
 
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(self.worker == response.context["user"])
+        self.assertTrue(self.user == response.context["user"])
         self.assertTemplateUsed(response, "tasks/project_detail.html")
 
     def test_response_contains_teams(self):

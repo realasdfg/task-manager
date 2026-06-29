@@ -10,7 +10,7 @@ Worker = get_user_model()
 class TestPositionListView(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.worker = Worker.objects.create_user(
+        cls.user = Worker.objects.create_user(
             username="test_user",
             password="qwerty",
         )
@@ -27,7 +27,7 @@ class TestPositionListView(TestCase):
         response = self.client.get(reverse("tasks:position-list"))
 
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(self.worker == response.context["user"])
+        self.assertTrue(self.user == response.context["user"])
         self.assertTemplateUsed(response, "tasks/position_list.html")
 
     def test_search_works(self):
@@ -55,7 +55,7 @@ class TestPositionListView(TestCase):
 class TestPositionDetailView(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.worker = Worker.objects.create_user(
+        cls.user = Worker.objects.create_user(
             username="test_user",
             password="qwerty",
         )
@@ -82,7 +82,7 @@ class TestPositionDetailView(TestCase):
         response = self.client.get(self.position.get_absolute_url())
 
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(self.worker == response.context["user"])
+        self.assertTrue(self.user == response.context["user"])
         self.assertTemplateUsed(response, "tasks/position_detail.html")
 
     def test_response_contains_workers(self):

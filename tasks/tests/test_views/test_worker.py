@@ -10,7 +10,7 @@ Worker = get_user_model()
 class TestWorkerListView(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.worker = Worker.objects.create_user(
+        cls.user = Worker.objects.create_user(
             username="test_user",
             password="qwerty",
         )
@@ -36,7 +36,7 @@ class TestWorkerListView(TestCase):
         response = self.client.get(reverse("tasks:worker-list"))
 
         self.assertEqual(response.status_code, 200)
-        self.assertTrue(self.worker == response.context["user"])
+        self.assertTrue(self.user == response.context["user"])
         self.assertTemplateUsed(response, "tasks/worker_list.html")
 
     def test_search_works(self):
@@ -57,7 +57,7 @@ class TestWorkerListView(TestCase):
         )
         self.assertListEqual(
             [
-                self.worker,
+                self.user,
                 self.worker_lena,
                 self.worker_billy,
                 self.worker_big
