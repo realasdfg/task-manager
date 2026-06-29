@@ -333,3 +333,51 @@ class TestProjectUpdateView(TestCase):
         )
         response = self.client.get(url)
         self.assertEqual(response.context["object_name"], "project")
+
+
+class TestProjectDeleteView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = Worker.objects.create_user(
+            username="test_user",
+            password="qwerty",
+        )
+        cls.url = reverse(
+            "tasks:project-delete",
+            kwargs={"pk": 1}
+        )
+
+    def setUp(self):
+        self.project = Project.objects.create(name="Test Project")
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url)
+        self.assertRedirects(
+            response,
+            f"/accounts/login/?next=/projects/{self.project.id}/delete/"
+        )
+
+    def test_logged_in_uses_correct_template(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user == response.context["user"])
+        self.assertTemplateUsed(response, "tasks/project_confirm_delete.html")
+
+    def test_delete_project(self):
+        self.client.login(username="test_user", password="qwerty")
+        self.client.post(self.url)
+        self.assertEqual(len(Project.objects.all()), 0)
+
+    def test_delete_project_redirect(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.post(self.url)
+        self.assertRedirects(response, reverse("tasks:project-list"))
+
+    def test_success_message_after_deletion(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.post(self.url, follow=True)
+        messages = list(response.context["messages"])
+        self.assertEqual(len(messages), 1)
+        self.assertIn(self.project.name, str(messages[0]))

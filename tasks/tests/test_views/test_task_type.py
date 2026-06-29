@@ -256,3 +256,62 @@ class TestTaskTypeUpdateView(TestCase):
         )
         response = self.client.get(url)
         self.assertEqual(response.context["object_name"], "task type")
+
+
+class TestTaskTypeDeleteView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = Worker.objects.create_user(
+            username="test_user",
+            password="qwerty",
+        )
+        cls.url = reverse(
+            "tasks:tasktype-delete",
+            kwargs={"pk": 1}
+        )
+
+    def setUp(self):
+        self.task_type = TaskType.objects.create(
+            name="Test TaskType",
+        )
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.url)
+        self.assertRedirects(
+            response,
+            f"/accounts/login/?next=/task-types/{self.task_type.id}/delete/"
+        )
+
+    def test_logged_in_uses_correct_template(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(self.url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user == response.context["user"])
+        self.assertTemplateUsed(
+            response,
+            "tasks/tasktype_confirm_delete.html"
+        )
+
+    def test_delete_task_type(self):
+        self.client.login(username="test_user", password="qwerty")
+        self.client.post(self.url)
+        self.assertEqual(len(TaskType.objects.all()), 0)
+
+    def test_cannot_delete_task_type_when_tasks_exist(self):
+        Task.objects.create(name="Test Task", task_type=self.task_type)
+        self.client.login(username="test_user", password="qwerty")
+        self.client.post(self.url)
+        self.assertEqual(len(TaskType.objects.all()), 1)
+
+    def test_delete_task_type_redirect(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.post(self.url)
+        self.assertRedirects(response, reverse("tasks:tasktype-list"))
+
+    def test_success_message_after_deletion(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.post(self.url, follow=True)
+        messages = list(response.context["messages"])
+        self.assertEqual(len(messages), 1)
+        self.assertIn(self.task_type.name, str(messages[0]))
