@@ -12,7 +12,7 @@ from task_manager.mixins import (
     FilterMixin
 )
 from tasks.forms import ProjectForm, ProjectCompleteForm
-from tasks.mixins import PaginationMixin, TaskPaginationMixin
+from tasks.mixins import TaskPaginationMixin
 from tasks.models import Project
 
 

@@ -6,7 +6,7 @@ from django.views import generic
 
 from task_manager.mixins import SearchMixin, AddObjectNameMixin, SortMixin
 from tasks.forms import WorkerCreationForm, WorkerUpdateForm
-from tasks.mixins import PaginationMixin, TaskPaginationMixin
+from tasks.mixins import TaskPaginationMixin
 
 Worker = get_user_model()
 
