@@ -50,7 +50,7 @@
         <table class="table">
           <thead class="table-dark">
           <tr>
-            <th scope="col" class="text-center">ID</th>
+            <th scope="col" class="text-center w-0">ID</th>
             <th scope="col">Name</th>
             <th scope="col" class="text-center">Members</th>
           </tr>
@@ -59,9 +59,11 @@
           {% for team in project.teams.all %}
             <tr>
               <th scope="row" class="text-center">{{ team.id }}</th>
-              <td><a href="{% url 'tasks:team-detail' team.id %}" class="text-decoration-underline">
-                {{ team.name }}
-              </a></td>
+              <td>
+                <a href="{% url 'tasks:team-detail' team.id %}" class="text-decoration-underline">
+                  {{ team.name }}
+                </a>
+              </td>
               <td class="text-center">{{ team.members.count }}</td>
             </tr>
           {% empty %}
@@ -76,7 +78,7 @@
         <table class="table">
           <thead class="table-dark">
           <tr>
-            <th scope="col" class="text-center">ID</th>
+            <th scope="col" class="text-center w-0">ID</th>
             <th scope="col">Name</th>
             <th scope="col">Type</th>
             <th scope="col" class="text-center">Priority</th>

@@ -5,3 +5,7 @@ body {
 .header-list {
     padding-top: 110px;
 }
+
+.w-0 {
+    width: 0;
+}

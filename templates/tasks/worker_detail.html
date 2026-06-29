@@ -34,7 +34,7 @@
           {% endif %}
         </div>
         <h3>Member of teams ({{ worker.teams.count }})</h3>
-        <table class="table table-striped">
+        <table class="table">
           <thead class="table-dark">
           <tr>
             <th scope="col" class="text-center">ID</th>
@@ -58,7 +58,7 @@
         </table>
         <h3>{{ worker.username }}'s tasks ({{ tasks_count }})</h3>
         {% include "includes/tasks_filter.html" %}
-        <table class="table table-striped">
+        <table class="table">
           <thead class="table-dark">
           <tr>
             <th scope="col" class="text-center">ID</th>
