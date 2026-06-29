@@ -168,7 +168,7 @@ class TestTaskDetailView(TestCase):
         self.assertRedirects(response, self.task.get_absolute_url())
 
 
-class TestProjectCreateView(TestCase):
+class TestTaskCreateView(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = Worker.objects.create_user(
