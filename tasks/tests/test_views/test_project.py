@@ -1,8 +1,11 @@
+from datetime import timedelta
+
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
+from django.utils import timezone
 
-from tasks.models import Project
+from tasks.models import Project, Task, TaskType, Team
 
 Worker = get_user_model()
 
@@ -64,3 +67,112 @@ class TestProjectListView(TestCase):
             [self.proj_impl1],
             list(response.context["object_list"])
         )
+
+
+class TestProjectDetailView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.worker = Worker.objects.create_user(
+            username="test_user",
+            password="qwerty",
+        )
+
+        cls.project_teams = []
+        cls.project_tasks = []
+        task_type = TaskType.objects.create(name="task type")
+        for i in range(3):
+            cls.project_teams.append(
+                Team.objects.create(
+                    name=f"team_{i}",
+                )
+            )
+            cls.project_tasks.append(
+                Task.objects.create(
+                    name=f"task_{i}",
+                    task_type=task_type,
+                )
+            )
+
+    def setUp(self):
+        self.project = Project.objects.create(
+            name="Implement smth",
+        )
+        self.project.tasks.add(*self.project_tasks)
+        self.project.teams.add(*self.project_teams)
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(self.project.get_absolute_url())
+        self.assertRedirects(
+            response,
+            f"/accounts/login/?next=/projects/{self.project.id}/"
+        )
+
+    def test_logged_in_uses_correct_template(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(self.project.get_absolute_url())
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.worker == response.context["user"])
+        self.assertTemplateUsed(response, "tasks/project_detail.html")
+
+    def test_response_contains_teams(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(self.project.get_absolute_url())
+
+        self.assertContains(response, self.project_teams[0].name)
+        self.assertContains(response, self.project_teams[1].name)
+        self.assertContains(response, self.project_teams[2].name)
+
+    def test_response_contains_tasks(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(self.project.get_absolute_url())
+
+        self.assertContains(response, self.project_tasks[0].name)
+        self.assertContains(response, self.project_tasks[1].name)
+        self.assertContains(response, self.project_tasks[2].name)
+
+    def test_is_overdue_true_when_deadline_in_past(self):
+        self.client.login(username="test_user", password="qwerty")
+
+        self.project.deadline = timezone.now() - timedelta(days=1)
+        self.project.save()
+        response = self.client.get(self.project.get_absolute_url())
+        self.assertTrue(response.context["is_overdue"])
+
+    def test_is_overdue_false_when_deadline_in_future(self):
+        self.client.login(username="test_user", password="qwerty")
+
+        self.project.deadline = timezone.now() + timedelta(days=1)
+        self.project.save()
+        response = self.client.get(self.project.get_absolute_url())
+        self.assertFalse(response.context["is_overdue"])
+
+    def test_is_overdue_false_when_no_deadline(self):
+        self.client.login(username="test_user", password="qwerty")
+
+        self.project.deadline = None
+        self.project.save()
+        response = self.client.get(self.project.get_absolute_url())
+        self.assertFalse(response.context["is_overdue"])
+
+    def test_post_valid_form_saves_and_redirects(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.post(
+            self.project.get_absolute_url(),
+            data={"is_completed": True},
+        )
+        self.assertRedirects(response, self.project.get_absolute_url())
+        self.project.refresh_from_db()
+        self.assertTrue(self.project.is_completed)
+
+    def test_post_invalid_form_still_redirects(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.post(
+            self.project.get_absolute_url()
+        )
+        self.assertRedirects(response, self.project.get_absolute_url())
+
+    def test_context_contains_tasks(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(self.project.get_absolute_url())
+        self.assertIn("tasks", response.context)
