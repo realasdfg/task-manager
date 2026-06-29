@@ -1,0 +1,27 @@
+{% load task_tags %}
+
+{% if filter_fields %}
+  <form method="get">
+    {% for key, value in request.GET.items %}
+      {% if key not in filter_fields and key != "page" %}
+        <input type="hidden" name="{{ key }}" value="{{ value }}">
+      {% endif %}
+    {% endfor %}
+
+    {% for param, field_options in filter_fields.items %}
+      {% with field=field_options.0 options=field_options.1 %}
+        <label>
+          <select class="form-select" name="{{ param }}" onchange="this.form.submit()" style="min-width: 140px;">
+            <option value="">— All —</option>
+            {% for option_value, _ in options.items %}
+              <option value="{{ option_value }}"
+                      {% if active_filters|get_item:param == option_value %}selected{% endif %}>
+                {{ option_value|capfirst }}
+              </option>
+            {% endfor %}
+          </select>
+        </label>
+      {% endwith %}
+    {% endfor %}
+  </form>
+{% endif %}

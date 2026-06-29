@@ -64,6 +64,35 @@ class SortMixin:
         return context
 
 
+class FilterMixin:
+    filter_fields = {}  # {"url_param": ("field", {"option": value})}
+
+    def get_filter_fields(self):
+        return self.filter_fields
+
+    def get_active_filters(self):
+        active = {}
+        for param, (field, options) in self.get_filter_fields().items():
+            value = self.request.GET.get(param)
+            if value in options:
+                active[param] = value
+        return active
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        for param, (field, options) in self.get_filter_fields().items():
+            value = self.request.GET.get(param)
+            if value in options:
+                queryset = queryset.filter(**{field: options[value]})
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["filter_fields"] = self.get_filter_fields()
+        context["active_filters"] = self.get_active_filters()
+        return context
+
+
 class AddObjectNameMixin:
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

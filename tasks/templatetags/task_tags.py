@@ -29,3 +29,8 @@ def page_query(request, page_param, page_number):
     updated = request.GET.copy()
     updated[page_param] = page_number
     return updated.urlencode()
+
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
