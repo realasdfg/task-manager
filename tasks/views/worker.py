@@ -53,7 +53,7 @@ class WorkerDetailView(
     page_kwarg = "tasks_page"
     pagination_context_name = "tasks"
 
-    SORT_OPTIONS = {
+    TASKS_SORT_OPTIONS = {
         "name": "Name (A→Z)",
         "-name": "Name (Z→A)",
         "deadline": "Deadline (earliest)",
@@ -62,7 +62,7 @@ class WorkerDetailView(
         "-created_at": "Creation (latest)",
     }
 
-    FILTER_OPTIONS = {
+    TASKS_FILTER_OPTIONS = {
         "completed": True,
         "uncompleted": False,
     }
@@ -70,25 +70,25 @@ class WorkerDetailView(
     def get_pagination_queryset(self):
         queryset = self.object.tasks.select_related("task_type", "project")
 
-        # filter
+        # filter tasks
         status = self.request.GET.get("status")
-        if status in self.FILTER_OPTIONS:
+        if status in self.TASKS_FILTER_OPTIONS:
             queryset = queryset.filter(
-                is_completed=self.FILTER_OPTIONS[status]
+                is_completed=self.TASKS_FILTER_OPTIONS[status]
             )
 
-        # sort
+        # sort tasks
         sort = self.request.GET.get("sort", "-created_at")
-        if sort in self.SORT_OPTIONS:
+        if sort in self.TASKS_SORT_OPTIONS:
             queryset = queryset.order_by(sort)
 
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["sort_options"] = self.SORT_OPTIONS
+        context["sort_options"] = self.TASKS_SORT_OPTIONS
         context["current_sort"] = self.request.GET.get("sort", "-created_at")
-        context["filter_options"] = self.FILTER_OPTIONS
+        context["filter_options"] = self.TASKS_FILTER_OPTIONS
         context["current_status"] = self.request.GET.get("status", "")
         return context
 
