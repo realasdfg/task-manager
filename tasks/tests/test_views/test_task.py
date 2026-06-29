@@ -166,3 +166,82 @@ class TestTaskDetailView(TestCase):
             self.task.get_absolute_url()
         )
         self.assertRedirects(response, self.task.get_absolute_url())
+
+
+class TestProjectCreateView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = Worker.objects.create_user(
+            username="test_user",
+            password="qwerty",
+        )
+        cls.task_type = TaskType.objects.create(name="task type")
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(reverse("tasks:task-create"))
+        self.assertRedirects(
+            response,
+            "/accounts/login/?next=/tasks/create/"
+        )
+
+    def test_logged_in_uses_correct_template(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(reverse("tasks:task-create"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user == response.context["user"])
+        self.assertTemplateUsed(response, "tasks/base_form.html")
+
+    def test_create_task(self):
+        self.client.login(username="test_user", password="qwerty")
+        form_data = {
+            "name": "Test Task",
+            "task_type": self.task_type.id,
+            "priority": "medium",
+        }
+
+        self.client.post(reverse("tasks:task-create"), form_data)
+        self.assertTrue(
+            Task.objects.filter(name="Test Task").exists()
+        )
+
+    def test_create_task_redirect(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.post(
+            reverse("tasks:task-create"),
+            {
+                "name": "Test Task",
+                "task_type": self.task_type.id,
+                "priority": "medium",
+            }
+        )
+        self.assertRedirects(
+            response,
+            reverse(
+                "tasks:task-detail",
+                kwargs={"pk": 1}
+            )
+        )
+
+    def test_create_task_invalid_data(self):
+        self.client.login(username="test_user", password="qwerty")
+
+        response = self.client.post(
+            reverse("tasks:task-create"),
+            {
+                "name": "Test Task",
+                "priority": "medium",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response.context["form"],
+            "task_type",
+            "This field is required."
+        )
+
+    def test_context_has_object_name(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(reverse("tasks:task-create"))
+        self.assertEqual(response.context["object_name"], "task")

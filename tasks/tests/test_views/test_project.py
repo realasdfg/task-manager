@@ -176,3 +176,74 @@ class TestProjectDetailView(TestCase):
         self.client.login(username="test_user", password="qwerty")
         response = self.client.get(self.project.get_absolute_url())
         self.assertIn("tasks", response.context)
+
+
+class TestProjectCreateView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = Worker.objects.create_user(
+            username="test_user",
+            password="qwerty",
+        )
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(reverse("tasks:project-create"))
+        self.assertRedirects(
+            response,
+            "/accounts/login/?next=/projects/create/"
+        )
+
+    def test_logged_in_uses_correct_template(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(reverse("tasks:project-create"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user == response.context["user"])
+        self.assertTemplateUsed(response, "tasks/base_form.html")
+
+    def test_create_project(self):
+        self.client.login(username="test_user", password="qwerty")
+        form_data = {
+            "name": "Test Project",
+        }
+
+        self.client.post(reverse("tasks:project-create"), form_data)
+        self.assertTrue(
+            Project.objects.filter(name="Test Project").exists()
+        )
+
+    def test_create_project_redirect(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.post(
+            reverse("tasks:project-create"),
+            {
+                "name": "Test Project",
+            },
+        )
+        self.assertRedirects(
+            response,
+            reverse(
+                "tasks:project-detail",
+                kwargs={"pk": 1}
+            )
+        )
+
+    def test_create_project_invalid_data(self):
+        self.client.login(username="test_user", password="qwerty")
+
+        response = self.client.post(
+            reverse("tasks:project-create"),
+            {},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response.context["form"],
+            "name",
+            "This field is required."
+        )
+
+    def test_context_has_object_name(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(reverse("tasks:project-create"))
+        self.assertEqual(response.context["object_name"], "project")

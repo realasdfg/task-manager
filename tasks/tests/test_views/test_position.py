@@ -92,3 +92,74 @@ class TestPositionDetailView(TestCase):
         self.assertContains(response, self.position_workers[0].username)
         self.assertContains(response, self.position_workers[1].username)
         self.assertContains(response, self.position_workers[2].username)
+
+
+class TestPositionCreateView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = Worker.objects.create_user(
+            username="test_user",
+            password="qwerty",
+        )
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(reverse("tasks:position-create"))
+        self.assertRedirects(
+            response,
+            "/accounts/login/?next=/positions/create/"
+        )
+
+    def test_logged_in_uses_correct_template(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(reverse("tasks:position-create"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user == response.context["user"])
+        self.assertTemplateUsed(response, "tasks/base_form.html")
+
+    def test_create_position(self):
+        self.client.login(username="test_user", password="qwerty")
+        form_data = {
+            "name": "Test Position",
+        }
+
+        self.client.post(reverse("tasks:position-create"), form_data)
+        self.assertTrue(
+            Position.objects.filter(name="Test Position").exists()
+        )
+
+    def test_create_position_redirect(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.post(
+            reverse("tasks:position-create"),
+            {
+                "name": "Test Position",
+            },
+        )
+        self.assertRedirects(
+            response,
+            reverse(
+                "tasks:position-detail",
+                kwargs={"pk": 1}
+            )
+        )
+
+    def test_create_position_invalid_data(self):
+        self.client.login(username="test_user", password="qwerty")
+
+        response = self.client.post(
+            reverse("tasks:position-create"),
+            {},
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response.context["form"],
+            "name",
+            "This field is required."
+        )
+
+    def test_context_has_object_name(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(reverse("tasks:position-create"))
+        self.assertEqual(response.context["object_name"], "position")

@@ -92,3 +92,74 @@ class TestTeamDetailView(TestCase):
         self.assertContains(response, self.team_members[0].username)
         self.assertContains(response, self.team_members[1].username)
         self.assertContains(response, self.team_members[2].username)
+
+
+class TestTeamCreateView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = Worker.objects.create_user(
+            username="test_user",
+            password="qwerty",
+        )
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(reverse("tasks:team-create"))
+        self.assertRedirects(
+            response,
+            "/accounts/login/?next=/teams/create/"
+        )
+
+    def test_logged_in_uses_correct_template(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(reverse("tasks:team-create"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user == response.context["user"])
+        self.assertTemplateUsed(response, "tasks/base_form.html")
+
+    def test_create_team(self):
+        self.client.login(username="test_user", password="qwerty")
+        form_data = {
+            "name": "Test Team",
+        }
+
+        self.client.post(reverse("tasks:team-create"), form_data)
+        self.assertTrue(
+            Team.objects.filter(name="Test Team").exists()
+        )
+
+    def test_create_team_redirect(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.post(
+            reverse("tasks:team-create"),
+            {
+                "name": "Test Team",
+            }
+        )
+        self.assertRedirects(
+            response,
+            reverse(
+                "tasks:team-detail",
+                kwargs={"pk": 1}
+            )
+        )
+
+    def test_create_team_invalid_data(self):
+        self.client.login(username="test_user", password="qwerty")
+
+        response = self.client.post(
+            reverse("tasks:team-create"),
+            {}
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response.context["form"],
+            "name",
+            "This field is required."
+        )
+
+    def test_context_has_object_name(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(reverse("tasks:team-create"))
+        self.assertEqual(response.context["object_name"], "team")

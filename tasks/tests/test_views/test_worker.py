@@ -133,3 +133,82 @@ class TestWorkerDetailView(TestCase):
         self.client.login(username="test_user", password="qwerty")
         response = self.client.get(self.worker.get_absolute_url())
         self.assertIn("tasks", response.context)
+
+
+class TestWorkerCreateView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = Worker.objects.create_user(
+            username="test_user",
+            password="qwerty",
+        )
+
+    def test_redirect_if_not_logged_in(self):
+        response = self.client.get(reverse("tasks:worker-create"))
+        self.assertRedirects(
+            response,
+            "/accounts/login/?next=/workers/create/"
+        )
+
+    def test_logged_in_uses_correct_template(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(reverse("tasks:worker-create"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user == response.context["user"])
+        self.assertTemplateUsed(response, "tasks/base_form.html")
+
+    def test_create_worker(self):
+        self.client.login(username="test_user", password="qwerty")
+        form_data = {
+            "username": "TestWorker",
+            "password1": "azSX1234A",
+            "password2": "azSX1234A",
+        }
+
+        self.client.post(reverse("tasks:worker-create"), form_data)
+        self.assertTrue(
+            Worker.objects.filter(username="TestWorker").exists()
+        )
+
+    def test_create_worker_redirect(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.post(
+            reverse("tasks:worker-create"),
+            {
+                "username": "TestWorker",
+                "password1": "azSX1234A",
+                "password2": "azSX1234A",
+            }
+        )
+        self.assertRedirects(
+            response,
+            reverse(
+                "tasks:worker-detail",
+                kwargs={"pk": 2}
+            )
+        )
+
+    def test_create_worker_invalid_data(self):
+        self.client.login(username="test_user", password="qwerty")
+
+        response = self.client.post(
+            reverse("tasks:worker-create"),
+            {
+                "username": "TestWorker",
+                "password1": "azSX1234A",
+                "password2": "SXaz4321B",
+            }
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response.context["form"],
+            "password2",
+            "The two password fields didn’t match."
+        )
+
+    def test_context_has_object_name(self):
+        self.client.login(username="test_user", password="qwerty")
+        response = self.client.get(reverse("tasks:worker-create"))
+        self.assertEqual(response.context["object_name"], "worker")
