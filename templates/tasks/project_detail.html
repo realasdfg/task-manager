@@ -72,6 +72,7 @@
           </tbody>
         </table>
         <h3>Tasks in this project ({{ tasks_count }})</h3>
+        {% include "includes/tasks_filter.html" %}
         <table class="table">
           <thead class="table-dark">
           <tr>
@@ -80,6 +81,7 @@
             <th scope="col">Type</th>
             <th scope="col" class="text-center">Priority</th>
             <th scope="col">Deadline</th>
+            <th scope="col" class="text-center">Assignees</th>
           </tr>
           </thead>
           <tbody>
@@ -100,6 +102,9 @@
                 <span class="badge {{ task.priority|priority_badge }}">{{ task.get_priority_display }}</span>
               </td>
               <td>{{ task.deadline|default:"No" }}</td>
+              <td class="text-center">
+                {{ task.assignees.count }}
+              </td>
             </tr>
           {% empty %}
             <tr>

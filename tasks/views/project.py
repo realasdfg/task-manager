@@ -12,7 +12,7 @@ from task_manager.mixins import (
     FilterMixin
 )
 from tasks.forms import ProjectForm, ProjectCompleteForm
-from tasks.mixins import PaginationMixin
+from tasks.mixins import PaginationMixin, TaskPaginationMixin
 from tasks.models import Project
 
 
@@ -43,18 +43,17 @@ class ProjectListView(
 
 
 class ProjectDetailView(
-    PaginationMixin,
+    TaskPaginationMixin,
     LoginRequiredMixin,
     generic.DetailView
 ):
     model = Project
     queryset = Project.objects.prefetch_related("teams__members")
-    paginate_by = 10
-    page_kwarg = "tasks_page"
-    pagination_context_name = "tasks"
 
-    def get_pagination_queryset(self):
-        return self.object.tasks.select_related("task_type")
+    def get_tasks_queryset(self):
+        return (self.object.tasks
+                .select_related("task_type")
+                .prefetch_related("assignees"))
 
     def get_context_data(self, **kwargs):
         context = super(ProjectDetailView, self).get_context_data(**kwargs)
