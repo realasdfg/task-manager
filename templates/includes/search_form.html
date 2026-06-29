@@ -1,0 +1,12 @@
+{% load crispy_forms_filters %}
+
+<form method="get" class="d-flex align-items-baseline gap-2">
+  {% for key, value in request.GET.items %}
+    {% if key not in search_form.fields and key != "page" %}
+      <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% endif %}
+  {% endfor %}
+
+  {{ search_form|crispy }}
+  <input type="submit" value="Search" class="btn btn-outline-primary">
+</form>

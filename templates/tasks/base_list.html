@@ -1,5 +1,4 @@
 {% extends "layouts/base.html" %}
-{% load crispy_forms_filters %}
 
 {% block content %}
   <main>
@@ -14,25 +13,17 @@
     <div class="section section-md pt-3">
       <div class="container">
         <div class="d-flex gap-3">
-          <form method="get" class="d-flex align-items-baseline gap-2">
-            {{ search_form|crispy }}
-            <input type="submit" value="Search" class="btn btn-outline-primary">
-          </form>
-
+          {% include "includes/search_form.html" %}
         </div>
         <div class="d-flex justify-content-between align-items-baseline">
           <div class="d-flex gap-3">
-
             {% include "includes/sort_dropdown.html" %}
             {% include "includes/filters.html" %}
           </div>
           <a href="{% block create_url %}#{% endblock %}" class="btn btn-success text-white">
             {% block create_title %}Create{% endblock %}
           </a>
-
         </div>
-
-
         <table class="table">
           <thead class="table-dark">
           <tr>
