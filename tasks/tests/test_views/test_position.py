@@ -172,16 +172,16 @@ class TestPositionUpdateView(TestCase):
             username="test_user",
             password="qwerty",
         )
+        cls.url = reverse(
+            "tasks:position-update",
+            kwargs={"pk": 1}
+        )
 
     def setUp(self):
         self.position = Position.objects.create(name="Test Position")
 
     def test_redirect_if_not_logged_in(self):
-        url = reverse(
-            "tasks:position-update",
-            kwargs={"pk": self.position.id}
-        )
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertRedirects(
             response,
             f"/accounts/login/?next=/positions/{self.position.id}/update/"
@@ -189,11 +189,7 @@ class TestPositionUpdateView(TestCase):
 
     def test_logged_in_uses_correct_template(self):
         self.client.login(username="test_user", password="qwerty")
-        url = reverse(
-            "tasks:position-update",
-            kwargs={"pk": self.position.id}
-        )
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(self.user == response.context["user"])
@@ -202,23 +198,18 @@ class TestPositionUpdateView(TestCase):
     def test_update_position(self):
         self.client.login(username="test_user", password="qwerty")
         form_data = {"name": "Test Position Changed"}
-        url = reverse(
-            "tasks:position-update",
-            kwargs={"pk": self.position.id}
-        )
 
-        self.client.post(url, form_data)
+        self.client.post(self.url, form_data)
         self.assertTrue(
             Position.objects.filter(name="Test Position Changed").exists()
         )
 
     def test_update_position_redirect(self):
         self.client.login(username="test_user", password="qwerty")
-        url = reverse(
-            "tasks:position-update",
-            kwargs={"pk": self.position.id}
+        response = self.client.post(
+            self.url,
+            {"name": "Test Position Changed"}
         )
-        response = self.client.post(url, {"name": "Test Position Changed"})
         self.assertRedirects(
             response,
             self.position.get_absolute_url(),
@@ -226,11 +217,7 @@ class TestPositionUpdateView(TestCase):
 
     def test_update_position_invalid_data(self):
         self.client.login(username="test_user", password="qwerty")
-        url = reverse(
-            "tasks:position-update",
-            kwargs={"pk": self.position.id}
-        )
-        response = self.client.post(url, {})
+        response = self.client.post(self.url, {})
 
         self.assertEqual(response.status_code, 200)
         self.assertFormError(
@@ -241,11 +228,7 @@ class TestPositionUpdateView(TestCase):
 
     def test_context_has_object_name(self):
         self.client.login(username="test_user", password="qwerty")
-        url = reverse(
-            "tasks:position-update",
-            kwargs={"pk": self.position.id}
-        )
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertEqual(response.context["object_name"], "position")
 
 

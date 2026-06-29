@@ -256,16 +256,16 @@ class TestProjectUpdateView(TestCase):
             username="test_user",
             password="qwerty",
         )
+        cls.url = reverse(
+            "tasks:project-update",
+            kwargs={"pk": 1}
+        )
 
     def setUp(self):
         self.project = Project.objects.create(name="Test Project")
 
     def test_redirect_if_not_logged_in(self):
-        url = reverse(
-            "tasks:project-update",
-            kwargs={"pk": self.project.id}
-        )
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertRedirects(
             response,
             f"/accounts/login/?next=/projects/{self.project.id}/update/"
@@ -273,11 +273,7 @@ class TestProjectUpdateView(TestCase):
 
     def test_logged_in_uses_correct_template(self):
         self.client.login(username="test_user", password="qwerty")
-        url = reverse(
-            "tasks:project-update",
-            kwargs={"pk": self.project.id}
-        )
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(self.user == response.context["user"])
@@ -288,23 +284,17 @@ class TestProjectUpdateView(TestCase):
         form_data = {
             "name": "Test Project Changed",
         }
-
-        url = reverse(
-            "tasks:project-update",
-            kwargs={"pk": self.project.id}
-        )
-        self.client.post(url, form_data)
+        self.client.post(self.url, form_data)
         self.assertTrue(
             Project.objects.filter(name="Test Project Changed").exists()
         )
 
     def test_update_project_redirect(self):
         self.client.login(username="test_user", password="qwerty")
-        url = reverse(
-            "tasks:project-update",
-            kwargs={"pk": self.project.id}
+        response = self.client.post(
+            self.url,
+            {"name": "Test Project Changed"}
         )
-        response = self.client.post(url, {"name": "Test Project Changed"})
         self.assertRedirects(
             response,
             self.project.get_absolute_url(),
@@ -312,11 +302,7 @@ class TestProjectUpdateView(TestCase):
 
     def test_update_project_invalid_data(self):
         self.client.login(username="test_user", password="qwerty")
-        url = reverse(
-            "tasks:project-update",
-            kwargs={"pk": self.project.id}
-        )
-        response = self.client.post(url, {})
+        response = self.client.post(self.url, {})
 
         self.assertEqual(response.status_code, 200)
         self.assertFormError(
@@ -327,11 +313,7 @@ class TestProjectUpdateView(TestCase):
 
     def test_context_has_object_name(self):
         self.client.login(username="test_user", password="qwerty")
-        url = reverse(
-            "tasks:project-update",
-            kwargs={"pk": self.project.id}
-        )
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertEqual(response.context["object_name"], "project")
 
 

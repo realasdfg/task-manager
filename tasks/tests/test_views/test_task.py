@@ -255,6 +255,10 @@ class TestTaskUpdateView(TestCase):
             password="qwerty",
         )
         cls.task_type = TaskType.objects.create(name="task type")
+        cls.url = reverse(
+            "tasks:task-update",
+            kwargs={"pk": 1}
+        )
 
     def setUp(self):
         self.task = Task.objects.create(
@@ -263,11 +267,7 @@ class TestTaskUpdateView(TestCase):
         )
 
     def test_redirect_if_not_logged_in(self):
-        url = reverse(
-            "tasks:task-update",
-            kwargs={"pk": self.task.id}
-        )
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertRedirects(
             response,
             f"/accounts/login/?next=/tasks/{self.task.id}/update/"
@@ -275,11 +275,7 @@ class TestTaskUpdateView(TestCase):
 
     def test_logged_in_uses_correct_template(self):
         self.client.login(username="test_user", password="qwerty")
-        url = reverse(
-            "tasks:task-update",
-            kwargs={"pk": self.task.id}
-        )
-        response = self.client.get(url)
+        response = self.client.get(self.url)
 
         self.assertEqual(response.status_code, 200)
         self.assertTrue(self.user == response.context["user"])
@@ -287,29 +283,20 @@ class TestTaskUpdateView(TestCase):
 
     def test_update_task(self):
         self.client.login(username="test_user", password="qwerty")
-        url = reverse(
-            "tasks:task-update",
-            kwargs={"pk": self.task.id}
-        )
         form_data = {
             "name": "Test Task Changed",
             "task_type": self.task_type.id,
             "priority": "medium",
         }
-
-        self.client.post(url, form_data)
+        self.client.post(self.url, form_data)
         self.assertTrue(
             Task.objects.filter(name="Test Task Changed").exists()
         )
 
     def test_update_task_redirect(self):
         self.client.login(username="test_user", password="qwerty")
-        url = reverse(
-            "tasks:task-update",
-            kwargs={"pk": self.task.id}
-        )
         response = self.client.post(
-            url,
+            self.url,
             {
                 "name": "Test Task Changed",
                 "task_type": self.task_type.id,
@@ -323,13 +310,8 @@ class TestTaskUpdateView(TestCase):
 
     def test_update_task_invalid_data(self):
         self.client.login(username="test_user", password="qwerty")
-        url = reverse(
-            "tasks:task-update",
-            kwargs={"pk": self.task.id}
-        )
-
         response = self.client.post(
-            url,
+            self.url,
             {
                 "name": "Test Task Changed",
                 "priority": "medium",
@@ -345,11 +327,7 @@ class TestTaskUpdateView(TestCase):
 
     def test_context_has_object_name(self):
         self.client.login(username="test_user", password="qwerty")
-        url = reverse(
-            "tasks:task-update",
-            kwargs={"pk": self.task.id}
-        )
-        response = self.client.get(url)
+        response = self.client.get(self.url)
         self.assertEqual(response.context["object_name"], "task")
 
 
