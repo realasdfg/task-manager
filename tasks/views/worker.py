@@ -73,7 +73,9 @@ class WorkerDetailView(
         # filter
         status = self.request.GET.get("status")
         if status in self.FILTER_OPTIONS:
-            queryset = queryset.filter(is_completed=self.FILTER_OPTIONS[status])
+            queryset = queryset.filter(
+                is_completed=self.FILTER_OPTIONS[status]
+            )
 
         # sort
         sort = self.request.GET.get("sort", "-created_at")
