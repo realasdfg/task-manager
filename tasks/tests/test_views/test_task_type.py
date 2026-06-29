@@ -171,3 +171,88 @@ class TestTaskTypeCreateView(TestCase):
         self.client.login(username="test_user", password="qwerty")
         response = self.client.get(reverse("tasks:tasktype-create"))
         self.assertEqual(response.context["object_name"], "task type")
+
+
+class TestTaskTypeUpdateView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = Worker.objects.create_user(
+            username="test_user",
+            password="qwerty",
+        )
+
+    def setUp(self):
+        self.task_type = TaskType.objects.create(name="Test TaskType")
+
+    def test_redirect_if_not_logged_in(self):
+        url = reverse(
+            "tasks:tasktype-update",
+            kwargs={"pk": self.task_type.id}
+        )
+        response = self.client.get(url)
+        self.assertRedirects(
+            response,
+            f"/accounts/login/?next=/task-types/{self.task_type.id}/update/"
+        )
+
+    def test_logged_in_uses_correct_template(self):
+        self.client.login(username="test_user", password="qwerty")
+        url = reverse(
+            "tasks:tasktype-update",
+            kwargs={"pk": self.task_type.id}
+        )
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user == response.context["user"])
+        self.assertTemplateUsed(response, "tasks/base_form.html")
+
+    def test_update_task_type(self):
+        self.client.login(username="test_user", password="qwerty")
+
+        url = reverse(
+            "tasks:tasktype-update",
+            kwargs={"pk": self.task_type.id}
+        )
+        form_data = {"name": "Test TaskType Changed"}
+        self.client.post(url, form_data)
+        self.assertTrue(
+            TaskType.objects.filter(name="Test TaskType Changed").exists()
+        )
+
+    def test_update_task_type_redirect(self):
+        self.client.login(username="test_user", password="qwerty")
+        url = reverse(
+            "tasks:tasktype-update",
+            kwargs={"pk": self.task_type.id}
+        )
+        response = self.client.post(url, {"name": "Test TaskType Changed"})
+        self.assertRedirects(
+            response,
+            self.task_type.get_absolute_url(),
+        )
+
+    def test_update_task_type_invalid_data(self):
+        self.client.login(username="test_user", password="qwerty")
+
+        url = reverse(
+            "tasks:tasktype-update",
+            kwargs={"pk": self.task_type.id}
+        )
+        response = self.client.post(url, {})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response.context["form"],
+            "name",
+            "This field is required."
+        )
+
+    def test_context_has_object_name(self):
+        self.client.login(username="test_user", password="qwerty")
+        url = reverse(
+            "tasks:tasktype-update",
+            kwargs={"pk": self.task_type.id}
+        )
+        response = self.client.get(url)
+        self.assertEqual(response.context["object_name"], "task type")

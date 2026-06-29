@@ -212,3 +212,98 @@ class TestWorkerCreateView(TestCase):
         self.client.login(username="test_user", password="qwerty")
         response = self.client.get(reverse("tasks:worker-create"))
         self.assertEqual(response.context["object_name"], "worker")
+
+
+class TestWorkerUpdateView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = Worker.objects.create_user(
+            username="test_user",
+            password="qwerty",
+        )
+
+    def setUp(self):
+        self.worker = Worker.objects.create_user(
+            username="test_worker",
+            password="azSX1234A",
+        )
+
+    def test_redirect_if_not_logged_in(self):
+        url = reverse(
+            "tasks:worker-update",
+            kwargs={"pk": self.worker.id}
+        )
+        response = self.client.get(url)
+        self.assertRedirects(
+            response,
+            f"/accounts/login/?next=/workers/{self.worker.id}/update/"
+        )
+
+    def test_logged_in_uses_correct_template(self):
+        self.client.login(username="test_user", password="qwerty")
+        url = reverse(
+            "tasks:worker-update",
+            kwargs={"pk": self.worker.id}
+        )
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(self.user == response.context["user"])
+        self.assertTemplateUsed(response, "tasks/base_form.html")
+
+    def test_update_worker(self):
+        self.client.login(username="test_user", password="qwerty")
+        url = reverse(
+            "tasks:worker-update",
+            kwargs={"pk": self.worker.id}
+        )
+        form_data = {
+            "username": "test_worker_changed",
+            "first_name": "first name",
+        }
+        self.client.post(url, form_data)
+        self.assertTrue(
+            Worker.objects.filter(username="test_worker_changed").exists()
+        )
+
+    def test_update_worker_redirect(self):
+        self.client.login(username="test_user", password="qwerty")
+        url = reverse(
+            "tasks:worker-update",
+            kwargs={"pk": self.worker.id}
+        )
+        response = self.client.post(
+            url,
+            {
+                "username": "test_worker_changed",
+                "first_name": "first name",
+            }
+        )
+        self.assertRedirects(
+            response,
+            self.worker.get_absolute_url()
+        )
+
+    def test_update_worker_invalid_data(self):
+        self.client.login(username="test_user", password="qwerty")
+        url = reverse(
+            "tasks:worker-update",
+            kwargs={"pk": self.worker.id}
+        )
+        response = self.client.post(url, {"first_name": "first name"})
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFormError(
+            response.context["form"],
+            "username",
+            "This field is required."
+        )
+
+    def test_context_has_object_name(self):
+        self.client.login(username="test_user", password="qwerty")
+        url = reverse(
+            "tasks:worker-update",
+            kwargs={"pk": self.worker.id}
+        )
+        response = self.client.get(url)
+        self.assertEqual(response.context["object_name"], "worker")
