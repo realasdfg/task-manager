@@ -4,6 +4,15 @@ A Django web application for managing projects, tasks, teams, workers, positions
 class-based views, reusable list/detail mixins, Bootstrap-based templates, Select2 widgets, and a custom `Worker` user
 model.
 
+## Demo
+https://task-manager-9cw3.onrender.com
+- Login: `admin`
+- Password: `dcgBm7gA`
+> ⚠️ **If the page does not load**
+>
+> Please wait ~50 seconds — the server may be waking up.
+> On free Render.com plans, the service sleeps after 5 minutes of inactivity and needs time to restart.
+
 ## Features
 
 - Authentication-protected dashboard with project, team, worker, and task counters.
@@ -105,8 +114,10 @@ cp .env.template .env
 Then update `.env`:
 
 ```env
+DATABASE_URL=your-db-url
 SECRET_KEY=your-secret-key
-DEBUG=True
+DJANGO_SETTINGS_MODULE=settings-module
+RENDER_EXTERNAL_HOSTNAME=host-name
 ```
 
 5. Apply migrations.
