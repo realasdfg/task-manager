@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -78,6 +79,16 @@ class WorkerDeleteView(LoginRequiredMixin, generic.DeleteView):
     model = Worker
     template_name = "tasks/base_confirm_delete.html"
     success_url = reverse_lazy("tasks:worker-list")
+
+    def post(self, request, *args, **kwargs):
+        if request.user == self.get_object():
+            return redirect(self.get_object().get_absolute_url())
+        return super().post(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if request.user == self.get_object():
+            return redirect(self.get_object().get_absolute_url())
+        return super().get(request, *args, **kwargs)
 
     def form_valid(self, form):
         messages.success(

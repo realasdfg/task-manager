@@ -11,7 +11,9 @@
             <a href="{% url 'password_change' %}" class="btn btn-outline-success me-3">Change password</a>
           {% endif %}
           <a href="{% url 'tasks:worker-update' worker.id %}" class="btn btn-outline-success me-3">Edit</a>
-          <a href="{% url 'tasks:worker-delete' worker.id %}" class="btn btn-danger">Delete</a>
+          {% if user != worker %}
+            <a href="{% url 'tasks:worker-delete' worker.id %}" class="btn btn-danger">Delete</a>
+          {% endif %}
         </div>
       </div>
     </div>
