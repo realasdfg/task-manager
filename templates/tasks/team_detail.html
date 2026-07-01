@@ -1,0 +1,56 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+  <main>
+    <div class="section pb-2 bg-primary text-white header-list">
+      <div class="container d-flex justify-content-between">
+        <h2>Team: {{ team.name }}</h2>
+        <div>
+          <a href="{% url 'tasks:team-update' team.id %}" class="btn btn-outline-success me-3">Edit</a>
+          <a href="{% url 'tasks:team-delete' team.id %}" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+    <div class="section section-md pt-3">
+      <div class="container">
+        <h3>{{ team.name }} members ({{ team.members.count }})</h3>
+        <table class="table">
+          <thead class="table-dark">
+          <tr>
+            <th scope="col" class="text-center w-0">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Full name</th>
+            <th scope="col">Position</th>
+            <th scope="col" class="text-center">Tasks</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for member in team.members.all %}
+            <tr>
+              <th scope="row" class="text-center">{{ member.id }}</th>
+              <td><a href="{% url 'tasks:worker-detail' member.id %}" class="text-decoration-underline">
+                {{ member.username }}
+              </a></td>
+              <td>{{ member.first_name }} {{ member.last_name }}</td>
+              <td>
+                {% if member.position %}
+                  <a href="{% url 'tasks:position-detail' member.position.id %}" class="text-decoration-underline">
+                    {{ member.position.name }}
+                  </a>
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td class="text-center">{{ member.tasks.count }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <th colspan="100%" scope="row" class="text-center">There are no members at this moment.</th>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+{% endblock content %}

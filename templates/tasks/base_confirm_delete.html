@@ -1,0 +1,27 @@
+{% extends "layouts/base.html" %}
+
+{% block content %}
+  <main>
+    <div class="section pb-2 bg-primary text-white header-list">
+      <div class="container">
+        <h2>Deletion confirmation</h2>
+      </div>
+    </div>
+    {% block deletion_info %}
+      <div class="section section-md pt-3">
+        <div class="container">
+          <div class="alert alert-danger">
+            <p class="fw-bold">Are you sure you want to delete "{{ object }}"?</p>
+            {% block additional_info %}
+            {% endblock %}
+            <form method="post">
+              {% csrf_token %}
+              {% include 'includes/cancel_button.html' %}
+              <input type="submit" value="Delete" class="btn btn-danger">
+            </form>
+          </div>
+        </div>
+      </div>
+    {% endblock %}
+  </main>
+{% endblock content %}

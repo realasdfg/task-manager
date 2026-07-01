@@ -1,0 +1,116 @@
+{% extends "layouts/base.html" %}
+{% load task_tags %}
+
+{% block content %}
+  <main>
+    <div class="section pb-2 bg-primary text-white header-list">
+      <div class="container d-flex justify-content-between">
+        <h2>Task: {{ task.name }}</h2>
+        <div>
+          <a href="{% url 'tasks:task-update' task.id %}" class="btn btn-outline-success me-3">Edit</a>
+          <a href="{% url 'tasks:task-delete' task.id %}" class="btn btn-danger">Delete</a>
+        </div>
+      </div>
+    </div>
+    <div class="section section-md pt-3">
+      <div class="container">
+        <div class="alert alert-tertiary">
+          <strong>Created:</strong> {{ task.created_at }} ({{ task.created_at|timesince }} ago)
+          <br>
+          <strong>Deadline:</strong>
+          {% if task.deadline %}
+            {{ task.deadline }}
+            {% if is_overdue %}
+              <span class="text-danger">(overdue)</span>
+            {% else %}
+              ({{ task.deadline|timeuntil }} left)
+            {% endif %}
+          {% else %}
+            No
+          {% endif %}
+          <br>
+          <strong>Priority:</strong>
+          <span class="badge {{ task.priority|priority_badge }}">
+            {{ task.get_priority_display }}
+          </span>
+          <br>
+          <strong>Task type:</strong>
+          <a href="{% url 'tasks:tasktype-detail' task.task_type.id %}"
+             class="text-decoration-underline">
+            {{ task.task_type }}
+          </a>
+          <br>
+          <strong>Belongs to project:</strong>
+          {% if task.project %}
+            <a href="{% url 'tasks:project-detail' task.project.id %}"
+               class="text-decoration-underline">
+              {{ task.project }}
+            </a>
+          {% else %}
+            No
+          {% endif %}
+        </div>
+        <div class="alert alert-tertiary">
+          <form method="post" class="d-flex align-items-center gap-2">
+            {% csrf_token %}
+            <strong>Completed:</strong>
+            <input type="hidden" name="is_completed" value="{{ task.is_completed|yesno:'false,true' }}">
+            {% if task.is_completed %}
+              <span class="icon-success"><span class="fas fa-check-circle"></span></span>
+              <button type="submit" class="btn btn-sm btn-outline-success">Resume task</button>
+            {% else %}
+              <span class="icon-danger"><span class="fas fa-times-circle"></span></span>
+              <button type="submit" class="btn btn-sm btn-outline-danger">Mark completed</button>
+            {% endif %}
+          </form>
+        </div>
+        <div class="alert alert-secondary">
+          {{ task.description|default:"No description" }}
+        </div>
+        <h3>Assignees ({{ task.assignees.count }})</h3>
+        <table class="table">
+          <thead class="table-dark">
+          <tr>
+            <th scope="col" class="text-center w-0">ID</th>
+            <th scope="col">Username</th>
+            <th scope="col">Full Name</th>
+            <th scope="col">Position</th>
+            <th scope="col">Teams</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for assignee in task.assignees.all %}
+            <tr>
+              <th scope="row" class="text-center">{{ assignee.id }}</th>
+              <td><a href="{% url 'tasks:worker-detail' assignee.id %}" class="text-decoration-underline">
+                {{ assignee.username }}
+              </a></td>
+              <td>{{ assignee.first_name }} {{ assignee.last_name }}</td>
+              <td>
+                {% if assignee.position %}
+                  <a href="{% url 'tasks:position-detail' assignee.position.id %}" class="text-decoration-underline">
+                    {{ assignee.position.name }}
+                  </a>
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>
+                {% for team in assignee.teams.all %}
+                  <a href="{% url 'tasks:team-detail' team.id %}" class="text-decoration-underline">{{ team }}</a><br>
+                {% empty %}
+                  -
+                {% endfor %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <th colspan="100%" scope="row" class="text-center">There are no workers at this moment.</th>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+{% endblock content %}

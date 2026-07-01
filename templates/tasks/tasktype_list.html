@@ -1,0 +1,29 @@
+{% extends "tasks/base_list.html" %}
+
+{% block list_title %}Task Types{% endblock %}
+
+{% block create_url %}{% url 'tasks:tasktype-create' %}{% endblock %}
+
+{% block create_title %}Add task type{% endblock %}
+
+{% block table_headers %}
+  <th scope="col" class="text-center w-0">ID</th>
+  <th scope="col">Name</th>
+  <th scope="col" class="text-center">Tasks</th>
+{% endblock %}
+
+{% block table_rows %}
+  {% for task_type in tasktype_list %}
+    <tr>
+      <th scope="row" class="text-center">{{ task_type.id }}</th>
+      <td><a href="{% url 'tasks:tasktype-detail' task_type.id %}" class="text-decoration-underline">
+        {{ task_type.name }}
+      </a></td>
+      <td class="text-center">{{ task_type.tasks.count }}</td>
+    </tr>
+  {% empty %}
+    <tr>
+      <th colspan="100%" scope="row" class="text-center">There are no tasks at this moment.</th>
+    </tr>
+  {% endfor %}
+{% endblock %}

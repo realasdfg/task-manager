@@ -1,0 +1,70 @@
+{% extends "layouts/base.html" %}
+{% load task_tags %}
+
+{% block content %}
+  <main>
+    <div class="section pb-2 bg-primary text-white header-list">
+      <div class="container d-flex justify-content-between">
+        <h2>Task Type: {{ tasktype.name }}</h2>
+        <div>
+          <a href="{% url 'tasks:tasktype-update' tasktype.id %}" class="btn btn-outline-success">Edit</a>
+          {% if tasks_count > 0 %}
+            <span title="Cannot delete: used by existing tasks">
+              <button class="btn btn-danger" disabled>Delete</button>
+            </span>
+          {% else %}
+            <a href="{% url 'tasks:tasktype-delete' tasktype.id %}" class="btn btn-danger">Delete</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="section section-md pt-3">
+      <div class="container">
+        <h3>Tasks ({{ tasks_count }})</h3>
+        <table class="table">
+          <thead class="table-dark">
+          <tr>
+            <th scope="col" class="text-center w-0">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Project</th>
+            <th scope="col" class="text-center">Priority</th>
+            <th scope="col">Deadline</th>
+            <th scope="col" class="text-center">Assignees</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for task in tasks %}
+            <tr class="{% if task.is_completed %}table-success{% endif %}">
+              <th scope="row" class="text-center">{{ task.id }}</th>
+              <td>
+                <a href="{% url 'tasks:task-detail' task.id %}" class="text-decoration-underline">
+                  {{ task.name }}
+                </a>
+              </td>
+              <td>
+                {% if task.project %}
+                  <a href="{% url 'tasks:project-detail' task.project.id %}" class="text-decoration-underline">
+                    {{ task.project.name }}
+                  </a>
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td class="text-center">
+                <span class="badge {{ task.priority|priority_badge }}">{{ task.get_priority_display }}</span>
+              </td>
+              <td>{{ task.deadline|default:"No" }}</td>
+              <td class="text-center">{{ task.assignees.count }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <th colspan="100%" scope="row" class="text-center">There are no tasks at this moment.</th>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        {% include "includes/pagination_detail.html" with page=tasks page_param="tasks_page" %}
+      </div>
+    </div>
+  </main>
+{% endblock content %}

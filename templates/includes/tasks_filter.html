@@ -1,0 +1,20 @@
+<form method="get" class="d-flex gap-2 mb-3">
+  <label>
+    <select class="form-select" name="status" onchange="this.form.submit()" style="min-width: 140px">
+      <option value="">— All —</option>
+      <option value="completed" {% if current_status == "completed" %}selected{% endif %}>
+        Completed
+      </option>
+      <option value="uncompleted" {% if current_status == "uncompleted" %}selected{% endif %}>
+        Uncompleted
+      </option>
+    </select>
+  </label>
+  <label>
+    <select class="form-select" name="sort" onchange="this.form.submit()" style="min-width: 180px">
+      {% for value, label in sort_options.items %}
+        <option value="{{ value }}" {% if value == current_sort %}selected{% endif %}>{{ label }}</option>
+      {% endfor %}
+    </select>
+  </label>
+</form>

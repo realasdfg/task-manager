@@ -1,0 +1,23 @@
+{% extends "tasks/base_confirm_delete.html" %}
+
+{% block deletion_info %}
+  <div class="section section-md pt-3">
+    <div class="container">
+      <div class="alert alert-danger">
+        {% if tasktype.tasks.exists %}
+          <p class="text-danger fw-bold">
+            Warning: You cannot delete this task type.
+            {{ tasktype.tasks.count }} task(s) use this type!
+          </p>
+        {% else %}
+          <p class="fw-bold">Are you sure you want to delete "{{ object }}"?</p>
+        {% endif %}
+        <form action="" method="post">
+          {% csrf_token %}
+          {% include 'includes/cancel_button.html' %}
+          <input type="submit" value="Yes" class="btn btn-danger" {% if tasktype.tasks.exists %}disabled{% endif %}>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

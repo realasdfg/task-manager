@@ -1,0 +1,41 @@
+{% extends "tasks/base_list.html" %}
+
+{% block list_title %}Workers{% endblock %}
+
+{% block create_url %}{% url 'tasks:worker-create' %}{% endblock %}
+
+{% block create_title %}Add worker{% endblock %}
+
+{% block table_headers %}
+  <th scope="col" class="text-center w-0">ID</th>
+  <th scope="col">Username</th>
+  <th scope="col">Full Name</th>
+  <th scope="col">Position</th>
+  <th scope="col" class="text-center">Tasks</th>
+{% endblock %}
+
+{% block table_rows %}
+  {% for worker in worker_list %}
+    <tr>
+      <th scope="row" class="text-center">{{ worker.id }}</th>
+      <td><a href="{% url 'tasks:worker-detail' worker.id %}" class="text-decoration-underline">
+        {{ worker.username }}
+      </a></td>
+      <td>{{ worker.first_name }} {{ worker.last_name }}</td>
+      <td>
+        {% if worker.position %}
+          <a href="{% url 'tasks:position-detail' worker.position.id %}" class="text-decoration-underline">
+            {{ worker.position.name }}
+          </a>
+        {% else %}
+          -
+        {% endif %}
+      </td>
+      <td class="text-center">{{ worker.tasks.count }}</td>
+    </tr>
+  {% empty %}
+    <tr>
+      <th colspan="100%" scope="row" class="text-center">There are no workers at this moment.</th>
+    </tr>
+  {% endfor %}
+{% endblock %}

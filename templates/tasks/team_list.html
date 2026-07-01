@@ -1,0 +1,29 @@
+{% extends "tasks/base_list.html" %}
+
+{% block list_title %}Teams{% endblock %}
+
+{% block create_url %}{% url 'tasks:team-create' %}{% endblock %}
+
+{% block create_title %}Create team{% endblock %}
+
+{% block table_headers %}
+  <th scope="col" class="text-center w-0">ID</th>
+  <th scope="col">Name</th>
+  <th scope="col" class="text-center">Members</th>
+{% endblock %}
+
+{% block table_rows %}
+  {% for team in team_list %}
+    <tr>
+      <th scope="row" class="text-center">{{ team.id }}</th>
+      <td><a href="{% url 'tasks:team-detail' team.id %}" class="text-decoration-underline">
+        {{ team.name }}
+      </a></td>
+      <td class="text-center">{{ team.members.count }}</td>
+    </tr>
+  {% empty %}
+    <tr>
+      <th colspan="100%" scope="row" class="text-center">There are no teams at this moment.</th>
+    </tr>
+  {% endfor %}
+{% endblock %}

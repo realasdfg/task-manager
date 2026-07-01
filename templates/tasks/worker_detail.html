@@ -1,0 +1,114 @@
+{% extends "layouts/base.html" %}
+{% load task_tags %}
+
+{% block content %}
+  <main>
+    <div class="section pb-2 bg-primary text-white header-list">
+      <div class="container d-flex justify-content-between">
+        <h2>{{ worker.username }}</h2>
+        <div>
+          {% if user == worker %}
+            <a href="{% url 'password_change' %}" class="btn btn-outline-success me-3">Change password</a>
+          {% endif %}
+          <a href="{% url 'tasks:worker-update' worker.id %}" class="btn btn-outline-success me-3">Edit</a>
+          {% if user != worker %}
+            <a href="{% url 'tasks:worker-delete' worker.id %}" class="btn btn-danger">Delete</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="section section-md pt-3">
+      <div class="container">
+        <div class="alert alert-tertiary">
+          <strong>First name:</strong> {{ worker.first_name|default:"-" }}
+          <br>
+          <strong>Last name:</strong> {{ worker.last_name|default:"-" }}
+          <br>
+          <strong>E-mail:</strong> {{ worker.email|default:"No" }}
+          <br>
+          <strong>Position:</strong>
+          {% if worker.position %}
+            <a href="{% url 'tasks:position-detail' worker.position.id %}" class="text-decoration-underline">
+              {{ worker.position.name }}
+            </a>
+          {% else %}
+            No
+          {% endif %}
+        </div>
+        <h3>Member of teams ({{ worker.teams.count }})</h3>
+        <table class="table">
+          <thead class="table-dark">
+          <tr>
+            <th scope="col" class="text-center">ID</th>
+            <th scope="col">Name</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for team in worker.teams.all %}
+            <tr>
+              <th scope="row" class="text-center">{{ team.id }}</th>
+              <td><a href="{% url 'tasks:team-detail' team.id %}" class="text-decoration-underline">
+                {{ team.name }}
+              </a></td>
+            </tr>
+          {% empty %}
+            <tr>
+              <th colspan="100%" scope="row" class="text-center">There are no teams at this moment.</th>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <h3>{{ worker.username }}'s tasks ({{ tasks_count }})</h3>
+        {% include "includes/tasks_filter.html" %}
+        <table class="table">
+          <thead class="table-dark">
+          <tr>
+            <th scope="col" class="text-center">ID</th>
+            <th scope="col">Name</th>
+            <th scope="col">Project</th>
+            <th scope="col">Type</th>
+            <th scope="col" class="text-center">Priority</th>
+            <th scope="col">Deadline</th>
+          </tr>
+          </thead>
+          <tbody>
+          {% for task in tasks %}
+            <tr class="{% if task.is_completed %}table-success{% endif %}">
+              <th scope="row" class="text-center">{{ task.id }}</th>
+              <td>
+                <a href="{% url 'tasks:task-detail' task.id %}" class="text-decoration-underline">
+                  {{ task.name }}
+                </a>
+              </td>
+              <td>
+                {% if task.project %}
+                  <a href="{% url 'tasks:project-detail' task.project.id %}" class="text-decoration-underline">
+                    {{ task.project.name }}
+                  </a>
+                {% else %}
+                  -
+                {% endif %}
+              </td>
+              <td>
+                <a href="{% url 'tasks:tasktype-detail' task.task_type.id %}"
+                   class="text-decoration-underline">
+                  {{ task.task_type }}
+                </a>
+              </td>
+              <td class="text-center">
+                <span class="badge {{ task.priority|priority_badge }}">{{ task.get_priority_display }}</span>
+              </td>
+              <td>{{ task.deadline|default:"No" }}</td>
+            </tr>
+          {% empty %}
+            <tr>
+              <th colspan="100%" scope="row" class="text-center">There are no tasks at this moment.</th>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        {% include "includes/pagination_detail.html" with page=tasks page_param="tasks_page" %}
+      </div>
+    </div>
+  </main>
+{% endblock content %}

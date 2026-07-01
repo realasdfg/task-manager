@@ -1,0 +1,97 @@
+from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
+from django.urls import reverse_lazy
+from django.utils import timezone
+from django.views import generic
+
+from task_manager.mixins import (
+    SearchMixin,
+    AddObjectNameMixin,
+    SortMixin,
+    FilterMixin
+)
+from tasks.forms import TaskCompleteForm, TaskForm
+from tasks.models import Task
+
+
+class TaskListView(
+    FilterMixin,
+    SortMixin,
+    SearchMixin,
+    LoginRequiredMixin,
+    generic.ListView
+):
+    model = Task
+    queryset = (Task.objects.all()
+                .prefetch_related("assignees")
+                .select_related("task_type", "project"))
+    search_fields = {"name": "Search by name"}
+    paginate_by = 10
+    sort_options = {
+        "name": "Name (A→Z)",
+        "-name": "Name (Z→A)",
+        "deadline": "Deadline (earliest)",
+        "-deadline": "Deadline (latest)",
+        "created_at": "Creation (earliest)",
+        "-created_at": "Creation (latest)",
+    }
+    default_sort = "-created_at"
+    filter_fields = {
+        "status": ("is_completed", {"completed": True, "uncompleted": False}),
+    }
+
+
+class TaskDetailView(LoginRequiredMixin, generic.DetailView):
+    model = Task
+    queryset = (Task.objects.all()
+                .select_related("project", "task_type")
+                .prefetch_related("assignees__position", "assignees__teams"))
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super(TaskDetailView, self).get_context_data(**kwargs)
+
+        task_deadline = self.object.deadline
+        context["is_overdue"] = (task_deadline is not None
+                                 and task_deadline < timezone.now())
+        return context
+
+    def post(self, request, *args, **kwargs):
+        task = self.get_object()
+        form = TaskCompleteForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+        return redirect("tasks:task-detail", pk=task.pk)
+
+
+class TaskCreateView(
+    AddObjectNameMixin,
+    LoginRequiredMixin,
+    generic.CreateView
+):
+    model = Task
+    form_class = TaskForm
+    template_name = "tasks/base_form.html"
+
+
+class TaskUpdateView(
+    AddObjectNameMixin,
+    LoginRequiredMixin,
+    generic.UpdateView
+):
+    model = Task
+    form_class = TaskForm
+    template_name = "tasks/base_form.html"
+
+
+class TaskDeleteView(LoginRequiredMixin, generic.DeleteView):
+    model = Task
+    template_name = "tasks/base_confirm_delete.html"
+    success_url = reverse_lazy("tasks:task-list")
+
+    def form_valid(self, form):
+        messages.success(
+            self.request,
+            f"Task '{self.object}' has been successfully deleted."
+        )
+        return super().form_valid(form)

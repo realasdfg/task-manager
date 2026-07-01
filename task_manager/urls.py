@@ -14,9 +14,23 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+from debug_toolbar.toolbar import debug_toolbar_urls
 from django.contrib import admin
-from django.urls import path
+from django.contrib.auth.views import LoginView
+from django.urls import path, include
+
+from tasks.forms import LoginForm
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
+    path("", include("tasks.urls", namespace="tasks")),
+    path(
+        "accounts/login/",
+        LoginView.as_view(authentication_form=LoginForm),
+        name="login",
+    ),
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("select2/", include("django_select2.urls")),
 ]
+
+urlpatterns += debug_toolbar_urls()
